@@ -1,8 +1,9 @@
-cred50	Credit	50
-cred100	Credit	100
-cred200	Credit	200
-cred500	Credit	500
-cred1000	Credit	1000
-RESET	RESET	0
+$02	Credit	20
+$05	Credit	50
+$10	Credit	100
+$20	Credit	200
+$50	Credit	500
+$1k	Credit	1000
+RST	RESET	0
 4029764001807	Club Mate 0.5L	-35
 4029764001821	Club Mate 0.33L	-25

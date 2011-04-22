@@ -110,7 +110,7 @@ void read_input()
 
     // scan people
     for (i = 0; i < people_count; ++i) {
-        if (!strncmp( buf, people[i], strlen(people[i]) )) {
+        if (!strncmp( buf, people[i], 3 )) {
             printf("\nMember %s ", people[i]);
             if (last_item == -1) {
                 balance = modify_credit(people[i], 0);

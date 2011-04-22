@@ -14,7 +14,7 @@ svgfoot = """
 </svg>
 """
 
-cntx = 5
+cntx = 6
 cnty = 10
 scalex = 1.2
 scaley = 1.2
@@ -24,18 +24,20 @@ items = f.readlines()
 f.close()
 
 items = map(lambda x: x.strip(), items)
-items += ['cred50','cred100','cred200','cred500','cred1000','RESET']
+itemss = map(lambda x: x[0:3], items)
+items += ['credit 20', 'credit 50', 'credit 100', 'credit 200', 'credit 500', 'credit 1000', 'RESET']
+itemss += ['$02','$05','$10','$20','$50','$1k','RST']
 
 f = open('barcodes.svg','w')
 f.write(svghead)
 
 i = 0
 j = 0
-for item in items:
-    elem = Popen(('zint','--directsvg','-d', item), stdout = PIPE).communicate()[0].split('\n')
+for idx in xrange(len(items)):
+    elem = Popen(('zint','--directsvg','-d', itemss[idx]), stdout = PIPE).communicate()[0].split('\n')
     elem = elem[8:-2]
-    elem[0] = elem[0].replace('id="barcode"', 'transform="matrix(%f,0,0,%f,%f,%f)"' % (scalex, scaley, 42+i*200 , 14+j*90) )
-    elem[23] = item
+    elem[0] = elem[0].replace('id="barcode"', 'transform="matrix(%f,0,0,%f,%f,%f)"' % (scalex, scaley, 52+i*160 , 14+j*100) )
+    elem[23] = items[idx]
     f.write('\n'.join(elem))
     i += 1
     if i >= cntx:

@@ -6,7 +6,7 @@ all: brmbar.c
 	bcc -Md -W brmbar.c dataio.c -o brmbar.com
 
 clean:
-	rm -f brmbar.com brmbar
+	rm -f brmbar.com brmbar barcodes.svg
 
 dos:
 	dosbox brmbar.com
