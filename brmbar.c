@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "defines.h"
 
 struct item {
@@ -7,7 +8,10 @@ struct item {
     int price;
 } items[ITEM_MAXNUM];
 
+char *people[PERSON_MAXLEN];
+
 int items_count;
+int people_count;
 
 void fill_items()
 {
@@ -15,7 +19,17 @@ void fill_items()
     FILE *f = fopen("items.txt", "r");
     while (fgets(buf, 128, f)) {
         printf("%s\n", buf);
-   }
+    }
+    fclose(f);
+}
+
+void fill_people()
+{
+    FILE *f = fopen("people.txt", "r");
+    people_count = 0;
+    while (fgets(people[people_count], PERSON_MAXLEN , f)) {
+        ++people_count;
+    }
     fclose(f);
 }
 
@@ -25,8 +39,8 @@ int read_item() {
     for (;;) {
         printf("i> ");
         if (fgets(buf, 128, stdin)) {
-            for (i = 0; ; ++i) {
-                if (!strncmp( buf, items[0].ean, strlen(items[0].ean) )) {
+            for (i = 0; i < items_count; ++i) {
+                if (!strncmp( buf, items[i].ean, strlen(items[i].ean) )) {
                     return i;
                 }
             }
@@ -35,18 +49,29 @@ int read_item() {
     }
 }
 
-int read_action() {
-    return 0;
+int read_person() {
+    char buf[128];
+    int i;
+    for (;;) {
+        printf("p> ");
+        if (fgets(buf, 128, stdin)) {
+            for (i = 0; i < people_count; ++i) {
+                if (!strncmp( buf, people[0], strlen(people[0]) )) {
+                    return i;
+                }
+            }
+            printf("Unknown person %s\n", buf);
+        }
+    }
 }
 
 int main()
 {
-    int i, a;
+    int i, p;
     fill_items();
     for (;;) {
         i = read_item();
-        a = read_action();
+        p = read_person();
     }
     return 0;
 }
-

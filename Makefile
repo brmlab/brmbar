@@ -1,11 +1,12 @@
 CC=bcc
 CFLAGS=-Md -W
 
-brmbar.com: brmbar.c defines.h
-	$(CC) $(CFLAGS) brmbar.c -o brmbar.com
+all: brmbar.c defines.h
+	gcc -Wall brmbar.c -o brmbar
+	bcc -Md -W brmbar.c -o brmbar.com
 
 clean:
-	rm -f brmbar.com
+	rm -f brmbar.com brmbar
 
-run:
+dos:
 	dosbox brmbar.com

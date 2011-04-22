@@ -4,6 +4,7 @@
 #define EAN_MAXLEN 32
 #define NAME_MAXLEN 128
 #define ITEM_MAXNUM 128
+#define PERSON_MAXLEN 16
 
 #endif
 
