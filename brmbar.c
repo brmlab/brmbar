@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "dataio.h"
 
 #define EAN_MAXLEN 32
 #define NAME_MAXLEN 128
@@ -95,7 +96,7 @@ void read_input()
 
     // scan items
     for (i = 0; i < items_count; ++i) {
-        if (!strncmp(buf, items[i].ean, strlen(items[i].ean))) {
+        if (!strncmp(buf, items[i].ean, strlen(items[i].ean)) && strlen(items[i].ean)+1 == strlen(buf)) {
             if (items[i].price) {
                 last_item = i;
                 printf("\n%s    %d Kc\n\n", items[i].name, items[i].price);

@@ -4,4 +4,3 @@
 extern int modify_credit(name, price);
 
 #endif
-
