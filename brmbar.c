@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "dataio.h"
 
 #define EAN_MAXLEN 32
@@ -99,7 +100,7 @@ void read_input()
         if (!strncmp(buf, items[i].ean, strlen(items[i].ean)) && strlen(items[i].ean)+1 == strlen(buf)) {
             if (items[i].price) {
                 last_item = i;
-                printf("\n%s    %d Kc\n\n", items[i].name, items[i].price);
+                printf("\n%s    %d Kc\n\n", items[i].name, abs(items[i].price));
             } else {
                 last_item = -1;
                 printf("\n%s\n\n", items[i].name);
@@ -117,7 +118,7 @@ void read_input()
                 printf("has %d Kc.\n\n", balance);
             } else {
                 balance = modify_credit(people[i], items[last_item].price);
-                printf("has ordered %s for %d Kc and now has %d Kc.\n\n", items[last_item].name, items[last_item].price, balance);
+                printf("has ordered %s for %d Kc and now has %d Kc.\n\n", items[last_item].name, abs(items[last_item].price), balance);
                 last_item = -1;
             }
             return;
