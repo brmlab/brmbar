@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include "defines.h"
 
 struct item {
-    char *ean;
-    char *name;
+    char ean[EAN_MAXLEN];
+    char name[NAME_MAXLEN];
     int price;
-} items[100];
+} items[ITEM_MAXNUM];
 
 void fill_items()
 {
@@ -12,7 +13,7 @@ void fill_items()
     FILE *f = fopen("items.txt", "r");
     while (fgets(buf, 128, f)) {
         printf("%s\n", buf);
-    }
+   }
     fclose(f);
 }
 
@@ -21,3 +22,4 @@ int main()
     fill_items();
     return 0;
 }
+
