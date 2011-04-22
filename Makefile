@@ -1,9 +1,9 @@
 CC=bcc
-CFLAGS=-Md -W
+CFLAGS=-Md -W -O
 
 all: brmbar.c
 #	gcc -Wall brmbar.c dataio.c -o brmbar
-	bcc -Md -W brmbar.c dataio.c -o brmbar.com
+	bcc $(CFLAGS) brmbar.c dataio.c gfx.c -o brmbar.com
 
 clean:
 	rm -f brmbar.com brmbar barcodes.svg
