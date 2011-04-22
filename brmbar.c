@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int read_items()
+void read_items()
 {
     char buf[128];
     FILE *f = fopen("items.txt", "r");
