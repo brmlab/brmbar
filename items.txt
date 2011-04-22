@@ -6,3 +6,11 @@ cred1000	Credit	1000
 status	Status	0
 4029764001807	Club Mate 0.5L	-35
 4029764001821	Club Mate 0.33L	-25
+5018374350930	Tesco Baked Beans in Tomato Sauce	-20
+7622300331436	Delissa mlecna	-10
+7622300331498	Delissa oriskova	-10
+8593868000555	Pivo Branik 10° svetle	-25
+8594404000329	Pivo Gambrinus 10° svetle	-25
+8594404001241	Pivo Radegast 10° svetle	-25
+8594001021512	Matonni perliva 1,5L	-20
+5449000000286	Coca-Cola 2L	-50
