@@ -9,6 +9,8 @@ struct item {
     int price;
 };
 
+extern int items_count;
+
 extern struct item items[ITEM_MAXNUM];
 
 extern void fill_items();
