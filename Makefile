@@ -6,7 +6,7 @@ all: brmbar.c
 	bcc -Md -W brmbar.c -o brmbar.com
 
 clean:
-	rm -f brmbar.com
+	rm -f brmbar.com brmbar
 
 dos:
 	dosbox brmbar.com

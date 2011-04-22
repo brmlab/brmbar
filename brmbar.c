@@ -19,6 +19,7 @@ char people[PEOPLE_MAXCOUNT][PERSON_MAXLEN];
 
 int items_count;
 int people_count;
+int last_item = -1;
 
 char buf[BUFSIZE];
 
@@ -86,61 +87,52 @@ void fill_people()
     fclose(f);
 }
 
-int read_item() {
-    int i;
-    for (;;) {
-        printf("i> ");
-        if (fgets(buf, BUFSIZE, stdin)) {
-            for (i = 0; i < items_count; ++i) {
-                if (!strncmp( buf, items[i].ean, strlen(items[i].ean) )) {
-                    if (items[i].price) {
-                        printf("Item: %s (%d Kc)\n\n", items[i].name, items[i].price);
-                    } else {
-                        printf("Item: %s\n\n", items[i].name);
-                    }
-                    return i;
-                }
+void read_input()
+{
+    int i, balance;
+    printf("> ");
+    if (!fgets(buf, BUFSIZE, stdin)) return;
+
+    // scan items
+    for (i = 0; i < items_count; ++i) {
+        if (!strncmp(buf, items[i].ean, strlen(items[i].ean))) {
+            if (items[i].price) {
+                last_item = i;
+                printf("\n%s    %d Kc\n\n", items[i].name, items[i].price);
+            } else {
+                last_item = -1;
+                printf("\n%s\n\n", items[i].name);
             }
-            printf("Unknown item: %s\n", buf);
+            return;
         }
     }
-}
 
-int read_person() {
-    int i;
-    for (;;) {
-        printf("p> ");
-        if (fgets(buf, BUFSIZE, stdin)) {
-            for (i = 0; i < people_count; ++i) {
-                if (!strncmp( buf, people[i], strlen(people[i]) )) {
-                    printf("Person: %s\n\n", people[i]);
-                    return i;
-                }
+    // scan people
+    for (i = 0; i < people_count; ++i) {
+        if (!strncmp( buf, people[i], strlen(people[i]) )) {
+            printf("\nMember %s ", people[i]);
+            if (last_item == -1) {
+                balance = modify_credit(people[i], 0);
+                printf("has %d Kc.\n\n", balance);
+            } else {
+                balance = modify_credit(people[i], items[last_item].price);
+                printf("has ordered %s for %d Kc and now has %d Kc.\n\n", items[last_item].name, items[last_item].price, balance);
+                last_item = -1;
             }
-            printf("Unknown person %s\n", buf);
+            return;
         }
     }
+
+    // error
+    printf("\nUnknown code %s\n", buf);
 }
-
-
-void do_action(i, p) int i; int p; {
-// TODO: perform action - person P selected item I
-    if (!strcmp("BACK", people[p])) {
-        printf("Going back ...\n\n");
-        return;
-    }
-}
-
 
 int main()
 {
-    int i, p;
     fill_items();
     fill_people();
     for (;;) {
-        i = read_item();
-        p = read_person();
-        do_action(i, p);
+        read_input();
     }
     return 0;
 }
