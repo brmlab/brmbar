@@ -1,6 +1,12 @@
 #include <stdio.h>
 
-void read_items()
+struct item {
+    char *ean;
+    char *name;
+    int price;
+} items[100];
+
+void fill_items()
 {
     char buf[128];
     FILE *f = fopen("items.txt", "r");
@@ -12,6 +18,6 @@ void read_items()
 
 int main()
 {
-    read_items();
+    fill_items();
     return 0;
 }
