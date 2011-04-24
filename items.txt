@@ -1,19 +1,19 @@
-$02	Credit	20
-$05	Credit	50
-$10	Credit	100
-$20	Credit	200
-$50	Credit	500
-$1k	Credit	1000
-RST	RESET	0
-4029764001807	Club Mate 0.5L	-35
-4029764001821	Club Mate 0.33L	-25
-5018374350930	Tesco Baked Beans in Tomato Sauce	-20
-7622300331436	Delissa mlecna	-10
-7622300331498	Delissa oriskova	-10
-8593868000555	Pivo Branik 10% svetle	-25
-8594404000329	Pivo Gambrinus 10% svetle	-25
-8594404001241	Pivo Radegast 10% svetle	-25
-8594001021512	Matonni perliva 1,5L	-20
-5449000000286	Coca-Cola 2L	-50
-8801043263108	Shin Cup Noodle Soup	-25
-8934646229308	Lucky Beef Flavor	-10
+$02;Credit 20;20
+$05;Credit 50;50
+$10;Credit 100;100
+$20;Credit 200;200
+$50;Credit 500;500
+$1k;Credit 1000;1000
+STS;Show status;0
+4029764001807;Club Mate 0.5L;-35
+4029764001821;Club Mate 0.33L;-25
+5018374350930;Tesco Baked Beans in Tomato Sauce;-20
+7622300331436;Delissa mlecna;-10
+7622300331498;Delissa oriskova;-10
+8593868000555;Pivo Branik 10% svetle;-25
+8594404000329;Pivo Gambrinus 10% svetle;-25
+8594404001241;Pivo Radegast 10% svetle;-25
+8594001021512;Matonni perliva 1,5L;-20
+5449000000286;Coca-Cola 2L;-50
+8801043263108;Shin Cup Noodle Soup;-25
+8934646229308;Lucky Beef Flavor;-10

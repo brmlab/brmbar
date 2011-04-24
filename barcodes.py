@@ -25,8 +25,14 @@ f.close()
 
 items = map(lambda x: x.strip(), items)
 itemss = map(lambda x: x[0:3], items)
-items += ['credit 20', 'credit 50', 'credit 100', 'credit 200', 'credit 500', 'credit 1000', 'RESET']
-itemss += ['$02','$05','$10','$20','$50','$1k','RST']
+
+f = open('items.txt','r')
+for l in f.readlines():
+    l = l.strip().split(';')
+    if int(l[2]) >= 0:
+        items += [l[1]]
+        itemss += [l[0]]
+f.close()
 
 f = open('barcodes.svg','w')
 f.write(svghead)
@@ -37,6 +43,8 @@ for idx in xrange(len(items)):
     elem = Popen(('zint','--directsvg','-d', itemss[idx]), stdout = PIPE).communicate()[0].split('\n')
     elem = elem[8:-2]
     elem[0] = elem[0].replace('id="barcode"', 'transform="matrix(%f,0,0,%f,%f,%f)"' % (scalex, scaley, 52+i*160 , 14+j*100) )
+    elem[21] = elem[21].replace(' y="59.00" ', ' y="69.00" ')
+    elem[22] = elem[22].replace(' font-size="8.0" ', ' font-size="14.0" ')
     elem[23] = items[idx]
     f.write('\n'.join(elem))
     i += 1

@@ -42,10 +42,10 @@ void fill_items()
 
         //Read the item EAN
         while (i < BUFSIZE) {
-            if (buf[i] == '\t') {
+            if (buf[i] == ';') {
                 buf[i] = 0;
                 strcpy(items[items_count].ean, &buf[begin]);
-                buf[i] = '\t';
+                buf[i] = ';';
                 begin = i + 1;
                 break;
             }
@@ -55,10 +55,10 @@ void fill_items()
         //Read the item name
         i = begin;
         while (i < BUFSIZE) {
-            if (buf[i] == '\t') {
+            if (buf[i] == ';') {
                 buf[i] = 0;
                 strcpy(items[items_count].name, &buf[begin]);
-                buf[i] = '\t';
+                buf[i] = ';';
                 begin = i+1;
                 break;
             }
