@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include "dataio.h"
 
-#define EAN_MAXLEN 32
-#define NAME_MAXLEN 128
+#define EAN_MAXLEN 16
+#define NAME_MAXLEN 64
 #define PERSON_MAXLEN 16
-#define ITEMS_MAXCOUNT 128
+#define ITEMS_MAXCOUNT 512
 #define PEOPLE_MAXCOUNT 128
 #define BUFSIZE 128
 
@@ -81,7 +81,7 @@ void fill_people()
     FILE *f = fopen("people.txt", "r");
     people_count = 0;
     while (fgets(people[people_count], PERSON_MAXLEN , f)) {
-        char *c = strchr(people[people_count], '\n');
+        char *c = strpbrk(people[people_count], " \t\r\n");
         if (c) *c = 0;
         people[people_count][PERSON_MAXLEN-1] = 0;
         ++people_count;
@@ -102,13 +102,12 @@ void read_input()
                 last_item = -2;
                 printf("\n%s\n\n", items[i].name);
             } else
-            if (items[i].price < 0) {
-                last_item = i;
-                printf("\n%s    %d Kc\n\n", items[i].name, abs(items[i].price));
-            } else
             if (items[i].price == 0) {
                 last_item = -1;
                 printf("\n%s\n\n", items[i].name);
+            } else {
+                last_item = i;
+                printf("\n%s    %d Kc\n\n", items[i].name, abs(items[i].price));
             }
             return;
         }
