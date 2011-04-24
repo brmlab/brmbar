@@ -98,10 +98,15 @@ void read_input()
     // scan items
     for (i = 0; i < items_count; ++i) {
         if (!strncmp(buf, items[i].ean, strlen(items[i].ean)) && strlen(items[i].ean)+1 == strlen(buf)) {
-            if (items[i].price) {
+            if (items[i].price == 30000) {
+                last_item = -2;
+                printf("\n%s\n\n", items[i].name);
+            } else
+            if (items[i].price > 0) {
                 last_item = i;
                 printf("\n%s    %d Kc\n\n", items[i].name, abs(items[i].price));
-            } else {
+            } else
+            if (items[i].price == 0) {
                 last_item = -1;
                 printf("\n%s\n\n", items[i].name);
             }
@@ -116,6 +121,11 @@ void read_input()
             if (last_item == -1) {
                 balance = modify_credit(people[i], 0);
                 printf("has %d Kc.\n\n", balance);
+            } else
+            if (last_item == -2) {
+                balance = modify_credit(people[i], 0);
+                modify_credit(people[i], -balance);
+                printf("has credit set to 0 Kc.\n\n");
             } else {
                 balance = modify_credit(people[i], items[last_item].price);
                 printf("has ordered %s for %d Kc and now has %d Kc.\n\n", items[last_item].name, abs(items[last_item].price), balance);

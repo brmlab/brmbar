@@ -4,7 +4,8 @@ $10;Credit 100;100
 $20;Credit 200;200
 $50;Credit 500;500
 $1k;Credit 1000;1000
-STS;Show status;0
+SHW;SHOW credit;0
+RST;RESET credit;30000
 4029764001807;Club Mate 0.5L;-35
 4029764001821;Club Mate 0.33L;-25
 5018374350930;Tesco Baked Beans in Tomato Sauce;-20
