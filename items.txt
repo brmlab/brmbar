@@ -18,3 +18,6 @@ RST;RESET credit;30000
 5449000000286;Coca-Cola 2L;-50
 8801043263108;Shin Cup Noodle Soup;-25
 8934646229308;Lucky Beef Flavor;-10
+8594033171902;Big Shock tycinka;-15
+85909311;Margot tycinka;-15
+8584004041198;Tatranky;-8

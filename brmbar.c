@@ -102,7 +102,7 @@ void read_input()
                 last_item = -2;
                 printf("\n%s\n\n", items[i].name);
             } else
-            if (items[i].price > 0) {
+            if (items[i].price < 0) {
                 last_item = i;
                 printf("\n%s    %d Kc\n\n", items[i].name, abs(items[i].price));
             } else
