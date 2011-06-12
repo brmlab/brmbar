@@ -14,19 +14,18 @@ svgfoot = """
 </svg>
 """
 
-cntx = 6
-cnty = 10
+width = 4
 scalex = 1.2
 scaley = 1.2
 
-f = open('people.txt','r')
+f = open('../dos/people.txt','r')
 items = f.readlines()
 f.close()
 
 items = map(lambda x: x.strip(), items)
 itemss = map(lambda x: x[0:3], items)
 
-f = open('items.txt','r')
+f = open('../dos/items.txt','r')
 for l in f.readlines():
     l = l.strip().split(';')
     if int(l[2]) >= 0:
@@ -34,23 +33,32 @@ for l in f.readlines():
         itemss += [l[0]]
 f.close()
 
-f = open('barcodes.svg','w')
-f.write(svghead)
 
+p = 0
 i = 0
 j = 0
 for idx in xrange(len(items)):
+    if idx % 8 == 0:
+        if not f.closed:
+            f.write(svgfoot)
+            f.close()
+        f = open('barcodes' + str(p) + '.svg','w')
+        p += 1
+        i = 0
+        j = 0
+        f.write(svghead)
     elem = Popen(('zint','--directsvg','-d', itemss[idx]), stdout = PIPE).communicate()[0].split('\n')
     elem = elem[8:-2]
-    elem[0] = elem[0].replace('id="barcode"', 'transform="matrix(%f,0,0,%f,%f,%f)"' % (scalex, scaley, 52+i*160 , 14+j*100) )
+    elem[0] = elem[0].replace('id="barcode"', 'transform="matrix(%f,0,0,%f,%f,%f)"' % (scalex, scaley, 50+i*285 , 180+j*285) )
     elem[21] = elem[21].replace(' y="59.00" ', ' y="69.00" ')
     elem[22] = elem[22].replace(' font-size="8.0" ', ' font-size="14.0" ')
     elem[23] = items[idx]
     f.write('\n'.join(elem))
     i += 1
-    if i >= cntx:
+    if i >= width:
         i = 0
         j += 1
 
-f.write(svgfoot)
-f.close()
+if not f.closed:
+    f.write(svgfoot)
+    f.close()
