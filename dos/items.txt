@@ -9,8 +9,12 @@ RST;RESET credit;30000
 4029764001807;Club Mate 0.5L;-35
 4029764001821;Club Mate 0.33L;-25
 5018374350930;Tesco Baked Beans in Tomato Sauce;-20
-7622300331436;Delissa mlecna;-10
-7622300331498;Delissa oriskova;-10
+7622300331436;Siesta mlecna;-10
+7622300331467;Siesta horka;-10
+7622300331498;Siesta oriskova;-10
+7613031880065;Delissa oriskova;-7
+7613031880003;Delissa vanilkova;-7
+7613031879946;Delissa cokoladova;-7
 8593868000555;Pivo Branik 10% svetle;-25
 8594404000329;Pivo Gambrinus 10% svetle;-25
 8594404001241;Pivo Radegast 10% svetle;-25
@@ -21,3 +25,26 @@ RST;RESET credit;30000
 8594033171902;Big Shock tycinka;-15
 85909311;Margot tycinka;-15
 8584004041198;Tatranky;-8
+85917095;Margot tycinka +20%;-17
+8593894800075;Bebe cokoladove;-15
+5906747308803;Pim's coko piskoty visnove;-30
+8584004010200;Kavenky;-10
+8586011330463;Vinea Biela;-50
+8586011330470;Vinea Cervena;-50
+8593894911030;Zlate oplatky liskooriskove;-17
+8593894911122;Zlate oplatky smetanove;-17
+85951631;Frisco brusinka;-25
+8593868110445;Staropramen 10%;-25
+8714800011426;Bavaria 0.0%;-25
+8594003844782;Orangina zluta;-25
+3155930006015;Desperados 0.33l;-40
+5060166692636;Monster Ripper 0.5l;-35
+8585002408976;Kure na paprice;-35
+8593837223220;Kure na paprice;-35
+8593837223213;Gulas;-35
+8593837223176;Bolonska omacka;-35
+031146254903;Big Ramen - Shin Cup Noodle Soup;-35
+031146254019;Big Ramen - Noodle Shrimp Flavour;-35
+85933323;Deli pistaciova;-10
+85933354;Deli cokoladova;-10
+8594067540071;Prave hospodske bramburky;-12
