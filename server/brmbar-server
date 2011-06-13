@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from flask import Flask, render_template
+from re import match
 
 app = Flask('BrmBar')
 
@@ -10,7 +11,17 @@ def index():
 
 @app.route('/code/<code>')
 def code(code):
-    return 'CODE "%s" received' % code
+    if code == 'RST':
+        return 'RESET received'
+    if match('^\$[0-9]+$', code):
+        amount = int(code[1:])
+        return 'CREDIT %d received' % amount
+    if match('^U[0-9]{4}$', code):
+        userid = int(code[1:])
+        return 'USER %s received' % userid
+    if match('^[0-9]+$', code):
+        return 'ITEM %s received' % code
+    abort(400)
 
 @app.route('/admin/')
 def admin():
@@ -25,4 +36,4 @@ def stats():
     return render_template('stats.html')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port = 45678)
