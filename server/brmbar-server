@@ -2,6 +2,7 @@
 
 from flask import Flask, render_template, Response
 from re import match
+from users import users
 
 app = Flask('BrmBar')
 
@@ -30,12 +31,16 @@ def admin():
 @app.route('/admin/barcode-generator.txt')
 def admin_barcodegeneratortxt():
     ret = []
+    ret.append('Credit 20;$20')
+    ret.append('Credit 50;$50')
     ret.append('Credit 100;$100')
     ret.append('Credit 200;$200')
     ret.append('Credit 500;$500')
     ret.append('Credit 1000;$1000')
+    ret.append('Credit 2000;$2000')
     ret.append('RESET;RST')
-    # TODO: add users in form <username>;U<userid>
+    for (id,name) in sorted(users.iteritems(), key = lambda (k,v): (v,k)):
+        ret.append('%s;U%d' % (name, id))
     response = Response(response = '\n'.join(ret) + '\n', content_type = 'text/plain')
     return response
 
