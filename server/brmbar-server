@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 from re import match
 
 app = Flask('BrmBar')
@@ -26,6 +26,18 @@ def code(code):
 @app.route('/admin/')
 def admin():
     return render_template('admin.html')
+
+@app.route('/admin/barcode-generator.txt')
+def admin_barcodegeneratortxt():
+    ret = []
+    ret.append('Credit 100;$100')
+    ret.append('Credit 200;$200')
+    ret.append('Credit 500;$500')
+    ret.append('Credit 1000;$1000')
+    ret.append('RESET;RST')
+    # TODO: add users in form <username>;U<userid>
+    response = Response(response = '\n'.join(ret) + '\n', content_type = 'text/plain')
+    return response
 
 @app.route('/log/')
 def log():
