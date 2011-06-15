@@ -53,4 +53,4 @@ def stats():
     return render_template('stats.html')
 
 if __name__ == '__main__':
-    app.run(port = 45678)
+    app.run(host = '0.0.0.0', port = 45678)
