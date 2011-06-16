@@ -13,15 +13,15 @@ def index():
 @app.route('/code/<code>')
 def code(code):
     if code == 'R0000':
-        return 'RESET'
+        return Response('RESET', content_type = 'text/plain')
     if match('^\C[0-9]{4}$', code):
         amount = int(code[1:])
-        return 'CREDIT %d' % amount
+        return Response('CREDIT %d' % amount, content_type = 'text/plain')
     if match('^U[0-9]{4}$', code):
         userid = int(code[1:])
-        return 'USER %s' % userid
+        return Response('USER %s' % userid, content_type = 'text/plain')
     if match('^[0-9]+$', code):
-        return 'ITEM %s' % code
+        return Response('ITEM %s' % code, content_type = 'text/plain')
     abort(400)
 
 @app.route('/admin/')
