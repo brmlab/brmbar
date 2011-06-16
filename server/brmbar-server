@@ -12,17 +12,45 @@ def index():
 
 @app.route('/code/<code>')
 def code(code):
-    if code == 'R0000':
-        return Response('RESET', content_type = 'text/plain')
-    if match('^\C[0-9]{4}$', code):
-        amount = int(code[1:])
-        return Response('CREDIT %d' % amount, content_type = 'text/plain')
+    LEN = 25
     if match('^U[0-9]{4}$', code):
         userid = int(code[1:])
-        return Response('USER %s' % userid, content_type = 'text/plain')
+        # TODO: fetch credit and username
+        try:
+            username = users[userid]
+            usercredit = '0 Kc'
+            r = username[:LEN - len(usercredit) - 1].ljust(LEN - len(usercredit) - 1) + ' ' + usercredit
+        except:
+            r = 'Unknown'.ljust(LEN - 5) + ' - Kc'
+        return Response('%s %s' % (username, usercredit), content_type = 'text/plain')
+    if code == 'R0000':
+        return Response('Reset Credit to 0', content_type = 'text/plain')
+    if match('^\C[0-9]{4}$', code):
+        amount = int(code[1:])
+        return Response('Credit %d' % amount, content_type = 'text/plain')
     if match('^[0-9]+$', code):
-        return Response('ITEM %s' % code, content_type = 'text/plain')
+        # TODO: fetch item, show name and price
+        itemname = 'Unknown'
+        itemprice = '0 Kc'
+        r = itemname[:LEN - len(itemprice) - 1].ljust(LEN - len(itemprice) - 1) + ' ' + itemprice
+        return Response(r, content_type = 'text/plain')
     abort(400)
+
+@app.route('/action/<user>/<item>')
+def action(user, item):
+    if not match('^U[0-9]{4}$', user):
+        abort(400)
+    if code == 'R0000':
+        # TODO: process - reset credit
+        pass
+    if match('^\C[0-9]{4}$', code):
+        amount = int(code[1:])
+        # TODO: process - add credit
+        pass
+    if match('^[0-9]+$', code):
+        # TODO: process - deduct item price
+        pass
+    return Response('OK', content_type = 'text/plain')
 
 @app.route('/admin/')
 def admin():
