@@ -19,23 +19,32 @@ def code(code):
     LEN = 25
     if match('^U[0-9]{4}$', code):
         userid = int(code[1:])
-        # TODO: fetch credit and username
+        cur = g.db.execute('SELECT balance FROM balance WHERE userid = ?', (userid, ))
+        row = cur.fetchone()
+        if row:
+            usercredit = '%d Kc' % row[0]
+        else:
+            usercredit = '0 Kc'
         try:
             username = users[userid]
-            usercredit = '0 Kc'
-            r = username[:LEN - len(usercredit) - 1].ljust(LEN - len(usercredit) - 1) + ' ' + usercredit
         except:
-            r = 'Unknown'.ljust(LEN - 5) + ' - Kc'
-        return Response('%s %s' % (username, usercredit), content_type = 'text/plain')
+            username = 'Unknown'
+        r = username[:LEN - len(usercredit) - 1].ljust(LEN - len(usercredit) - 1) + ' ' + usercredit
+        return Response(r, content_type = 'text/plain')
     if code == 'R0000':
         return Response('Reset Credit to 0', content_type = 'text/plain')
     if match('^\C[0-9]{4}$', code):
         amount = int(code[1:])
         return Response('Credit %d' % amount, content_type = 'text/plain')
     if match('^[0-9]+$', code):
-        # TODO: fetch item, show name and price
-        itemname = 'Unknown'
-        itemprice = '0 Kc'
+        cur = g.db.execute('SELECT name, price FROM items WHERE code = ?', (code, ))
+        row = cur.fetchone()
+        if row:
+            itemname = row[0]
+            itemprice = '%d Kc' % row[1]
+        else:
+            itemname = 'Unknown'
+            itemprice = '0 Kc'
         r = itemname[:LEN - len(itemprice) - 1].ljust(LEN - len(itemprice) - 1) + ' ' + itemprice
         return Response(r, content_type = 'text/plain')
     abort(400)
@@ -45,10 +54,10 @@ def action(user, item):
     if not match('^U[0-9]{4}$', user):
         abort(400)
     if code == 'R0000':
-        # TODO: process - reset credit
+        g.db.execute('DELETE FROM balance WHERE userid = ?', (user, ))
+        g.db.commit()
         pass
     if match('^\C[0-9]{4}$', code):
-        amount = int(code[1:])
         # TODO: process - add credit
         pass
     if match('^[0-9]+$', code):
@@ -95,7 +104,9 @@ def barcodestxt():
 
 @app.route('/log/')
 def log():
-    return render_template('log.html')
+    cur = g.db.execute('SELECT ts, userid, name, price, code, event FROM log LEFT JOIN items ON log.itemid=items.id ORDER BY ts DESC')
+    rows = [dict(ts = row[0], user = users[row[1]], itemname = row[2], price = row[3], code = row[4], event = row[5]) for row in cur.fetchall()]
+    return render_template('log.html', rows = rows)
 
 @app.route('/stats/')
 def stats():

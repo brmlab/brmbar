@@ -1,3 +1,4 @@
 #!/bin/sh
+rm -f brmbar.db
 sqlite3 brmbar.db < schema.sql
 sqlite3 brmbar.db < items.sql

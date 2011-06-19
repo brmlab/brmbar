@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Log{% endblock %}
 {% block content %}
-log
+
+<table>
+<tr><th>date/time</th><th>user</th><th>item</th></tr>
+{% for row in rows %}
+<tr><td>{{ row.ts|safe }}</td><td></td>{{ row.user|safe }}</td><td>
+{%- if row.itemname -%}
+<img src="/static/items/{{ row.code|safe }}.jpg" width="64" height="64"/> {{ row.itemname|safe }} - {{ row.price }} Kc
+{%- else -%}
+{{- row.event -}}
+{%- endif -%}
+</td></tr>
+{% endfor %}
+</table>
+
 {% endblock %}
