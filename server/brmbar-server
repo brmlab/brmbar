@@ -107,12 +107,9 @@ def download_file(filename):
         filename = 'missing.jpg'
     return send_from_directory('static/items/', filename, mimetype='image/jpeg')
 
-def connect_db():
-    return sqlite3.connect('brmbar.db')
-
 @app.before_request
 def before_request():
-    g.db = connect_db()
+    g.db = sqlite3.connect('db/brmbar.db')
 
 @app.after_request
 def after_request(response):

@@ -1,0 +1,3 @@
+#!/bin/sh
+sqlite3 brmbar.db < schema.sql
+sqlite3 brmbar.db < items.sql
