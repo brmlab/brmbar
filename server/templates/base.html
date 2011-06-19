@@ -1,12 +1,13 @@
 <html>
 <head>
 <title>BrmBar: {% block title %}{% endblock %}</title>
-<link rel="icon" type="image/png" href="/static/favicon.png">
+<link rel="icon" type="image/png" href="/static/favicon.png" />
+<link rel="stylesheet" type="text/css" href="/static/style.css" />
 </head>
 <body>
 <h1><img src="/static/favicon.png" valign="middle" /> BrmBar: {{ self.title() }}</h1>
 <div id="menu">
-<a href="/">home</a> | <a href="/stats/">stats</a> | <a href="/log/">log</a> | <a href="/admin/">admin</a>
+<p><a href="/">home</a> | <a href="/stats/">stats</a> | <a href="/log/">log</a> | <a href="/items/">items</a></p>
 </div>
 <div id="content">
 {% block content %}{% endblock %}

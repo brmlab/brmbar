@@ -1,0 +1,27 @@
+body {
+	font-family: Helvetica, Arial;
+}
+
+table {
+	border: 1px solid #888;
+	border-spacing: 0px;
+}
+
+td, th {
+	padding: 8px;
+}
+
+th {
+	background: #ddd;
+}
+
+div.block {
+	border: 1px solid #888;
+	width: 160px;
+	height: 180px;
+	float: left;
+	margin: 8px;
+	text-align: center;
+	font-size: 10pt;
+	padding-top: 8px;
+}

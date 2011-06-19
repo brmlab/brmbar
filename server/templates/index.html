@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Welcome{% endblock %}
 {% block content %}
-welcome
+
+{% for item in items %}
+<div class="block">
+<img src="/static/items/{{ item.code|safe }}.jpg"><br/>
+{{ item.name|safe }}<br/>
+<strong>{{ item.price }} Kc</strong>
+</div>
+{% endfor %}
+
 {% endblock %}

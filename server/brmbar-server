@@ -1,14 +1,18 @@
 #!/usr/bin/python
 
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, g, redirect, abort, request, send_from_directory
 from re import match
 from users import users
+import sqlite3
+import os
 
 app = Flask('BrmBar')
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    cur = g.db.execute('SELECT id, code, name, price FROM items ORDER BY name')
+    items = [dict(id = row[0], code = row[1], name = row[2], price = row[3]) for row in cur.fetchall()]
+    return render_template('index.html', items = items)
 
 @app.route('/code/<code>')
 def code(code):
@@ -52,12 +56,29 @@ def action(user, item):
         pass
     return Response('OK', content_type = 'text/plain')
 
-@app.route('/admin/')
-def admin():
-    return render_template('admin.html')
+@app.route('/items/')
+def items():
+    cur = g.db.execute('SELECT id, code, name, price FROM items ORDER BY name')
+    items = [dict(id = row[0], code = row[1], name = row[2], price = row[3]) for row in cur.fetchall()]
+    return render_template('items.html', items = items)
 
-@app.route('/admin/barcode-generator.txt')
-def admin_barcodegeneratortxt():
+@app.route('/items/', methods=['POST'])
+def items_post():
+    f = request.form
+    if f['action'] == 'add':
+        if f['code'] and f['name'] and f['price']:
+            g.db.execute('INSERT INTO items (code, name, price) VALUES (?, ?, ?)', (f['code'], f['name'], f['price']))
+            g.db.commit()
+        return redirect('/items/')
+    if f['action'].startswith('delete:'):
+        id = int(f['action'][7:])
+        g.db.execute('DELETE FROM items WHERE id = ?', (id, ))
+        g.db.commit()
+        return redirect('/items/')
+    abort(400)
+
+@app.route('/barcodes.txt')
+def barcodestxt():
     ret = []
     ret.append('Credit 20;C0020')
     ret.append('Credit 50;C0050')
@@ -80,5 +101,23 @@ def log():
 def stats():
     return render_template('stats.html')
 
+@app.route('/static/items/<filename>')
+def download_file(filename):
+    if not os.path.exists('static/items/' + filename):
+        filename = 'missing.jpg'
+    return send_from_directory('static/items/', filename, mimetype='image/jpeg')
+
+def connect_db():
+    return sqlite3.connect('brmbar.db')
+
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+@app.after_request
+def after_request(response):
+    g.db.close()
+    return response
+
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 45678)
+    app.run(host = '0.0.0.0', port = 45678, debug = True)
