@@ -10,8 +10,8 @@ app = Flask('BrmBar')
 
 @app.route('/')
 def index():
-    cur = g.db.execute('SELECT id, code, name, price FROM items ORDER BY name')
-    items = [dict(id = row[0], code = row[1], name = row[2], price = row[3]) for row in cur.fetchall()]
+    cur = g.db.execute('SELECT code, name, price FROM items ORDER BY name')
+    items = [dict(code = row[0], name = row[1], price = row[2]) for row in cur.fetchall()]
     return render_template('index.html', items = items)
 
 @app.route('/code/<code>')
@@ -53,22 +53,47 @@ def code(code):
 def action(user, item):
     if not match('^U[0-9]{4}$', user):
         abort(400)
-    if code == 'R0000':
+    user = int(user[1:])
+    if item == 'R0000':
         g.db.execute('DELETE FROM balance WHERE userid = ?', (user, ))
+        g.db.execute('INSERT INTO log(userid, event) VALUES(?, ?)', (user, 'Credit reset'))
         g.db.commit()
-        pass
-    if match('^\C[0-9]{4}$', code):
-        # TODO: process - add credit
-        pass
-    if match('^[0-9]+$', code):
-        # TODO: process - deduct item price
-        pass
+    if match('^C[0-9]{4}$', item):
+        cur = g.db.execute('SELECT balance FROM balance WHERE userid = ?', (user, ))
+        row = cur.fetchone()
+        if row:
+            balance = int(row[0]) + int(item[1:])
+            g.db.execute('UPDATE balance SET balance = ? WHERE userid = ?', (balance, user))
+            g.db.execute('INSERT INTO log(userid, event) VALUES(?, ?)', (user, 'Credit +%s' % item[1:]))
+            g.db.commit()
+        else:
+            balance = int(item[1:])
+            g.db.execute('INSERT INTO balance(balance, userid) VALUES(?, ?)', (balance, user))
+            g.db.execute('INSERT INTO log(userid, event) VALUES(?, ?)', (user, 'Credit +%s' % item[1:]))
+            g.db.commit()
+    if match('^[0-9]+$', item):
+        cur1 = g.db.execute('SELECT price FROM items WHERE code = ?', (item, ))
+        row1 = cur1.fetchone()
+        cur2 = g.db.execute('SELECT balance FROM balance WHERE userid = ?', (user, ))
+        row2 = cur2.fetchone()
+        if not row1:
+            abort(400)
+        if row2:
+            balance = - int(row1[0]) + int(row2[0])
+            g.db.execute('UPDATE balance SET balance = ? WHERE userid = ?', (balance, user))
+            g.db.execute('INSERT INTO log(userid, itemcode) VALUES(?, ?)', (user, item))
+            g.db.commit()
+        else:
+            balance = - int(row1[0])
+            g.db.execute('INSERT INTO balance(balance, userid) VALUES(?, ?)', (balance, user))
+            g.db.execute('INSERT INTO log(userid, itemcode) VALUES(?, ?)', (user, item))
+            g.db.commit()
     return Response('OK', content_type = 'text/plain')
 
 @app.route('/items/')
 def items():
-    cur = g.db.execute('SELECT id, code, name, price FROM items ORDER BY name')
-    items = [dict(id = row[0], code = row[1], name = row[2], price = row[3]) for row in cur.fetchall()]
+    cur = g.db.execute('SELECT code, name, price FROM items ORDER BY name')
+    items = [dict(code = row[0], name = row[1], price = row[2]) for row in cur.fetchall()]
     return render_template('items.html', items = items)
 
 @app.route('/items/', methods=['POST'])
@@ -80,8 +105,8 @@ def items_post():
             g.db.commit()
         return redirect('/items/')
     if f['action'].startswith('delete:'):
-        id = int(f['action'][7:])
-        g.db.execute('DELETE FROM items WHERE id = ?', (id, ))
+        code = int(f['action'][7:])
+        g.db.execute('DELETE FROM items WHERE code = ?', (code, ))
         g.db.commit()
         return redirect('/items/')
     abort(400)
@@ -104,7 +129,7 @@ def barcodestxt():
 
 @app.route('/log/')
 def log():
-    cur = g.db.execute('SELECT ts, userid, name, price, code, event FROM log LEFT JOIN items ON log.itemid=items.id ORDER BY ts DESC')
+    cur = g.db.execute('SELECT ts, userid, name, price, code, event FROM log LEFT JOIN items ON log.itemcode = items.code ORDER BY ts DESC')
     rows = [dict(ts = row[0], user = users[row[1]], itemname = row[2], price = row[3], code = row[4], event = row[5]) for row in cur.fetchall()]
     return render_template('log.html', rows = rows)
 

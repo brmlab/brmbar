@@ -7,7 +7,7 @@
 <tr><th>image</th><th>code</th><th>item</th><th>price</th><th>action</th></tr>
 <tr><td></td><td><input name="code" size="14"/></td><td><input name="name" size="30"/></td><td><input name="price" size="2"/></td><td><input type="submit" name="action" value="add"/></tr>
 {% for item in items %}
-<tr><td><img src="/static/items/{{ item.code|safe }}.jpg" width="64" height="64"/></td><td>{{ item.code|safe }}</td><td>{{ item.name|safe }}</td><td>{{ item.price }}</td><td><input type="submit" name="action" value="delete:{{ item.id }}"/></tr>
+<tr><td><img src="/static/items/{{ item.code|safe }}.jpg" width="64" height="64"/></td><td>{{ item.code|safe }}</td><td>{{ item.name|safe }}</td><td>{{ item.price }}</td><td><input type="submit" name="action" value="delete:{{ item.code }}"/></tr>
 {% endfor %}
 </table>
 </form>

@@ -1,8 +1,7 @@
 CREATE TABLE items (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  code TEXT NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
   price INTEGER NOT NULL,
-  code TEXT NOT NULL
 );
 
 CREATE INDEX items_name ON items ( name );
@@ -12,9 +11,9 @@ CREATE UNIQUE INDEX items_code ON items ( code );
 CREATE TABLE log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   userid INTEGER NOT NULL,
-  itemid INTEGER,
+  itemcode INTEGER,
   event TEXT,
-  ts INTEGER NOT NULL
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX log_userid ON log ( userid );
