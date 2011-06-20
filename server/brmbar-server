@@ -96,19 +96,20 @@ def items():
     items = [dict(code = row[0], name = row[1], price = row[2]) for row in cur.fetchall()]
     return render_template('items.html', items = items)
 
-@app.route('/items/', methods=['POST'])
+@app.route('/items/', methods = ['POST'])
 def items_post():
     f = request.form
-    if f['action'] == 'add':
-        if f['code'] and f['name'] and f['price']:
-            g.db.execute('INSERT INTO items (code, name, price) VALUES (?, ?, ?)', (f['code'], f['name'], f['price']))
+    for (k, v) in f.iteritems():
+        if k == 'add' and v == 'add':
+            if f['code'] and f['name'] and f['price']:
+                g.db.execute('INSERT INTO items (code, name, price) VALUES (?, ?, ?)', (f['code'], f['name'], f['price']))
+                g.db.commit()
+            return redirect('/items/')
+        if k.startswith('delete:') and v == 'delete':
+            code = k[7:]
+            g.db.execute('DELETE FROM items WHERE code = ?', (code, ))
             g.db.commit()
-        return redirect('/items/')
-    if f['action'].startswith('delete:'):
-        code = int(f['action'][7:])
-        g.db.execute('DELETE FROM items WHERE code = ?', (code, ))
-        g.db.commit()
-        return redirect('/items/')
+            return redirect('/items/')
     abort(400)
 
 @app.route('/barcodes.txt')
