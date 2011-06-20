@@ -1,7 +1,7 @@
 CREATE TABLE items (
   code TEXT NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
-  price INTEGER NOT NULL,
+  price INTEGER NOT NULL
 );
 
 CREATE INDEX items_name ON items ( name );
