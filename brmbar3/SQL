@@ -1,0 +1,79 @@
+CREATE SEQUENCE currencies_id_seq START WITH 1 INCREMENT BY 1;
+CREATE TABLE currencies (
+	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('currencies_id_seq'::regclass),
+	name VARCHAR(128) NOT NULL
+);
+INSERT INTO currencies (name) VALUES ('Kč');
+
+CREATE TYPE exchange_rate_direction AS ENUM ('source_to_target', 'target_to_source');
+CREATE TABLE exchange_rates (
+	valid_since TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+
+	target INTEGER NOT NULL,
+        FOREIGN KEY (target) REFERENCES currencies (id),
+
+	source INTEGER NOT NULL,
+        FOREIGN KEY (source) REFERENCES currencies (id),
+
+	rate DECIMAL(12,2) NOT NULL,
+	rate_dir exchange_rate_direction NOT NULL
+);
+
+
+-- brmbar users have 'debt' accounts; a negative balance means that
+-- we have debt to the users, i.e. they are positive relative to the brmbar.
+-- Positive balance means that the users have debt in brmbar.
+-- Therefore, user's balance must always be shown negated.
+CREATE SEQUENCE accounts_id_seq START WITH 1 INCREMENT BY 1;
+CREATE TYPE account_type AS ENUM ('cash', 'debt', 'inventory', 'income', 'expense', 'starting_balance', 'ending_balance');
+CREATE TABLE accounts (
+	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('accounts_id_seq'::regclass),
+
+	name VARCHAR(128) NOT NULL,
+
+	currency INTEGER NOT NULL,
+        FOREIGN KEY (currency) REFERENCES currencies (id),
+
+	acctype account_type NOT NULL
+);
+INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Cash', (SELECT id FROM currencies WHERE name='Kč'), 'cash');
+INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Profits', (SELECT id FROM currencies WHERE name='Kč'), 'income');
+
+
+CREATE SEQUENCE barcodes_id_seq START WITH 1 INCREMENT BY 1;
+CREATE TABLE barcodes (
+	barcode VARCHAR(128) PRIMARY KEY NOT NULL,
+
+	account INTEGER NOT NULL,
+        FOREIGN KEY (account) REFERENCES accounts (id)
+);
+
+
+CREATE SEQUENCE transactions_id_seq START WITH 1 INCREMENT BY 1;
+CREATE TABLE transactions (
+	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('transactions_id_seq'::regclass),
+	time TIMESTAMP DEFAULT NOW() NOT NULL,
+
+	responsible INTEGER,
+	FOREIGN KEY (responsible) REFERENCES accounts (id),
+	-- FIXME: imperfect constraint to assure this is a user
+
+	description TEXT
+);
+
+CREATE SEQUENCE transaction_splits_id_seq START WITH 1 INCREMENT BY 1;
+CREATE TYPE transaction_split_side AS ENUM ('credit', 'debit');
+CREATE TABLE transaction_splits (
+	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('transaction_splits_id_seq'::regclass),
+
+	transaction INTEGER NOT NULL,
+	FOREIGN KEY (transaction) REFERENCES transactions (id),
+
+	side transaction_split_side NOT NULL,
+
+	account INTEGER NOT NULL,
+        FOREIGN KEY (account) REFERENCES accounts (id),
+	amount DECIMAL(12,2) NOT NULL,
+
+	memo TEXT
+);

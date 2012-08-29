@@ -1,0 +1,22 @@
+-- Few test inserts just for debugging, to be used on clean database
+
+INSERT INTO accounts (name, currency, acctype) VALUES ('pasky', 1, 'debt');
+INSERT INTO barcodes (barcode, account) VALUES ('pasky', (SELECT id FROM accounts WHERE name = 'pasky'));
+INSERT INTO accounts (name, currency, acctype) VALUES ('TMA', 1, 'debt');
+INSERT INTO barcodes (barcode, account) VALUES ('TMA', (SELECT id FROM accounts WHERE name = 'TMA'));
+
+INSERT INTO currencies (name) VALUES ('Club Mate');
+INSERT INTO accounts (name, currency, acctype) VALUES ('Club Mate', (SELECT id FROM currencies WHERE name = 'Club Mate'), 'inventory');
+INSERT INTO exchange_rates (target, source, rate, rate_dir) VALUES ((SELECT id FROM currencies WHERE name = 'Club Mate'), (SELECT id FROM currencies WHERE name = 'Kč'), 28, 'target_to_source');
+INSERT INTO exchange_rates (target, source, rate, rate_dir) VALUES ((SELECT id FROM currencies WHERE name = 'Kč'), (SELECT id FROM currencies WHERE name = 'Club Mate'), 35, 'source_to_target');
+INSERT INTO barcodes (barcode, account) VALUES ('42', (SELECT id FROM accounts WHERE name = 'Club Mate'));
+
+INSERT INTO currencies (name) VALUES ('Deli');
+INSERT INTO accounts (name, currency, acctype) VALUES ('Deli', (SELECT id FROM currencies WHERE name = 'Deli'), 'inventory');
+INSERT INTO exchange_rates (target, source, rate, rate_dir) VALUES ((SELECT id FROM currencies WHERE name = 'Deli'), (SELECT id FROM currencies WHERE name = 'Kč'), 7.50, 'target_to_source');
+INSERT INTO exchange_rates (target, source, rate, rate_dir) VALUES ((SELECT id FROM currencies WHERE name = 'Kč'), (SELECT id FROM currencies WHERE name = 'Deli'), 10, 'source_to_target');
+INSERT INTO barcodes (barcode, account) VALUES ('43', (SELECT id FROM accounts WHERE name = 'Deli'));
+
+INSERT INTO transactions (responsible, description) VALUES ((SELECT id FROM accounts WHERE name = 'pasky'), 'Naskladnena krabice Deli');
+INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (1, 'credit', (SELECT id FROM accounts WHERE name = 'pasky'), 75, '10x Deli');
+INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (1, 'debit', (SELECT id FROM accounts WHERE name = 'Deli'), 10, 'pasky');
