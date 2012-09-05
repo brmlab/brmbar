@@ -1,0 +1,36 @@
+- Withdrawal of user credit
+	1. choose user
+	2. choose amount
+- Management view
+	- Bilance overview (Cash, Profit, Credit total)
+	- Stock management link
+	- User management link
+- Item picker from list (only items with non-zero quantities)
+- Numerical manual entry support
+	- Use for credit charge
+	- Use for withdrawal
+- Restocking view (Stock management)
+	- Item picker with edit button
+	- Item editor (name, barcode, buy price, sale price, quantity)
+	- Group quantity changes in a single transaction
+- Alphanumeric manual entry support
+	- Use in item editor
+
+** At this point it should be good enough to deploy **
+
+- Withdrawal for brmbar receipts
+	1. User responsible
+	2. Amount and description
+- User management
+	- Add user
+		- Name
+		- Barcode
+	- Delete user
+	- Forbid negative credit
+- Statistics
+	- Users with debt
+	- Pretty chart
+- Advanced inventory management
+	- Mass quantity/cash corrections ("inventura" mode)
+	- Integrated brmbar overflow support
+- Mail/IRC notifications (e.g. receipt withdrawals, monthly balance, ...)
