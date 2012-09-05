@@ -37,14 +37,29 @@ class Shop:
 
 		return cost
 
+	def sell_for_cash(self, item, amount = 1):
+		# Sale: Currency conversion from item currency to shop currency
+		(buy, sell) = item.currency.rates(self.currency)
+		cost = amount * sell
+		profit = amount * (sell - buy)
+
+		transaction = self._transaction(description = "BrmBar sale of {}x {} for cash".format(amount, item.name))
+		item.credit(transaction, amount, "Cash")
+		self.cash.debit(transaction, cost, item.name)
+		self.profits.debit(transaction, profit, "Margin on " + item.name)
+		self.db.commit()
+
+		return cost
+
 	def add_credit(self, credit, user):
 		transaction = self._transaction(responsible = user, description = "BrmBar credit replenishment for " + user.name)
 		self.cash.debit(transaction, credit, user.name)
 		user.credit(transaction, credit, "Credit replenishment")
 		self.db.commit()
 
-	def _transaction(self, responsible, description):
+	def _transaction(self, responsible = None, description = None):
 		with closing(self.db.cursor()) as cur:
-			cur.execute("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id", [responsible.id, description])
+			cur.execute("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id",
+					[responsible.id if responsible else None, description])
 			transaction = cur.fetchone()[0]
 		return transaction

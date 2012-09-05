@@ -70,7 +70,7 @@ Item {
         text: "Pay by cash"
         fontSize: 44
         onButtonClick: {
-            // TODO
+            shop.sellItemCash(dbid)
             status_text.setStatus("Sold! Put " + price + " Kč in the money box.", "#ffff7c")
             loadPage("MainPage")
         }

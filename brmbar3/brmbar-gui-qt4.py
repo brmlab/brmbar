@@ -51,6 +51,10 @@ class ShopAdapter(QtCore.QObject):
 		shop.sell(item = brmbar.Account.load(db, id = itemid), user = user)
 		return user.negbalance_str()
 
+	@QtCore.Slot('QVariant', result='QVariant')
+	def sellItemCash(self, itemid):
+		shop.sell_for_cash(item = brmbar.Account.load(db, id = itemid))
+
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def chargeCredit(self, credit, userid):
 		user = brmbar.Account.load(db, id = userid)
