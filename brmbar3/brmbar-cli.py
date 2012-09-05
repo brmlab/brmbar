@@ -15,7 +15,6 @@ active_credit = None
 for line in sys.stdin:
 	barcode = line.rstrip()
 
-	# TODO $neco
 	if barcode[0] == "$":
 		credits = {'$02': 20, '$05': 50, '$10': 100, '$20': 200, '$50': 500, '$1k': 1000}
 		credit = credits[barcode]
@@ -25,7 +24,7 @@ for line in sys.stdin:
 		print("CREDIT " + str(credit))
 		active_inv_item = None
 		active_credit = credit
-		continue;
+		continue
 
 	if barcode == "SCR":
 		print("SHOW CREDIT")
