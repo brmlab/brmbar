@@ -9,18 +9,18 @@
 - Numerical manual entry support
 	- Use for credit charge
 	- Use for withdrawal
+- Alphanumeric manual entry support
+	- Use in item editor
 - Restocking view (Stock management)
 	- Item picker with edit button
 	- Item editor (name, barcode, buy price, sale price, quantity)
 	- Group quantity changes in a single transaction
-- Alphanumeric manual entry support
-	- Use in item editor
-
-** At this point it should be good enough to deploy **
-
 - Withdrawal for brmbar receipts
 	1. User responsible
 	2. Amount and description
+
+** At this point it should be good enough to deploy **
+
 - User management
 	- Add user
 		- Name
