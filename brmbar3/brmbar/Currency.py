@@ -75,4 +75,4 @@ class Currency:
 			return resamount
 
 	def str(self, amount):
-		return str(amount) + " " + self.name
+		return "{:.2f} {}".format(amount, self.name)
