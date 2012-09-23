@@ -67,6 +67,7 @@ class Currency:
 			res = cur.fetchone()
 			if res is None:
 				raise NameError("Currency.convert(): Unknown conversion " + self.name() + " to " + other.name())
+			rate, rate_dir = res
 			if rate_dir == "source_to_target":
 				resamount = amount * rate
 			else:
