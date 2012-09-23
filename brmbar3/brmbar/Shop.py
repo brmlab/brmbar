@@ -63,3 +63,34 @@ class Shop:
 					[responsible.id if responsible else None, description])
 			transaction = cur.fetchone()[0]
 		return transaction
+
+	def credit_balance(self):
+		with closing(self.db.cursor()) as cur:
+			# We assume all debt accounts share a currency
+			sumselect = """
+				SELECT SUM(ts.amount)
+					FROM accounts AS a
+					LEFT JOIN transaction_splits AS ts ON a.id = ts.account
+					WHERE a.acctype = %s AND ts.side = %s
+			"""
+			cur.execute(sumselect, ["debt", 'debit'])
+			debit = cur.fetchone()[0] or 0
+			cur.execute(sumselect, ["debt", 'credit'])
+			credit = cur.fetchone()[0] or 0
+		return debit - credit
+	def credit_negbalance_str(self):
+		return self.currency.str(-self.credit_balance())
+
+	def inventory_balance(self):
+		balance = 0
+		with closing(self.db.cursor()) as cur:
+			# Each inventory account has its own currency,
+			# so we just do this ugly iteration
+			cur.execute("SELECT id FROM accounts WHERE acctype = %s", ["inventory"])
+			for inventory in cur:
+				invid = inventory[0]
+				inv = Account.load(self.db, id = invid)
+				balance += inv.currency.convert(inv.balance(), self.currency)
+		return balance
+	def inventory_negbalance_str(self):
+		return self.currency.str(-self.inventory_balance())
