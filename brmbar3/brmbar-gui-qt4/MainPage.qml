@@ -26,16 +26,15 @@ Item {
     }
 
     BarButton {
-        id: select_item
+        id: withdraw
         x: 65
         y: 430
         width: 360
-        text: "Select Item"
+        text: "Withdrawal"
         fontSize: 44
     }
 
     BarButton {
-        id: select_credit_user
         x: 599
         y: 430
         width: 360
@@ -46,18 +45,21 @@ Item {
     }
 
     BarButton {
-        id: stock_manager
+        id: select_item
         x: 65
         y: 582
         width: 360
-        text: "Stock Mgmt"
+        text: "Select Item"
     }
 
     BarButton {
-        id: user_manager
+        id: management
         x: 599
         y: 582
         width: 360
-        text: "User Mgmt"
+        text: "Management"
+        onButtonClick: {
+            loadPage("Management")
+        }
     }
 }
