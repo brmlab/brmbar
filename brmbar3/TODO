@@ -1,7 +1,7 @@
-/ Management view
++ Management view
 	+ Stock management link
 	+ User management link
-	- Bilance overview (Cash, Profit, Credit total)
+	+ Bilance overview (Cash, Profit, Credit total)
 - Withdrawal of user credit
 	1. choose user
 	2. choose amount

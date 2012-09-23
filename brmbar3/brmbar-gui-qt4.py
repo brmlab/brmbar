@@ -61,6 +61,19 @@ class ShopAdapter(QtCore.QObject):
 		shop.add_credit(credit = credit, user = user)
 		return user.negbalance_str()
 
+	@QtCore.Slot(result='QVariant')
+	def balance_cash(self):
+		return shop.cash.balance_str()
+	@QtCore.Slot(result='QVariant')
+	def balance_profit(self):
+		return shop.profits.balance_str()
+	@QtCore.Slot(result='QVariant')
+	def balance_inventory(self):
+		return shop.inventory_negbalance_str()
+	@QtCore.Slot(result='QVariant')
+	def balance_credit(self):
+		return shop.credit_negbalance_str()
+
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency
