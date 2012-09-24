@@ -57,6 +57,12 @@ class Shop:
 		user.credit(transaction, credit, "Credit replenishment")
 		self.db.commit()
 
+	def withdraw_credit(self, credit, user):
+		transaction = self._transaction(responsible = user, description = "BrmBar credit withdrawal for " + user.name)
+		self.cash.credit(transaction, credit, user.name)
+		user.debit(transaction, credit, "Credit withdrawal")
+		self.db.commit()
+
 	def _transaction(self, responsible = None, description = None):
 		with closing(self.db.cursor()) as cur:
 			cur.execute("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id",
