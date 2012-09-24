@@ -3,14 +3,14 @@
 	+ User management link
 	+ Bilance overview (Cash, Profit, Credit total)
 - Item picker from list (only items with non-zero quantities)
+- User management
+	- List of users
+	- Withdrawal of user credit
 - Numerical manual entry support
 	- Use for credit charge
 	- Use for withdrawal
 - Alphanumeric manual entry support
 	- Use in item editor
-- User management
-	- List of users
-	- Withdrawal of user credit
 - Restocking view (Stock management)
 	- Item picker with edit button
 	- Item editor (name, barcode, buy price, sale price, quantity)
