@@ -13,6 +13,19 @@ class ShopAdapter(QtCore.QObject):
 	def __init__(self):
 		QtCore.QObject.__init__(self)
 
+	def acct_debt_map(self, acct):
+		map = acct.__dict__.copy()
+		map["balance"] = str(acct.balance())
+		map["negbalance"] = str(-acct.balance())
+		map["negbalance_str"] = acct.negbalance_str()
+		return map
+
+	def acct_inventory_map(self, acct):
+		buy, sell = acct.currency.rates(currency)
+		map = acct.__dict__.copy()
+		map["price"] = str(sell)
+		return map
+
 	@QtCore.Slot(str, result='QVariant')
 	def barcodeInput(self, barcode):
 		""" Evaluate barcode received on input
@@ -32,16 +45,9 @@ class ShopAdapter(QtCore.QObject):
 		if acct is None:
 			return None
 		if acct.acctype == 'debt':
-			map = acct.__dict__.copy()
-			map["balance"] = str(acct.balance())
-			map["negbalance"] = str(-acct.balance())
-			map["negbalance_str"] = acct.negbalance_str()
-			return map
+			return self.acct_debt_map(acct)
 		elif acct.acctype == "inventory":
-			buy, sell = acct.currency.rates(currency)
-			map = acct.__dict__.copy()
-			map["price"] = str(sell)
-			return map
+			return self.acct_inventory_map(acct)
 		else:
 			return None
 
