@@ -136,7 +136,7 @@ Item {
         x: 599
         y: 582
         width: 360
-        text: "Cancel"
+        text: "Main Screen"
         onButtonClick: {
             loadPage("MainPage")
         }
