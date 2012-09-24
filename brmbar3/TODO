@@ -2,9 +2,9 @@
 	+ Stock management link
 	+ User management link
 	+ Bilance overview (Cash, Profit, Credit total)
-- Item picker from list (only items with non-zero quantities)
-- User management
-	- List of users
+/ Item picker from list (only items with non-zero quantities)
+/ User management
+	+ List of users
 	- Withdrawal of user credit
 - Numerical manual entry support
 	- Use for credit charge

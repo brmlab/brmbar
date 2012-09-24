@@ -80,6 +80,10 @@ class ShopAdapter(QtCore.QObject):
 	def balance_credit(self):
 		return shop.credit_negbalance_str()
 
+	@QtCore.Slot(result='QVariant')
+	def userList(self):
+		return [ self.acct_debt_map(a) for a in shop.account_list("debt") ]
+
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency

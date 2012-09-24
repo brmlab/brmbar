@@ -129,6 +129,9 @@ Item {
         y: 430
         width: 360
         text: "User Mgmt"
+        onButtonClick: {
+            loadPage("UserMgmt")
+        }
     }
 
     BarButton {
