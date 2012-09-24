@@ -67,6 +67,12 @@ class ShopAdapter(QtCore.QObject):
 		shop.add_credit(credit = credit, user = user)
 		return user.negbalance_str()
 
+	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
+	def withdrawCredit(self, credit, userid):
+		user = brmbar.Account.load(db, id = userid)
+		shop.withdraw_credit(credit = credit, user = user)
+		return user.negbalance_str()
+
 	@QtCore.Slot(result='QVariant')
 	def balance_cash(self):
 		return shop.cash.balance_str()

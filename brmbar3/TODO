@@ -2,17 +2,17 @@
 	+ Stock management link
 	+ User management link
 	+ Bilance overview (Cash, Profit, Credit total)
-/ Item picker from list (only items with non-zero quantities)
-/ User management
++ Item picker from list
++ User management
 	+ List of users
-	- Withdrawal of user credit
+	+ Withdrawal of user credit
 - Numerical manual entry support
 	- Use for credit charge
 	- Use for withdrawal
 - Alphanumeric manual entry support
 	- Use in item editor
 - Restocking view (Stock management)
-	- Item picker with edit button
+	- Item picker with edit button (only items with non-zero quantities)
 	- Item editor (name, barcode, buy price, sale price, quantity)
 	- Group quantity changes in a single transaction
 - Withdrawal for brmbar receipts

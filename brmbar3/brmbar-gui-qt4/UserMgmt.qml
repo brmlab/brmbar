@@ -24,7 +24,8 @@ Item {
                 loadPageByAcct(acct)
                 return
             }
-            loadPage("UserEdit", { name: acct["name"], dbid: acct["id"], negbalance: acct["negbalance"] })
+	    /* TODO: This should be UserEdit when implemented. */
+            loadPage("Withdraw", { name: acct["name"], dbid: acct["id"], negbalance: acct["negbalance"] })
         }
     }
 
@@ -67,6 +68,9 @@ Item {
 		    height: 68
 		    text: "Withdraw"
 		    fontSize: 34
+		    onButtonClick: {
+			loadPage("Withdraw", { username: modelData.name, userdbid: modelData.id })
+		    }
 		}
 	    }
 	    model: user_list_model
