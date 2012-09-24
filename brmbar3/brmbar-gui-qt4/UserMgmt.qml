@@ -70,15 +70,6 @@ Item {
 		}
 	    }
 	    model: user_list_model
-//	    model: ListModel {
-//		ListElement {
-//		    name: "pasky"; negbalance: "400.00 Kč"
-//		}
-//
-//		ListElement {
-//		    name: "růža"; negbalance: "1200.00 Kč"
-//		}
-//	    }
 	}
 
 	BarScrollBar {
