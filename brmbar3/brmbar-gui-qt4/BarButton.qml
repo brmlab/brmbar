@@ -9,7 +9,7 @@ Rectangle {
     border.color: "#ffffff"
 
     property string text: "Button"
-    property int fontSize: 46
+    property int fontSize: 44
 
     signal buttonClick
     onButtonClick: { /* Supplied by component user. */ }
@@ -18,7 +18,7 @@ Rectangle {
         id: text1
         color: "#ffffff"
         text: parent.text
-        font.pointSize: 44
+        font.pointSize: parent.fontSize
         scale: if (!mousearea1.pressed) { 1 } else { 0.95 }
         horizontalAlignment: Text.AlignHCenter
         anchors.fill: parent
