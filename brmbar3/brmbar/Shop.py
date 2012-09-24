@@ -94,3 +94,11 @@ class Shop:
 		return balance
 	def inventory_negbalance_str(self):
 		return self.currency.str(-self.inventory_balance())
+
+	def account_list(self, acctype):
+		accts = []
+		with closing(self.db.cursor()) as cur:
+			cur.execute("SELECT id FROM accounts WHERE acctype = %s", ["debt"])
+			for inventory in cur:
+				accts += [ Account.load(self.db, id = inventory[0]) ]
+		return accts
