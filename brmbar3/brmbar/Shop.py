@@ -104,7 +104,7 @@ class Shop:
 	def account_list(self, acctype):
 		accts = []
 		with closing(self.db.cursor()) as cur:
-			cur.execute("SELECT id FROM accounts WHERE acctype = %s", ["debt"])
+			cur.execute("SELECT id FROM accounts WHERE acctype = %s", [acctype])
 			for inventory in cur:
 				accts += [ Account.load(self.db, id = inventory[0]) ]
 		return accts
