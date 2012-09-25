@@ -6,9 +6,6 @@ Item {
     id: page
     anchors.fill: parent
 
-    property variant name: ""
-    property variant dbid: ""
-    property variant price: ""
     property variant user_list_model
 
     BarcodeInput {
