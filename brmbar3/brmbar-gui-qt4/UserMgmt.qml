@@ -32,7 +32,7 @@ Item {
     Item {
 	id: user_list_container
         x: 65
-        y: 156
+        y: 166
         width: 899
         height: 250
 
