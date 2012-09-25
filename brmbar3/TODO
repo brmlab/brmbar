@@ -6,9 +6,9 @@
 + User management
 	+ List of users
 	+ Withdrawal of user credit
-- Numerical manual entry support
-	- Use for credit charge
-	- Use for withdrawal
++ Numerical manual entry support
+	+ Use for credit charge
+	+ Use for withdrawal
 - Alphanumeric manual entry support
 	- Use in item editor
 - Restocking view (Stock management)

@@ -12,13 +12,14 @@ Item {
 
     Text {
         id: item_name
-        x: 65
+        x: 422
         y: 156
         width: 537
-        height: 160
+        height: 80
         color: "#ffffff"
         text: parent.username ? parent.username : "Credit charge"
         wrapMode: Text.WordWrap
+        horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
         font.pointSize: 44
     }
@@ -26,7 +27,7 @@ Item {
     Text {
         id: text3
         x: 611
-        y: 156
+        y: 256
         height: 160
         width: 348
         color: "#ffff7c"
@@ -39,8 +40,17 @@ Item {
     BarTextHint {
         x: 65
         y: 430
-        hint_goal: parent.amount ? (parent.username ? "Charge now?" : "Charge user:") : "Charge credit:"
-        hint_action: !(parent.amount && parent.userdbid) ? "Scan barcode now" : ""
+        hint_goal: (parent.username ? "" : parent.amount ? "Charge user:" : "Charge credit:")
+        hint_action: (parent.username ? (parent.amount ? "" : "(or scan barcode now)") : "Scan barcode now")
+    }
+
+    BarNumPad {
+	id: credit_pad
+	x: 65
+	y: 195
+	visible: parent.username != ""
+	onLetterEntered: { amount = amount.toString() + letter; }
+	onLetterBackspace: { amount = amount.toString().replace(/.$/, ''); }
     }
 
     BarcodeInput {
@@ -87,22 +97,6 @@ Item {
             status_text.setStatus("Charging cancelled", "#ff4444")
             loadPage("MainPage")
         }
-    }
-
-    Text {
-        id: text1
-        x: 112
-        y: 333
-        width: 800
-        height: 80
-        color: "#ffffff"
-        text: "Put "+amount+" Kč in the money box now."
-        visible: amount ? true : false
-        anchors.horizontalCenterOffset: 0
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-        font.pointSize: 36
-        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     function chargeCredit() {
