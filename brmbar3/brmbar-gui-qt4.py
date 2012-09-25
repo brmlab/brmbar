@@ -23,6 +23,7 @@ class ShopAdapter(QtCore.QObject):
 	def acct_inventory_map(self, acct):
 		buy, sell = acct.currency.rates(currency)
 		map = acct.__dict__.copy()
+		map["buy_price"] = str(buy)
 		map["price"] = str(sell)
 		return map
 
@@ -89,6 +90,10 @@ class ShopAdapter(QtCore.QObject):
 	@QtCore.Slot(result='QVariant')
 	def userList(self):
 		return [ self.acct_debt_map(a) for a in shop.account_list("debt") ]
+
+	@QtCore.Slot(result='QVariant')
+	def itemList(self):
+		return [ self.acct_inventory_map(a) for a in shop.account_list("inventory") ]
 
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)

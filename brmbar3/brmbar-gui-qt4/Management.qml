@@ -121,6 +121,9 @@ Item {
         y: 430
         width: 360
         text: "Stock Mgmt"
+        onButtonClick: {
+            loadPage("StockMgmt")
+        }
     }
 
     BarButton {
