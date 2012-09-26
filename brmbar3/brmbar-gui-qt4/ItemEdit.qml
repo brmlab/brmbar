@@ -13,7 +13,7 @@ Item {
     Text {
         id: item_name
         x: 65
-        y: 156
+        y: 166
         width: 537
         height: 60
         color: "#ffff7c"
@@ -26,7 +26,7 @@ Item {
     BarButton {
         id: item_name_edit
         x: 599
-        y: 156
+        y: 166
         width: 240
         height: 60
         fontSize: 34
@@ -36,7 +36,7 @@ Item {
     Text {
         id: item_buyprice_label
         x: 65
-        y: 226
+        y: 236
         height: 60
         width: 200
         color: "#ffffff"
@@ -48,7 +48,7 @@ Item {
     Text {
         id: item_buyprice
         x: 265
-        y: 226
+        y: 236
         height: 60
         width: 248
         color: "#ffff7c"
@@ -61,7 +61,7 @@ Item {
     BarButton {
         id: item_buyprice_edit
         x: 599
-        y: 226
+        y: 236
         width: 240
         height: 60
         fontSize: 34
@@ -71,7 +71,7 @@ Item {
     Text {
         id: item_sellprice_label
         x: 65
-        y: 296
+        y: 306
         height: 60
         width: 200
         color: "#ffffff"
@@ -83,7 +83,7 @@ Item {
     Text {
         id: item_sellprice
         x: 265
-        y: 296
+        y: 306
         height: 60
         width: 248
         color: "#ffff7c"
@@ -96,7 +96,7 @@ Item {
     BarButton {
         id: item_sellprice_edit
         x: 599
-        y: 296
+        y: 306
         width: 240
         height: 60
         fontSize: 34
@@ -106,7 +106,7 @@ Item {
     Text {
         id: item_balance_label
         x: 65
-        y: 366
+        y: 376
         height: 60
         width: 200
         color: "#ffffff"
@@ -118,7 +118,7 @@ Item {
     Text {
         id: item_balance
         x: 265
-        y: 366
+        y: 376
         height: 60
         width: 248
         color: "#ffff7c"
@@ -131,7 +131,7 @@ Item {
     BarButton {
         id: item_balance_restock
         x: 599
-        y: 366
+        y: 376
         width: 240
         height: 60
         fontSize: 34
