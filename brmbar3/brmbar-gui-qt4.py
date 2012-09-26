@@ -23,6 +23,7 @@ class ShopAdapter(QtCore.QObject):
 	def acct_inventory_map(self, acct):
 		buy, sell = acct.currency.rates(currency)
 		map = acct.__dict__.copy()
+		map["balance"] = "{:.0f}".format(acct.balance())
 		map["buy_price"] = str(buy)
 		map["price"] = str(sell)
 		return map
@@ -53,6 +54,10 @@ class ShopAdapter(QtCore.QObject):
 				return None
 			return { "acctype": "recharge", "amount": str(credit)+".00" }
 		return self.acct_map(brmbar.Account.load_by_barcode(db, barcode))
+
+	@QtCore.Slot('QVariant', result='QVariant')
+	def loadAccount(self, dbid):
+		return self.acct_map(brmbar.Account.load(db, id = dbid))
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def sellItem(self, itemid, userid):
