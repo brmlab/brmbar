@@ -78,3 +78,7 @@ class Account:
 		""" Common part of credit() and debit(). """
 		with closing(self.db.cursor()) as cur:
 			cur.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, self.id, amount, memo])
+
+	def add_barcode(self, barcode):
+		with closing(self.db.cursor()) as cur:
+			cur.execute("INSERT INTO barcodes (account, barcode) VALUES (%s, %s)", [self.id, barcode])
