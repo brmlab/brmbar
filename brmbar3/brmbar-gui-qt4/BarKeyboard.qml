@@ -20,10 +20,10 @@ Grid {
         model: keys.length
         BarButton {
 	    width: buttonWidth; height: buttonHeight
-	    property string key: keys.charAt(index)
+	    property string key: shift ? keys.charAt(index).toUpperCase() : keys.charAt(index)
 	    property bool special: key == "^" || key == "<"
 
-            text: key == "^" ? "shift" : key == "<" ? "bksp" : shift ? key.toUpperCase() : key
+            text: key == "^" ? "shift" : key == "<" ? "bksp" : key
             fontSize: special ? 20 : 44
 
             onButtonClick: {
