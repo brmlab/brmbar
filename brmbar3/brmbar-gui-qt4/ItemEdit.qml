@@ -10,6 +10,24 @@ Item {
     property variant dbid: ""
     property variant info: ""
 
+    property string barcode: ""
+
+    BarcodeInput {
+        color: "#00ff00" /* just for debugging */
+        onAccepted: {
+	    var acct = shop.barcodeInput(text)
+	    barcode = text
+	    text = ""
+	    if (typeof(acct) != "undefined") {
+		status_text.setStatus("Existing barcode: " + acct.name, "#ff4444")
+		/* TODO: Allow override. */
+		return
+	    }
+	    shop.addBarcode(dbid, barcode)
+	    status_text.setStatus("Barcode added.", "#ffff7c")
+        }
+    }
+
     Text {
         id: item_name
         x: 65
@@ -138,12 +156,11 @@ Item {
         text: "Restock"
     }
 
-    BarButton {
-        id: add_barcode
+    BarTextHint {
         x: 65
         y: 476
-        width: 360
-        text: "Add Barcode"
+        hint_goal: "Add barcode:"
+        hint_action: "Scan item now"
     }
 
     BarButton {

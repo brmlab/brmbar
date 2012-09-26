@@ -102,6 +102,10 @@ class ShopAdapter(QtCore.QObject):
 	def itemList(self):
 		return [ self.acct_inventory_map(a) for a in shop.account_list("inventory") ]
 
+	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
+	def addBarcode(self, dbid, barcode):
+		return brmbar.Account.load(db, id = dbid).add_barcode(barcode)
+
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency
