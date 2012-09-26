@@ -11,9 +11,9 @@
 	+ Use for withdrawal
 - Alphanumeric manual entry support
 	- Use in item editor
-- Restocking view (Stock management)
-	- Item picker with edit button (only items with non-zero quantities)
-	- Item editor (name, barcode, buy price, sale price, quantity)
+/ Restocking view (Stock management)
+	+ Item picker with edit button
+	/ Item editor (name, barcode, buy price, sale price, quantity, barcode)
 	- Group quantity changes in a single transaction
 - Withdrawal for brmbar receipts
 	1. User responsible
