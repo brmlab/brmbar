@@ -27,6 +27,16 @@ class ShopAdapter(QtCore.QObject):
 		map["price"] = str(sell)
 		return map
 
+	def acct_map(self, acct):
+		if acct is None:
+			return None
+		if acct.acctype == 'debt':
+			return self.acct_debt_map(acct)
+		elif acct.acctype == "inventory":
+			return self.acct_inventory_map(acct)
+		else:
+			return None
+
 	@QtCore.Slot(str, result='QVariant')
 	def barcodeInput(self, barcode):
 		""" Evaluate barcode received on input
@@ -42,15 +52,7 @@ class ShopAdapter(QtCore.QObject):
 			if credit is None:
 				return None
 			return { "acctype": "recharge", "amount": str(credit)+".00" }
-		acct = brmbar.Account.load_by_barcode(db, barcode)
-		if acct is None:
-			return None
-		if acct.acctype == 'debt':
-			return self.acct_debt_map(acct)
-		elif acct.acctype == "inventory":
-			return self.acct_inventory_map(acct)
-		else:
-			return None
+		return self.acct_map(brmbar.Account.load_by_barcode(db, barcode))
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def sellItem(self, itemid, userid):
