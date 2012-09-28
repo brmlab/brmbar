@@ -299,8 +299,12 @@ Item {
         text: "Save"
         onButtonClick: {
 	    info["name"] = name
-            shop.saveAccount(dbid, info)
-            status_text.setStatus("Changes saved", "#ffff7c")
+            var res = shop.saveItem(dbid, info)
+	    if (res.cost) {
+		status_text.setStatus("Restocked! Take " + res.cost + " from the money box.", "#ffff7c")
+	    } else {
+		status_text.setStatus("Changes saved", "#ffff7c")
+	    }
             loadPage("StockMgmt")
         }
     }

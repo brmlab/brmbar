@@ -106,6 +106,19 @@ class ShopAdapter(QtCore.QObject):
 	def addBarcode(self, dbid, barcode):
 		return brmbar.Account.load(db, id = dbid).add_barcode(barcode)
 
+	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
+	def saveItem(self, dbid, invmap):
+		acct = brmbar.Account.load(db, id = dbid)
+		buy, sell = acct.currency.rates(currency)
+		if (sell != invmap["price"]):
+			acct.currency.update_sell_rate(currency, invmap["price"])
+		if (buy != invmap["buy_price"]):
+			acct.currency.update_buy_rate(currency, invmap["buy_price"])
+		cost = ""
+		if (acct.balance() < int(invmap["balance"])):
+			cost = shop.buy_for_cash(acct, invmap["balance"] - acct.balance())
+		return { "dbid": dbid, "cost": currency.str(cost) }
+
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency
