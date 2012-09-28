@@ -29,6 +29,7 @@
 	- Forbid negative credit
 - Stock management
 	- Group quantity changes in a single transaction (for single receipt, many stock)
+	- Support for directly paying for stocked items from user credit
 - Statistics
 	- Users with debt
 	- Pretty chart

@@ -63,6 +63,18 @@ class Shop:
 		user.debit(transaction, credit, "Credit withdrawal")
 		self.db.commit()
 
+	def buy_for_cash(self, item, amount = 1):
+		# Buy: Currency conversion from item currency to shop currency
+		(buy, sell) = item.currency.rates(self.currency)
+		cost = amount * buy
+
+		transaction = self._transaction(description = "BrmBar stock replenishment of {}x {} for cash".format(amount, item.name))
+		item.debit(transaction, amount, "Cash")
+		self.cash.credit(transaction, cost, item.name)
+		self.db.commit()
+
+		return cost
+
 	def _transaction(self, responsible = None, description = None):
 		with closing(self.db.cursor()) as cur:
 			cur.execute("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id",
