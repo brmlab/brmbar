@@ -31,8 +31,10 @@ Grid {
 		    shift = !shift
 		else if (key == "<")
 		    letterBackspace()
-		else
+		else {
 		    letterEntered(key)
+		    shift = false
+		}
             }
         }
     }
