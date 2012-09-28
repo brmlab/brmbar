@@ -63,7 +63,7 @@ class Currency:
 
 	def convert(self, amount, target):
 		with closing(self.db.cursor()) as cur:
-			cur.execute("SELECT rate, rate_dir FROM exchange_rates WHERE target = %s AND source = %s AND valid_since <= NOW() ORDER BY valid_since ASC LIMIT 1", [target.id, self.id])
+			cur.execute("SELECT rate, rate_dir FROM exchange_rates WHERE target = %s AND source = %s AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1", [target.id, self.id])
 			res = cur.fetchone()
 			if res is None:
 				raise NameError("Currency.convert(): Unknown conversion " + self.name() + " to " + other.name())
