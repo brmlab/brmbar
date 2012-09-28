@@ -32,6 +32,7 @@ Item {
         width: 360
         text: "Withdrawal"
         fontSize: 44
+	btnColor: "#666666"
     }
 
     BarButton {
@@ -50,6 +51,7 @@ Item {
         y: 582
         width: 360
         text: "Select Item"
+	btnColor: "#666666"
     }
 
     BarButton {

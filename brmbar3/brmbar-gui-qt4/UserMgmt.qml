@@ -88,6 +88,7 @@ Item {
         width: 360
         text: "Add User"
         fontSize: 44
+	btnColor: "#666666"
     }
 
     BarButton {
