@@ -75,6 +75,12 @@ class Shop:
 
 		return cost
 
+	def receipt_to_credit(self, user, credit, description):
+		transaction = self._transaction(responsible = user, description = "Receipt: " + description)
+		self.profits.credit(transaction, credit, user.name)
+		user.credit(transaction, credit, "Credit from receipt: " + description)
+		self.db.commit()
+
 	def _transaction(self, responsible = None, description = None):
 		with closing(self.db.cursor()) as cur:
 			cur.execute("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id",
