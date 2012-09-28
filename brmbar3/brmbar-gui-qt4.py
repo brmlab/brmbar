@@ -138,6 +138,14 @@ class ShopAdapter(QtCore.QObject):
 			db.commit()
 		return { "dbid": acct.id, "cost": (currency.str(cost) if cost != "" else "") }
 
+	@QtCore.Slot('QVariant', 'QVariant', 'QVariant', result='QVariant')
+	def newReceipt(self, userid, description, amount):
+		if (description == "" or amount == ""):
+			return None
+		user = brmbar.Account.load(db, id = userid)
+		shop.receipt_to_credit(user, amount, description)
+		return user.negbalance_str()
+
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency

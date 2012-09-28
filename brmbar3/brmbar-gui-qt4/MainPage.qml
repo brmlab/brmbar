@@ -30,7 +30,7 @@ Item {
         x: 65
         y: 430
         width: 360
-        text: "Withdrawal"
+        text: "Select Item"
         fontSize: 44
 	btnColor: "#666666"
     }
@@ -50,8 +50,10 @@ Item {
         x: 65
         y: 582
         width: 360
-        text: "Select Item"
-	btnColor: "#666666"
+        text: "Receipt"
+        onButtonClick: {
+            loadPage("Receipt")
+        }
     }
 
     BarButton {
