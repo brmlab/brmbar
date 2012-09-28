@@ -50,7 +50,7 @@ class Account:
 	def create(cls, db, name, currency, acctype):
 		""" Constructor for new account """
 		with closing(db.cursor()) as cur:
-			cur.execute("INSERT INTO accounts (name, currency, acctype) VALUES (%s, %s, %s) RETURNING id", [name, currency, acctype])
+			cur.execute("INSERT INTO accounts (name, currency, acctype) VALUES (%s, %s, %s) RETURNING id", [name, currency.id, acctype])
 			id = cur.fetchone()[0]
 		return cls(db, name = name, id = id, currency = currency, acctype = acctype)
 
