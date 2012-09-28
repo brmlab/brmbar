@@ -32,6 +32,7 @@
 - Statistics
 	- Users with debt
 	- Pretty chart
+	- Fix "inventory value" computation
 - Advanced inventory management
 	- Mass quantity/cash corrections ("inventura" mode)
 	- Integrated brmbar overflow support

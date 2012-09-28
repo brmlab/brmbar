@@ -96,6 +96,10 @@ class Shop:
 			for inventory in cur:
 				invid = inventory[0]
 				inv = Account.load(self.db, id = invid)
+				# FIXME: This is not correct as each instance of inventory
+				# might have been bought for a different price! Therefore,
+				# we need to replace the command below with a complex SQL
+				# statement that will... ugh, accounting is hard!
 				balance += inv.currency.convert(inv.balance(), self.currency)
 		return balance
 	def inventory_negbalance_str(self):
