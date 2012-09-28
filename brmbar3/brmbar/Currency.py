@@ -76,3 +76,10 @@ class Currency:
 
 	def str(self, amount):
 		return "{:.2f} {}".format(amount, self.name)
+
+	def update_sell_rate(self, target, rate):
+		with closing(self.db.cursor()) as cur:
+			cur.execute("INSERT INTO exchange_rates (source, target, rate, rate_dir) VALUES (%s, %s, %s, %s)", [self.id, target.id, rate, "source_to_target"])
+	def update_buy_rate(self, source, rate):
+		with closing(self.db.cursor()) as cur:
+			cur.execute("INSERT INTO exchange_rates (source, target, rate, rate_dir) VALUES (%s, %s, %s, %s)", [source.id, self.id, rate, "target_to_source"])
