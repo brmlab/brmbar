@@ -35,7 +35,7 @@ class Currency:
 	def create(cls, db, name):
 		""" Constructor for new currency """
 		with closing(db.cursor()) as cur:
-			cur.execute("INSERT INTO currencies (name) VALUES (?) RETURNING id", [name])
+			cur.execute("INSERT INTO currencies (name) VALUES (%s) RETURNING id", [name])
 			id = cur.fetchone()[0]
 		return cls.new(db, name = name, id = id)
 
