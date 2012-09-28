@@ -82,6 +82,7 @@ class Account:
 	def add_barcode(self, barcode):
 		with closing(self.db.cursor()) as cur:
 			cur.execute("INSERT INTO barcodes (account, barcode) VALUES (%s, %s)", [self.id, barcode])
+		self.db.commit()
 
 	def rename(self, name):
 		with closing(self.db.cursor()) as cur:

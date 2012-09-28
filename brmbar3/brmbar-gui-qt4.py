@@ -119,6 +119,8 @@ class ShopAdapter(QtCore.QObject):
 		cost = ""
 		if (acct.balance() < int(invmap["balance"])):
 			cost = shop.buy_for_cash(acct, invmap["balance"] - acct.balance())
+		else:
+			db.commit()
 		return { "dbid": dbid, "cost": (currency.str(cost) if cost != "" else "") }
 
 	@QtCore.Slot('QVariant', result='QVariant')
