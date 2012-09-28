@@ -45,14 +45,14 @@ class Currency:
 		$sell is the price of $self in means of $other when selling it (from brmbar) """
 		with closing(self.db.cursor()) as cur:
 
-			cur.execute("SELECT rate, rate_dir FROM exchange_rates WHERE target = %s AND source = %s", [self.id, other.id])
+			cur.execute("SELECT rate, rate_dir FROM exchange_rates WHERE target = %s AND source = %s AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1", [self.id, other.id])
 			res = cur.fetchone()
 			if res is None:
 				raise NameError("Currency.rate(): Unknown conversion " + other.name() + " to " + self.name())
 			buy_rate, buy_rate_dir = res
 			buy = buy_rate if buy_rate_dir == "target_to_source" else 1/buy_rate
 
-			cur.execute("SELECT rate, rate_dir FROM exchange_rates WHERE target = %s AND source = %s", [other.id, self.id])
+			cur.execute("SELECT rate, rate_dir FROM exchange_rates WHERE target = %s AND source = %s AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1", [other.id, self.id])
 			res = cur.fetchone()
 			if res is None:
 				raise NameError("Currency.rate(): Unknown conversion " + self.name() + " to " + other.name())
