@@ -62,6 +62,15 @@ Item {
 	}
     }
 
+    BarKeyPad {
+        id: item_name_pad
+        x: 65
+        y: 239
+        visible: page.state == "name_edit"
+        onLetterEntered: { page.name = page.name + letter; }
+        onLetterBackspace: { page.name = page.name.replace(/.$/, ''); }
+    }
+
     Item {
 	id: buyprice_row
 	visible: page.state == "normal" || page.state == "buyprice_edit"
@@ -105,6 +114,15 @@ Item {
 	    text: page.state == "buyprice_edit" ? "Assign" : "Edit"
 	    onButtonClick: { if (page.state == "buyprice_edit") page.state = "normal"; else page.state = "buyprice_edit"; }
 	}
+    }
+
+    BarNumPad {
+        id: item_buyprice_pad
+        x: 65
+        y: 239
+        visible: page.state == "buyprice_edit"
+        onLetterEntered: { var xi = info; xi.buy_price = xi.buy_price.toString() + letter; info = xi }
+        onLetterBackspace: { var xi = info; xi.buy_price = xi.buy_price.toString().replace(/.$/, ''); info = xi }
     }
 
     Item {
@@ -152,6 +170,15 @@ Item {
 	}
     }
 
+    BarNumPad {
+        id: item_sellprice_pad
+        x: 65
+        y: 239
+        visible: page.state == "sellprice_edit"
+        onLetterEntered: { var xi = info; xi.price = xi.price.toString() + letter; info = xi }
+        onLetterBackspace: { var xi = info; xi.price = xi.price.toString().replace(/.$/, ''); info = xi }
+    }
+
     Item {
 	id: balance_row
 	visible: page.state == "normal" || page.state == "balance_edit"
@@ -178,7 +205,7 @@ Item {
 	    y: 0
 	    height: 60
 	    width: 248
-	    color: "#ffff7c"
+	    color: page.state == "balance_edit" ? "#ffffff" /* read-only value */ : "#ffff7c"
 	    text: info.balance
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
@@ -195,11 +222,63 @@ Item {
 	    text: page.state == "balance_edit" ? "Add qty" : "Restock"
 	    onButtonClick: {
 		if (page.state == "balance_edit") {
-		    /* TODO: Add... */
+		    var xi = info; xi.balance = parseInt(xi.balance) + parseInt(balance_addqty_amount.text); info = xi;
 		    page.state = "normal";
-		} else
+		} else {
 		    page.state = "balance_edit";
+		    balance_addqty_amount.text = ""
+	        }
 	    }
+	}
+    }
+
+    Item {
+	id: balance_addqty
+	visible: page.state == "balance_edit"
+	x: 65
+	y: 239
+
+	BarNumPad {
+	    id: balance_addqty_edit
+	    x: 0
+	    y: 0
+	    onLetterEntered: { balance_addqty_amount.text = balance_addqty_amount.text.toString() + letter; }
+	    onLetterBackspace: { balance_addqty_amount.text = balance_addqty_amount.text.toString().replace(/.$/, ''); }
+	}
+
+	Text {
+	    id: balance_addqty_label
+	    x: 300
+	    y: 10
+	    height: 60
+	    width: 300
+	    color: "#ffffff"
+	    text: "Add quantity:"
+	    verticalAlignment: Text.AlignVCenter
+	    font.pointSize: 34
+	}
+
+	Text {
+	    id: balance_addqty_amount
+	    x: 640
+	    y: 0
+	    height: 80
+	    width: 248
+	    color: "#ffff7c"
+	    text: ""
+	    verticalAlignment: Text.AlignVCenter
+	    font.pointSize: 44
+	}
+
+	Text {
+	    id: balance_addqty_legend
+	    x: 300
+	    y: 120
+	    height: 320
+	    width: 248
+	    color: "#71cccc"
+	    text: "Please specify the precise amount of newly\nstocked goods, even if the current quantity\nvalue does not match reality (you can let us\nknow about that at brmbar@brmlab.cz)"
+	    font.pointSize: 20
 	}
     }
 
