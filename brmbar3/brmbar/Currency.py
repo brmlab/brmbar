@@ -37,7 +37,7 @@ class Currency:
 		with closing(db.cursor()) as cur:
 			cur.execute("INSERT INTO currencies (name) VALUES (%s) RETURNING id", [name])
 			id = cur.fetchone()[0]
-		return cls.new(db, name = name, id = id)
+		return cls(db, name = name, id = id)
 
 	def rates(self, other):
 		""" Return tuple ($buy, $sell) of rates of $self in relation to $other (brmbar.Currency):
