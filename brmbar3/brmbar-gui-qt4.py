@@ -109,6 +109,8 @@ class ShopAdapter(QtCore.QObject):
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def saveItem(self, dbid, invmap):
 		acct = brmbar.Account.load(db, id = dbid)
+		if (acct.name != invmap["name"]):
+			acct.rename(invmap["name"])
 		buy, sell = acct.currency.rates(currency)
 		if (sell != invmap["price"]):
 			acct.currency.update_sell_rate(currency, invmap["price"])
