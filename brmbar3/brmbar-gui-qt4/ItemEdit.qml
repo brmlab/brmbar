@@ -24,6 +24,10 @@ Item {
 		/* TODO: Allow override. */
 		return
 	    }
+	    if (info.dbid == "") {
+		status_text.setStatus("Press [Create] first", "#ff4444")
+		return
+	    }
 	    shop.addBarcode(dbid, barcode)
 	    status_text.setStatus("Barcode added.", "#ffff7c")
         }
@@ -296,16 +300,33 @@ Item {
         x: 65
         y: 582
         width: 360
-        text: "Save"
+        text: dbid == "" ? "Create" : "Save"
         onButtonClick: {
-	    info["name"] = name
-            var res = shop.saveItem(dbid, info)
-	    if (res.cost) {
-		status_text.setStatus("Restocked! Take " + res.cost + " from the money box.", "#ffff7c")
+	    var xi = info; xi["name"] = page.name; info = xi
+
+	    var res;
+	    if (dbid == "") {
+		res = shop.newItem(info)
+		if (!res) {
+		   status_text.setStatus("Please fill all values first.", "#ff4444")
+		   return
+		}
 	    } else {
-		status_text.setStatus("Changes saved", "#ffff7c")
+		res = shop.saveItem(dbid, info)
 	    }
-            loadPage("StockMgmt")
+
+	    if (res.cost) {
+		status_text.setStatus((dbid == "" ? "Stocked!" : "Restocked!") + " Take " + res.cost + " from the money box.", "#ffff7c")
+	    } else {
+		status_text.setStatus(dbid == "" ? "Item created" : "Changes saved", "#ffff7c")
+	    }
+
+	    if (dbid == "") {
+		dbid = res.dbid
+		var xi = info; xi["dbid"] = page.dbid; info = xi
+	    } else {
+		loadPage("StockMgmt")
+	    }
         }
     }
 
@@ -322,7 +343,11 @@ Item {
     }
 
     Component.onCompleted: {
-	info = shop.loadAccount(dbid)
+	if (dbid != "") {
+	    info = shop.loadAccount(dbid)
+	} else {
+	    info = { "name": "", "dbid": "", "buy_price": "", "price": "", "balance": 0 };
+	}
     }
 
     states: [

@@ -117,7 +117,22 @@ class ShopAdapter(QtCore.QObject):
 		cost = ""
 		if (acct.balance() < int(invmap["balance"])):
 			cost = shop.buy_for_cash(acct, invmap["balance"] - acct.balance())
-		return { "dbid": dbid, "cost": currency.str(cost) }
+		return { "dbid": dbid, "cost": (currency.str(cost) if cost != "" else "") }
+
+	@QtCore.Slot('QVariant', result='QVariant')
+	def newItem(self, invmap):
+		if (invmap["name"] == "" or invmap["price"] == "" or invmap["buy_price"] == ""):
+			return None
+		invcurrency = brmbar.Currency.create(db, invmap["name"])
+		invcurrency.update_sell_rate(currency, invmap["price"])
+		invcurrency.update_buy_rate(currency, invmap["buy_price"])
+		acct = brmbar.Account.create(db, invmap["name"], invcurrency, "inventory")
+		cost = ""
+		if (int(invmap["balance"]) > 0):
+			cost = shop.buy_for_cash(acct, invmap["balance"]) # implicit db.commit()
+		else:
+			db.commit()
+		return { "dbid": acct.id, "cost": (currency.str(cost) if cost != "" else "") }
 
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)

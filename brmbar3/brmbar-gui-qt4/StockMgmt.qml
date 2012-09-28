@@ -87,6 +87,9 @@ Item {
         width: 360
         text: "Add Item"
         fontSize: 44
+        onButtonClick: {
+	    loadPage("ItemEdit", { name: "", dbid: "" })
+	}
     }
 
     BarButton {

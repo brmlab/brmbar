@@ -9,11 +9,11 @@
 + Numerical manual entry support
 	+ Use for credit charge
 	+ Use for withdrawal
-/ Restocking view (Stock management)
++ Restocking view (Stock management)
 	+ Item picker with edit button
 	+ Item editor (name, buy price, sale price, quantity)
 	+ Item-barcode assignment
-	- Support for adding new items
+	+ Support for adding new items
 + Alphanumeric manual entry support
 	+ Use in item editor
 - Withdrawal for brmbar receipts
