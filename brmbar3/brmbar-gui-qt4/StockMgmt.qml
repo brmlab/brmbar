@@ -30,7 +30,7 @@ Item {
         x: 65
         y: 166
         width: 899
-        height: 250
+        height: 400
 
 	ListView {
 	    id: item_list
