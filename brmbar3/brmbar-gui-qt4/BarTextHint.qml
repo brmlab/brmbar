@@ -19,7 +19,7 @@ Item {
         anchors.bottomMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
-        font.fontSize: 0.768 * 60
+        font.pixelSize: 0.768 * 60
     }
 
     Text {
@@ -33,6 +33,6 @@ Item {
         anchors.topMargin: 0
         anchors.right: parent.right
         anchors.rightMargin: 0
-        transformOrigin: Item.Center; smooth: true; font.bold: false; wrapMode: Text.NoWrap; font.fontSize: 0.768 * 60;horizontalAlignment: Text.AlignHCenter
+        transformOrigin: Item.Center; smooth: true; font.bold: false; wrapMode: Text.NoWrap; font.pixelSize: 0.768 * 60;horizontalAlignment: Text.AlignHCenter
     }
 }

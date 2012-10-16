@@ -45,7 +45,7 @@ Item {
 		    text: modelData.name
 		    anchors.verticalCenter: parent.verticalCenter
 		    color: "#ffffff"
-		    font.fontSize: 0.768 * 46
+		    font.pixelSize: 0.768 * 46
 		}
 
 		Text {
@@ -55,7 +55,7 @@ Item {
 		    color: "#ffff7c"
 		    text: modelData.negbalance_str
 		    horizontalAlignment: Text.AlignRight
-		    font.fontSize: 0.768 * 46
+		    font.pixelSize: 0.768 * 46
 		}
 
 		BarButton {

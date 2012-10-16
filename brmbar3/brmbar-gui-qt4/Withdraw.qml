@@ -21,7 +21,7 @@ Item {
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.fontSize: 0.768 * 60
+        font.pixelSize: 0.768 * 60
     }
 
     Text {
@@ -34,7 +34,7 @@ Item {
         text: parent.amount ? "-" + parent.amount : ""
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.fontSize: 0.768 * 122
+        font.pixelSize: 0.768 * 122
     }
 
     BarTextHint {

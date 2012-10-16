@@ -12,7 +12,7 @@ Rectangle {
         y: 35
         color: "#71cccc"
         text: "brmbar v3"
-        font.fontSize: 0.768 * 49
+        font.pixelSize: 0.768 * 49
     }
     BarClock {
         id: clock
@@ -43,7 +43,7 @@ Rectangle {
         text: ""
         horizontalAlignment: Text.AlignHCenter
         //anchors.horizontalCenter: clock.horizontalCenter
-        font.fontSize: 0.768 * 49
+        font.pixelSize: 0.768 * 49
 
         state: "HIDDEN"
         opacity: 0

@@ -55,7 +55,7 @@ Item {
 	    text: page.item_name
 	    wrapMode: Text.WordWrap
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	BarButton {
@@ -97,7 +97,7 @@ Item {
 	    color: "#ffffff"
 	    text: "Buy price:"
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	Text {
@@ -110,7 +110,7 @@ Item {
 	    text: page.buy_price
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	BarButton {
@@ -152,7 +152,7 @@ Item {
 	    color: "#ffffff"
 	    text: "Sell price:"
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	Text {
@@ -165,7 +165,7 @@ Item {
 	    text: page.price
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	BarButton {
@@ -207,7 +207,7 @@ Item {
 	    color: "#ffffff"
 	    text: "Quantity:"
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	Text {
@@ -220,7 +220,7 @@ Item {
 	    text: info.balance
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	BarButton {
@@ -267,7 +267,7 @@ Item {
 	    color: "#ffffff"
 	    text: "Add quantity:"
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	Text {
@@ -279,7 +279,7 @@ Item {
 	    color: "#ffff7c"
 	    text: balance_addqty_edit.enteredText
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 60
+	    font.pixelSize: 0.768 * 60
 	}
 
 	Text {
@@ -290,7 +290,7 @@ Item {
 	    width: 248
 	    color: "#71cccc"
 	    text: "Please specify the precise amount of newly\nstocked goods, even if the current quantity\nvalue does not match reality (you can let us\nknow about that at brmbar@brmlab.cz)"
-	    font.fontSize: 0.768 * 27
+	    font.pixelSize: 0.768 * 27
 	}
     }
 

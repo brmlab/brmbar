@@ -44,7 +44,7 @@ Item {
 	    text: page.description
 	    wrapMode: Text.WordWrap
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	BarButton {
@@ -86,7 +86,7 @@ Item {
 	    color: "#ffffff"
 	    text: "Money Amount:"
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	Text {
@@ -99,7 +99,7 @@ Item {
 	    text: amount
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
-	    font.fontSize: 0.768 * 46
+	    font.pixelSize: 0.768 * 46
 	}
 
 	BarButton {
@@ -144,7 +144,7 @@ Item {
 	text: "This is for cashing in small brmlab expenses.\nWrite the current date on the receipt and put it to the money box.\nDo not forget to announce this on a meetup and add it to the [[newz]].\nFor restocking brmbar items, please go to the Management view instead."
 	wrapMode: Text.WordWrap
 	horizontalAlignment: Text.AlignHCenter
-	font.fontSize: 0.768 * 27
+	font.pixelSize: 0.768 * 27
     }
 
     BarButton {

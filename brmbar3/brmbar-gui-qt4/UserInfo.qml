@@ -19,7 +19,7 @@ Item {
         text: parent.name
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.fontSize: 0.768 * 60
+        font.pixelSize: 0.768 * 60
     }
 
     Text {
@@ -32,7 +32,7 @@ Item {
         text: parent.negbalance
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.fontSize: 0.768 * 122
+        font.pixelSize: 0.768 * 122
     }
 
     BarcodeInput {
