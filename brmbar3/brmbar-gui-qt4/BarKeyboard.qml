@@ -2,6 +2,7 @@ import Qt 4.7
 
 Grid {
     property string keys: ""
+    property string enteredText: ""
     property int gridRows: 0
     property int gridColumns: 0
     property int buttonWidth: 70
@@ -37,5 +38,15 @@ Grid {
 		}
             }
         }
+    }
+
+    onLetterEntered: { enteredText = enteredText.toString() + letter; }
+    onLetterBackspace: { enteredText = enteredText.toString().replace(/.$/, ''); }
+    Keys.onPressed: {
+	if (event.key == Qt.Key_Backspace) {
+	    enteredText = enteredText.toString().replace(/.$/, '');
+	} else {
+	    enteredText = enteredText.toString() + event.text;
+	}
     }
 }
