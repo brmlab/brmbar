@@ -20,7 +20,7 @@ Item {
         text: parent.name
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 44
+        font.pixelSize: 60
     }
 
     Text {
@@ -33,7 +33,7 @@ Item {
         text: parent.price
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 90
+        font.pixelSize: 122
     }
 
     BarTextHint {
@@ -68,7 +68,7 @@ Item {
         y: 582
         width: 360
         text: "Pay by cash"
-        fontSize: 44
+        fontSize: 60
         onButtonClick: {
             shop.sellItemCash(dbid)
             status_text.setStatus("Sold! Put " + price + " Kč in the money box.", "#ffff7c")

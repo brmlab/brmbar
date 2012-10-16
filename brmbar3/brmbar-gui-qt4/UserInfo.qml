@@ -19,7 +19,7 @@ Item {
         text: parent.name
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 44
+        font.pixelSize: 60
     }
 
     Text {
@@ -32,7 +32,7 @@ Item {
         text: parent.negbalance
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 90
+        font.pixelSize: 122
     }
 
     BarcodeInput {
@@ -58,7 +58,7 @@ Item {
         y: 582
         width: 360
         text: "Charge"
-        fontSize: 44
+        fontSize: 60
         onButtonClick: {
             loadPage("ChargeCredit", { "username": name, "userdbid": dbid })
         }

@@ -44,7 +44,7 @@ Item {
 		    text: modelData.name
 		    anchors.verticalCenter: parent.verticalCenter
 		    color: "#ffffff"
-		    font.pointSize: 34
+		    font.pixelSize: 46
 		}
 
 		Text {
@@ -54,7 +54,7 @@ Item {
 		    color: "#ffff7c"
 		    text: modelData.price
 		    horizontalAlignment: Text.AlignRight
-		    font.pointSize: 34
+		    font.pixelSize: 46
 		}
 
 		BarButton {
@@ -63,7 +63,7 @@ Item {
 		    width: 240
 		    height: 68
 		    text: "Edit"
-		    fontSize: 34
+		    fontSize: 46
 		    onButtonClick: {
 			loadPage("ItemEdit", { name: modelData.name, dbid: modelData.id })
 		    }
@@ -86,7 +86,7 @@ Item {
         y: 582
         width: 360
         text: "Add Item"
-        fontSize: 44
+        fontSize: 60
         onButtonClick: {
 	    loadPage("ItemEdit", { name: "", dbid: "" })
 	}

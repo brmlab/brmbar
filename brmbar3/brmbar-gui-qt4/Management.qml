@@ -21,7 +21,7 @@ Item {
         text: "Profit:"
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -34,7 +34,7 @@ Item {
         text: parent.profit
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -47,7 +47,7 @@ Item {
         text: "Cash:"
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -60,7 +60,7 @@ Item {
         text: parent.cash
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -73,7 +73,7 @@ Item {
         text: "Credit:"
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -86,7 +86,7 @@ Item {
         text: parent.credit_money
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -99,7 +99,7 @@ Item {
         text: "Stock:"
         wrapMode: Text.WordWrap
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     Text {
@@ -112,7 +112,7 @@ Item {
         text: parent.inv_money
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
-        font.pointSize: 34
+        font.pixelSize: 46
     }
 
     BarButton {

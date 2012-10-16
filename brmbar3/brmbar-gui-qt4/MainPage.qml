@@ -31,7 +31,7 @@ Item {
         y: 430
         width: 360
         text: "Select Item"
-        fontSize: 44
+        fontSize: 60
 	btnColor: "#666666"
     }
 

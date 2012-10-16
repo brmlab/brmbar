@@ -9,7 +9,7 @@ Rectangle {
     border.color: btnColor
 
     property string text: "Button"
-    property int fontSize: 44
+    property int fontSize: 60
     property variant btnColor: "#ffffff"
 
     signal buttonClick
@@ -19,7 +19,7 @@ Rectangle {
         id: text1
         text: parent.text
         color: parent.btnColor
-        font.pointSize: parent.fontSize
+        font.pixelSize: parent.fontSize
         scale: if (!mousearea1.pressed) { 1 } else { 0.95 }
         horizontalAlignment: Text.AlignHCenter
         anchors.fill: parent

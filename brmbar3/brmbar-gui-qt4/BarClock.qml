@@ -7,7 +7,7 @@ Rectangle {
     height: 65
     property variant now: new Date()
     property variant textColor: "#000000"
-    property variant textSize: 12
+    property variant textSize: 16
     Timer {
         id: clockUpdater
         interval: 1000 // update clock every second
@@ -22,6 +22,6 @@ Rectangle {
         anchors.centerIn: parent
         text: Qt.formatDateTime(parent.now, "hh:mm:ss")
         color: parent.textColor
-        font.pointSize: parent.textSize
+        font.pixelSize: parent.textSize
     }
 }

@@ -21,7 +21,7 @@ Item {
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 44
+        font.pixelSize: 60
     }
 
     Text {
@@ -34,7 +34,7 @@ Item {
         text: parent.amount
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.pointSize: 90
+        font.pixelSize: 122
     }
 
     BarTextHint {
@@ -80,7 +80,7 @@ Item {
         y: 582
         width: 360
         text: "Charge"
-        fontSize: 44
+        fontSize: 60
         visible: parent.amount && parent.userdbid
         onButtonClick: {
             parent.chargeCredit()
