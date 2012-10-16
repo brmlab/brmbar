@@ -10,8 +10,10 @@ Rectangle {
         id: title
         x: 65
         y: 35
+	height: 65
         color: "#71cccc"
         text: "brmbar v3"
+	verticalAlignment: Text.AlignVCenter
         font.pixelSize: 0.768 * 49
     }
     BarClock {
