@@ -8,7 +8,7 @@ Item {
 
     property variant username: ""
     property variant userdbid: ""
-    property variant amount: ""
+    property variant amount: withdraw_pad.enteredText
 
     Text {
         id: item_name
@@ -49,12 +49,14 @@ Item {
 	x: 65
 	y: 195
 	visible: parent.username != ""
-	onLetterEntered: { amount = amount.toString() + letter; }
-	onLetterBackspace: { amount = amount.toString().replace(/.$/, ''); }
+	focus: parent.username != ""
+	Keys.onReturnPressed: { withdraw_button.buttonClick() }
+	Keys.onEscapePressed: { cancel.buttonClick() }
     }
 
     BarcodeInput {
         color: "#00ff00" /* just for debugging */
+	focus: parent.username == ""
         onAccepted: {
             var acct = shop.barcodeInput(text)
             text = ""
