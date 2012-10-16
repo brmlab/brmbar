@@ -21,7 +21,7 @@ Item {
                 loadPageByAcct(acct)
                 return
             }
-            loadPage("ItemEdit", { name: acct["name"], dbid: acct["id"] })
+            loadPage("ItemEdit", { dbid: acct["id"] })
         }
     }
 
@@ -65,7 +65,7 @@ Item {
 		    text: "Edit"
 		    fontSize: 46
 		    onButtonClick: {
-			loadPage("ItemEdit", { name: modelData.name, dbid: modelData.id })
+			loadPage("ItemEdit", { dbid: modelData.id })
 		    }
 		}
 	    }
@@ -88,7 +88,7 @@ Item {
         text: "Add Item"
         fontSize: 60
         onButtonClick: {
-	    loadPage("ItemEdit", { name: "", dbid: "" })
+	    loadPage("ItemEdit", { dbid: "" })
 	}
     }
 

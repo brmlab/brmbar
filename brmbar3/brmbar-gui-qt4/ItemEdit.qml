@@ -6,15 +6,19 @@ Item {
     id: page
     anchors.fill: parent
 
-    property variant name: ""
+    property variant item_name: item_name_pad.enteredText
     property variant dbid: ""
     property variant info: ""
+    property variant buy_price: item_buyprice_pad.enteredText
+    property variant price: item_sellprice_pad.enteredText
 
     property string barcode: ""
     state: "normal"
 
     BarcodeInput {
         color: "#00ff00" /* just for debugging */
+	focus: page.state == "normal"
+	visible: true
         onAccepted: {
 	    var acct = shop.barcodeInput(text)
 	    barcode = text
@@ -42,13 +46,13 @@ Item {
         height: 60
 
 	Text {
-	    id: item_name
+	    id: item_name_text
 	    x: 0
 	    y: 0
 	    width: 534
 	    height: 60
 	    color: "#ffff7c"
-	    text: page.name
+	    text: page.item_name
 	    wrapMode: Text.WordWrap
 	    verticalAlignment: Text.AlignVCenter
 	    font.pixelSize: 46
@@ -71,8 +75,9 @@ Item {
         x: 65
         y: 239
         visible: page.state == "name_edit"
-        onLetterEntered: { page.name = page.name + letter; }
-        onLetterBackspace: { page.name = page.name.replace(/.$/, ''); }
+        focus: page.state == "name_edit"
+	Keys.onReturnPressed: { item_name_edit.buttonClick() }
+	Keys.onEscapePressed: { cancel.buttonClick() }
     }
 
     Item {
@@ -102,7 +107,7 @@ Item {
 	    height: 60
 	    width: 248
 	    color: "#ffff7c"
-	    text: info.buy_price
+	    text: page.buy_price
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
 	    font.pixelSize: 46
@@ -125,8 +130,9 @@ Item {
         x: 65
         y: 239
         visible: page.state == "buyprice_edit"
-        onLetterEntered: { var xi = info; xi.buy_price = xi.buy_price.toString() + letter; info = xi }
-        onLetterBackspace: { var xi = info; xi.buy_price = xi.buy_price.toString().replace(/.$/, ''); info = xi }
+        focus: page.state == "buyprice_edit"
+	Keys.onReturnPressed: { item_buyprice_edit.buttonClick() }
+	Keys.onEscapePressed: { cancel.buttonClick() }
     }
 
     Item {
@@ -156,7 +162,7 @@ Item {
 	    height: 60
 	    width: 248
 	    color: "#ffff7c"
-	    text: info.price
+	    text: page.price
 	    horizontalAlignment: Text.AlignRight
 	    verticalAlignment: Text.AlignVCenter
 	    font.pixelSize: 46
@@ -179,8 +185,9 @@ Item {
         x: 65
         y: 239
         visible: page.state == "sellprice_edit"
-        onLetterEntered: { var xi = info; xi.price = xi.price.toString() + letter; info = xi }
-        onLetterBackspace: { var xi = info; xi.price = xi.price.toString().replace(/.$/, ''); info = xi }
+        focus: page.state == "sellprice_edit"
+	Keys.onReturnPressed: { item_sellprice_edit.buttonClick() }
+	Keys.onEscapePressed: { cancel.buttonClick() }
     }
 
     Item {
@@ -226,11 +233,11 @@ Item {
 	    text: page.state == "balance_edit" ? "Add qty" : "Restock"
 	    onButtonClick: {
 		if (page.state == "balance_edit") {
-		    var xi = info; xi.balance = parseInt(xi.balance) + parseInt(balance_addqty_amount.text); info = xi;
+		    var xi = info; xi.balance = parseInt(xi.balance) + parseInt(balance_addqty_edit.enteredText); info = xi;
 		    page.state = "normal";
 		} else {
 		    page.state = "balance_edit";
-		    balance_addqty_amount.text = ""
+		    balance_addqty_edit.enteredText = ""
 	        }
 	    }
 	}
@@ -246,8 +253,9 @@ Item {
 	    id: balance_addqty_edit
 	    x: 0
 	    y: 0
-	    onLetterEntered: { balance_addqty_amount.text = balance_addqty_amount.text.toString() + letter; }
-	    onLetterBackspace: { balance_addqty_amount.text = balance_addqty_amount.text.toString().replace(/.$/, ''); }
+	    focus: page.state == "balance_edit"
+	    Keys.onReturnPressed: { item_balance_restock.buttonClick() }
+	    Keys.onEscapePressed: { cancel.buttonClick() }
 	}
 
 	Text {
@@ -269,7 +277,7 @@ Item {
 	    height: 80
 	    width: 248
 	    color: "#ffff7c"
-	    text: ""
+	    text: balance_addqty_edit.enteredText
 	    verticalAlignment: Text.AlignVCenter
 	    font.pixelSize: 60
 	}
@@ -302,7 +310,11 @@ Item {
         width: 360
         text: dbid == "" ? "Create" : "Save"
         onButtonClick: {
-	    var xi = info; xi["name"] = page.name; info = xi
+	    var xi = info;
+	    xi["name"] = page.item_name;
+	    xi["buy_price"] = page.buy_price;
+	    xi["price"] = page.price;
+	    info = xi
 
 	    var res;
 	    if (dbid == "") {
@@ -348,6 +360,9 @@ Item {
 	} else {
 	    info = { "name": "", "dbid": "", "buy_price": "", "price": "", "balance": 0 };
 	}
+	item_name_pad.enteredText = info.name
+	item_buyprice_pad.enteredText = info.buy_price
+	item_sellprice_pad.enteredText = info.price
     }
 
     states: [
