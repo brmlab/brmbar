@@ -45,7 +45,7 @@ Item {
 		    text: modelData.name
 		    anchors.verticalCenter: parent.verticalCenter
 		    color: "#ffffff"
-		    font.pixelSize: 46
+		    font.fontSize: 0.768 * 46
 		}
 
 		Text {
@@ -55,7 +55,7 @@ Item {
 		    color: "#ffff7c"
 		    text: modelData.negbalance_str
 		    horizontalAlignment: Text.AlignRight
-		    font.pixelSize: 46
+		    font.fontSize: 0.768 * 46
 		}
 
 		BarButton {
@@ -64,7 +64,7 @@ Item {
 		    width: 240
 		    height: 68
 		    text: "Withdraw"
-		    fontSize: 46
+		    fontSize: 0.768 * 46
 		    onButtonClick: {
 			loadPage("Withdraw", { username: modelData.name, userdbid: modelData.id })
 		    }
@@ -87,7 +87,7 @@ Item {
         y: 582
         width: 360
         text: "Add User"
-        fontSize: 60
+        fontSize: 0.768 * 60
 	btnColor: "#666666"
     }
 

@@ -7,7 +7,7 @@ Rectangle {
     height: 65
     property variant now: new Date()
     property variant textColor: "#000000"
-    property variant textSize: 16
+    property variant textSize: 0.768 * 16
     Timer {
         id: clockUpdater
         interval: 1000 // update clock every second

@@ -12,7 +12,7 @@ TextInput {
     transformOrigin: Item.Center
     visible: true
     opacity: 0
-    font.pixelSize: 12
+    font.fontSize: 0.768 * 12
     focus: true
     validator: RegExpValidator { regExp: /..*/ } /* non-empty strings; barcode readers send empty lines, ignore these */
 }

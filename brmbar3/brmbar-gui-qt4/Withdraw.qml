@@ -21,7 +21,7 @@ Item {
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: 60
+        font.fontSize: 0.768 * 60
     }
 
     Text {
@@ -34,7 +34,7 @@ Item {
         text: parent.amount ? "-" + parent.amount : ""
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        font.pixelSize: 122
+        font.fontSize: 0.768 * 122
     }
 
     BarTextHint {
@@ -82,7 +82,7 @@ Item {
         y: 582
         width: 360
         text: "Withdraw"
-        fontSize: 60
+        fontSize: 0.768 * 60
         visible: parent.amount && parent.userdbid
         onButtonClick: {
             parent.withdrawCredit()

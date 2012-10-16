@@ -25,7 +25,7 @@ Grid {
 	    property bool special: key == "^" || key == "<"
 
             text: key == "^" ? "shift" : key == "<" ? "bksp" : key
-            fontSize: special ? 27 : 60
+            fontSize: 0.768 * (special ? 27 : 60)
 
             onButtonClick: {
 		if (key == "^")

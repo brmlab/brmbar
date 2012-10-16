@@ -9,7 +9,7 @@ Rectangle {
     border.color: btnColor
 
     property string text: "Button"
-    property int fontSize: 60
+    property int fontSize: 0.768 * 60
     property variant btnColor: "#ffffff"
 
     signal buttonClick
