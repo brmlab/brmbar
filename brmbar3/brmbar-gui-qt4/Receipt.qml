@@ -7,13 +7,14 @@ Item {
     anchors.fill: parent
 
     property variant user
-    property variant description: ""
-    property variant amount: ""
+    property variant description: item_name_pad.enteredText
+    property variant amount: amount_pad.enteredText
 
     state: "normal"
 
     BarcodeInput {
         color: "#00ff00" /* just for debugging */
+	focus: page.state == "normal"
         onAccepted: {
 	    var acct = shop.barcodeInput(text)
 	    text = ""
@@ -63,8 +64,9 @@ Item {
         x: 65
         y: 239
         visible: page.state == "description_edit"
-        onLetterEntered: { page.description = page.description + letter; }
-        onLetterBackspace: { page.description = page.description.replace(/.$/, ''); }
+        focus: page.state == "description_edit"
+	Keys.onReturnPressed: { description_edit.buttonClick() }
+	Keys.onEscapePressed: { cancel.buttonClick() }
     }
 
     Item {
@@ -117,8 +119,9 @@ Item {
         x: 65
         y: 239
         visible: page.state == "amount_edit"
-        onLetterEntered: { amount = amount.toString() + letter }
-        onLetterBackspace: { amount = amount.toString().replace(/.$/, '') }
+        focus: page.state == "amount_edit"
+	Keys.onReturnPressed: { amount_edit.buttonClick() }
+	Keys.onEscapePressed: { cancel.buttonClick() }
     }
 
     BarTextHint {
