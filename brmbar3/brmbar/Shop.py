@@ -120,8 +120,8 @@ class Shop:
 				# statement that will... ugh, accounting is hard!
 				balance += inv.currency.convert(inv.balance(), self.currency)
 		return balance
-	def inventory_negbalance_str(self):
-		return self.currency.str(-self.inventory_balance())
+	def inventory_balance_str(self):
+		return self.currency.str(self.inventory_balance())
 
 	def account_list(self, acctype):
 		accts = []

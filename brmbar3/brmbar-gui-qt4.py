@@ -89,7 +89,7 @@ class ShopAdapter(QtCore.QObject):
 		return shop.profits.balance_str()
 	@QtCore.Slot(result='QVariant')
 	def balance_inventory(self):
-		return shop.inventory_negbalance_str()
+		return shop.inventory_balance_str()
 	@QtCore.Slot(result='QVariant')
 	def balance_credit(self):
 		return shop.credit_negbalance_str()
