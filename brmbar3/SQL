@@ -1,7 +1,8 @@
 CREATE SEQUENCE currencies_id_seq START WITH 1 INCREMENT BY 1;
 CREATE TABLE currencies (
 	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('currencies_id_seq'::regclass),
-	name VARCHAR(128) NOT NULL
+	name VARCHAR(128) NOT NULL,
+	UNIQUE(name)
 );
 INSERT INTO currencies (name) VALUES ('Kč');
 
@@ -30,6 +31,7 @@ CREATE TABLE accounts (
 	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('accounts_id_seq'::regclass),
 
 	name VARCHAR(128) NOT NULL,
+	UNIQUE (name),
 
 	currency INTEGER NOT NULL,
         FOREIGN KEY (currency) REFERENCES currencies (id),
