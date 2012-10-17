@@ -79,3 +79,14 @@ CREATE TABLE transaction_splits (
 
 	memo TEXT
 );
+
+-- List balances of accounts computed based on transactions
+-- Note that currency information is currently not supplied; inventory items
+-- have balances in stock amounts.
+CREATE VIEW account_balances AS
+	SELECT ts.account AS id, accounts.name AS name, accounts.acctype AS acctype,
+		-SUM(CASE WHEN ts.side = 'credit' THEN -ts.amount ELSE ts.amount END) AS crbalance
+		FROM transaction_splits AS ts
+		LEFT JOIN accounts ON accounts.id = ts.account
+		GROUP BY ts.account, accounts.name, accounts.acctype
+		ORDER BY crbalance ASC;
