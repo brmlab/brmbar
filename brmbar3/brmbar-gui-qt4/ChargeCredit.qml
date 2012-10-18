@@ -17,7 +17,7 @@ Item {
         width: 537
         height: 80
         color: "#ffffff"
-        text: parent.username ? parent.username : "Credit charge"
+        text: parent.username ? parent.username : ""
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
@@ -41,7 +41,7 @@ Item {
         x: 65
         y: 430
         hint_goal: (parent.username ? "" : parent.amount ? "Charge user:" : "Charge credit:")
-        hint_action: (parent.username ? (parent.amount ? "" : "(or scan barcode now)") : "Scan barcode now")
+        hint_action: (parent.username ? "" : "Scan barcode now")
     }
 
     BarNumPad {

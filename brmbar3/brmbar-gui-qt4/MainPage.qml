@@ -39,7 +39,7 @@ Item {
         x: 599
         y: 430
         width: 360
-        text: "Credit"
+        text: "Charge"
         onButtonClick: {
             loadPage("ChargeCredit")
         }
