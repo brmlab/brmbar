@@ -11,7 +11,7 @@ Rectangle {
         x: 65
         y: 35
 	height: 65
-        color: "#71cccc"
+        color: "#217777"
         text: "brmbar v3"
 	verticalAlignment: Text.AlignVCenter
         font.pixelSize: 0.768 * 49
@@ -21,7 +21,7 @@ Rectangle {
         x: 328
         y: 35
         color: "#000000"
-        textColor: "#71cccc"
+        textColor: "#217777"
         textSize: 0.768 * 49
     }
 

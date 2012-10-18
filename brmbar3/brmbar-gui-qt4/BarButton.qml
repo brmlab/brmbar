@@ -10,7 +10,7 @@ Rectangle {
 
     property string text: "Button"
     property int fontSize: 0.768 * 60
-    property variant btnColor: "#ffffff"
+    property variant btnColor: "#aaaaaa"
 
     signal buttonClick
     onButtonClick: { /* Supplied by component user. */ }
