@@ -26,33 +26,12 @@ Item {
     }
 
     BarButton {
-        id: withdraw
         x: 65
-        y: 430
-        width: 360
-        text: "Select Item"
-        fontSize: 0.768 * 60
-	btnColor: "#666666"
-    }
-
-    BarButton {
-        x: 599
-        y: 430
+        y: 582
         width: 360
         text: "Charge"
         onButtonClick: {
             loadPage("ChargeCredit")
-        }
-    }
-
-    BarButton {
-        id: select_item
-        x: 65
-        y: 582
-        width: 360
-        text: "Receipt"
-        onButtonClick: {
-            loadPage("Receipt")
         }
     }
 

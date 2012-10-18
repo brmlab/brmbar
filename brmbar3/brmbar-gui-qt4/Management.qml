@@ -138,6 +138,17 @@ Item {
     }
 
     BarButton {
+        id: select_item
+        x: 65
+        y: 582
+        width: 360
+        text: "Receipt"
+        onButtonClick: {
+            loadPage("Receipt")
+        }
+    }
+
+    BarButton {
         id: cancel
         x: 599
         y: 582
