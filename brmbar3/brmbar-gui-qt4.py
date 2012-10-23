@@ -53,58 +53,83 @@ class ShopAdapter(QtCore.QObject):
 			if credit is None:
 				return None
 			return { "acctype": "recharge", "amount": str(credit)+".00" }
-		return self.acct_map(brmbar.Account.load_by_barcode(db, barcode))
+		acct = self.acct_map(brmbar.Account.load_by_barcode(db, barcode))
+		db.commit()
+		return acct
 
 	@QtCore.Slot('QVariant', result='QVariant')
 	def loadAccount(self, dbid):
-		return self.acct_map(brmbar.Account.load(db, id = dbid))
+		acct = self.acct_map(brmbar.Account.load(db, id = dbid))
+		db.commit()
+		return acct
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def sellItem(self, itemid, userid):
 		user = brmbar.Account.load(db, id = userid)
 		shop.sell(item = brmbar.Account.load(db, id = itemid), user = user)
-		return user.negbalance_str()
+		balance = user.negbalance_str()
+		db.commit()
+		return balance
 
 	@QtCore.Slot('QVariant', result='QVariant')
 	def sellItemCash(self, itemid):
 		shop.sell_for_cash(item = brmbar.Account.load(db, id = itemid))
+		db.commit()
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def chargeCredit(self, credit, userid):
 		user = brmbar.Account.load(db, id = userid)
 		shop.add_credit(credit = credit, user = user)
-		return user.negbalance_str()
+		balance = user.negbalance_str()
+		db.commit()
+		return balance
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def withdrawCredit(self, credit, userid):
 		user = brmbar.Account.load(db, id = userid)
 		shop.withdraw_credit(credit = credit, user = user)
-		return user.negbalance_str()
+		balance = user.negbalance_str()
+		db.commit()
+		return balance
 
 	@QtCore.Slot(result='QVariant')
 	def balance_cash(self):
-		return shop.cash.balance_str()
+		balance = shop.cash.balance_str()
+		db.commit()
+		return balance
 	@QtCore.Slot(result='QVariant')
 	def balance_profit(self):
-		return shop.profits.balance_str()
+		balance = shop.profits.balance_str()
+		db.commit()
+		return balance
 	@QtCore.Slot(result='QVariant')
 	def balance_inventory(self):
-		return shop.inventory_balance_str()
+		balance = shop.inventory_balance_str()
+		db.commit()
+		return balance
 	@QtCore.Slot(result='QVariant')
 	def balance_credit(self):
-		return shop.credit_negbalance_str()
+		balance = shop.credit_negbalance_str()
+		db.commit()
+		return balance
 
 	@QtCore.Slot(result='QVariant')
 	def userList(self):
-		return [ self.acct_debt_map(a) for a in shop.account_list("debt") ]
+		alist = [ self.acct_debt_map(a) for a in shop.account_list("debt") ]
+		db.commit()
+		return alist
 
 	@QtCore.Slot(result='QVariant')
 	def itemList(self):
-		return [ self.acct_inventory_map(a) for a in shop.account_list("inventory") ]
+		alist = [ self.acct_inventory_map(a) for a in shop.account_list("inventory") ]
+		db.commit()
+		return alist
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def addBarcode(self, dbid, barcode):
-		return brmbar.Account.load(db, id = dbid).add_barcode(barcode)
+		acct = brmbar.Account.load(db, id = dbid).add_barcode(barcode)
+		db.commit()
+		return acct
 
 	@QtCore.Slot('QVariant', 'QVariant', result='QVariant')
 	def saveItem(self, dbid, invmap):
@@ -144,11 +169,14 @@ class ShopAdapter(QtCore.QObject):
 			return None
 		user = brmbar.Account.load(db, id = userid)
 		shop.receipt_to_credit(user, amount, description)
-		return user.negbalance_str()
+		balance = user.negbalance_str()
+		db.commit()
+		return balance
 
 db = psycopg2.connect("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency
+db.commit()
 
 
 app = QtGui.QApplication(sys.argv)
