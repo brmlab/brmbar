@@ -22,7 +22,7 @@ Item {
                 return
             }
 	    /* TODO: This should be UserEdit when implemented. */
-            loadPage("Withdraw", { name: acct["name"], dbid: acct["id"], negbalance: acct["negbalance"] })
+            loadPage("Withdraw", { username: acct["name"], userdbid: acct["id"] })
         }
     }
 
