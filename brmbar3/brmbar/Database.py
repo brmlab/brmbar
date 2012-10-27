@@ -40,8 +40,13 @@ class Database:
             print("Sleeping: level %s (%s) @%s" % (
                 level, error, time.strftime("%Y%m%d %a %I:%m %p")
                 ))
+            #TODO: emit message "db conn failed, reconnecting
             time.sleep(2 ** level)
-            self.db_conn = psycopg2.connect(self.dsn)
+            try:
+                self.db_conn = psycopg2.connect(self.dsn)
+            except psycopg2.OperationalError:
+                #TODO: emit message "psql not running to interface
+                time.sleep(1)
             cur = self.db_conn.cursor()  #how ugly is this?
             return self._execute(cur, query, attrs, level+1)
 
