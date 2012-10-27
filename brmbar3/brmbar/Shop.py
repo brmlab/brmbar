@@ -82,51 +82,48 @@ class Shop:
         self.db.commit()
 
     def _transaction(self, responsible = None, description = None):
-        with closing(self.db.cursor()) as cur:
-            cur.execute("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id",
-                    [responsible.id if responsible else None, description])
-            transaction = cur.fetchone()[0]
+        transaction = self.db.execute_and_fetch("INSERT INTO transactions (responsible, description) VALUES (%s, %s) RETURNING id",
+                [responsible.id if responsible else None, description])
+        transaction = transaction[0]
         return transaction
 
     def credit_balance(self):
-        with closing(self.db.cursor()) as cur:
-            # We assume all debt accounts share a currency
-            sumselect = """
-                SELECT SUM(ts.amount)
-                    FROM accounts AS a
-                    LEFT JOIN transaction_splits AS ts ON a.id = ts.account
-                    WHERE a.acctype = %s AND ts.side = %s
-            """
-            cur.execute(sumselect, ["debt", 'debit'])
-            debit = cur.fetchone()[0] or 0
-            cur.execute(sumselect, ["debt", 'credit'])
-            credit = cur.fetchone()[0] or 0
+        # We assume all debt accounts share a currency
+        sumselect = """
+            SELECT SUM(ts.amount)
+                FROM accounts AS a
+                LEFT JOIN transaction_splits AS ts ON a.id = ts.account
+                WHERE a.acctype = %s AND ts.side = %s
+        """
+        cur = self.db.execute_and_fetch(sumselect, ["debt", 'debit'])
+        debit = cur[0] or 0
+        credit = self.db.execute_and_fetch(sumselect, ["debt", 'credit'])
+        credit = credit[0] or 0
         return debit - credit
     def credit_negbalance_str(self):
         return self.currency.str(-self.credit_balance())
 
     def inventory_balance(self):
         balance = 0
-        with closing(self.db.cursor()) as cur:
-            # Each inventory account has its own currency,
-            # so we just do this ugly iteration
-            cur.execute("SELECT id FROM accounts WHERE acctype = %s", ["inventory"])
-            for inventory in cur:
-                invid = inventory[0]
-                inv = Account.load(self.db, id = invid)
-                # FIXME: This is not correct as each instance of inventory
-                # might have been bought for a different price! Therefore,
-                # we need to replace the command below with a complex SQL
-                # statement that will... ugh, accounting is hard!
-                balance += inv.currency.convert(inv.balance(), self.currency)
+        # Each inventory account has its own currency,
+        # so we just do this ugly iteration
+        cur = self.db.execute_and_fetchall("SELECT id FROM accounts WHERE acctype = %s", ["inventory"])
+        for inventory in cur:
+            invid = inventory[0]
+            inv = Account.load(self.db, id = invid)
+            # FIXME: This is not correct as each instance of inventory
+            # might have been bought for a different price! Therefore,
+            # we need to replace the command below with a complex SQL
+            # statement that will... ugh, accounting is hard!
+            balance += inv.currency.convert(inv.balance(), self.currency)
         return balance
     def inventory_balance_str(self):
         return self.currency.str(self.inventory_balance())
 
     def account_list(self, acctype):
+        """list all accounts (people or items, as per acctype)"""
         accts = []
-        with closing(self.db.cursor()) as cur:
-            cur.execute("SELECT id FROM accounts WHERE acctype = %s ORDER BY name ASC", [acctype])
-            for inventory in cur:
-                accts += [ Account.load(self.db, id = inventory[0]) ]
+        cur = self.db.execute_and_fetchall("SELECT id FROM accounts WHERE acctype = %s ORDER BY name ASC", [acctype])
+        for inventory in cur:
+            accts += [ Account.load(self.db, id = inventory[0]) ]
         return accts

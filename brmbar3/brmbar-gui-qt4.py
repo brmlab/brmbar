@@ -5,6 +5,8 @@ import psycopg2
 
 from PySide import QtCore, QtGui, QtDeclarative
 
+from brmbar import Database
+
 import brmbar
 
 
@@ -173,7 +175,7 @@ class ShopAdapter(QtCore.QObject):
         db.commit()
         return balance
 
-db = psycopg2.connect("dbname=brmbar")
+db = Database.Database("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency
 db.commit()
