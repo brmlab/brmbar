@@ -1,8 +1,5 @@
 from .Currency import Currency
 
-import psycopg2
-from contextlib import closing
-
 class Account:
     """ BrmBar Account
 

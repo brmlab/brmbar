@@ -1,5 +1,3 @@
-import psycopg2
-from contextlib import closing
 
 class Currency:
     """ Currency

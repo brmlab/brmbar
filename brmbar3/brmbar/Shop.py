@@ -2,9 +2,6 @@ import brmbar
 from .Currency import Currency
 from .Account import Account
 
-import psycopg2
-from contextlib import closing
-
 class Shop:
     """ BrmBar Shop
 

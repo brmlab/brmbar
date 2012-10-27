@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import sys
-import psycopg2
 
 from PySide import QtCore, QtGui, QtDeclarative
 
