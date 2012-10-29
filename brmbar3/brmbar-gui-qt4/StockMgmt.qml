@@ -81,11 +81,11 @@ Item {
     }
 
     BarButton {
-        id: add_item
+        id: new_item
         x: 65
         y: 582
         width: 360
-        text: "Add Item"
+        text: "New Item"
         fontSize: 0.768 * 60
         onButtonClick: {
 	    loadPage("ItemEdit", { dbid: "" })
