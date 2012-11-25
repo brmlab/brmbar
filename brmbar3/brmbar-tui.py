@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
 import sys
-import psycopg2
+
+from brmbar import Database
 
 import brmbar
 
-db = psycopg2.connect("dbname=brmbar")
+db = Database.Database("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
 currency = shop.currency
 
