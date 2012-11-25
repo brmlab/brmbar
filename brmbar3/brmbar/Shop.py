@@ -48,6 +48,20 @@ class Shop:
 
         return cost
 
+    def undo_sale(self, item, user, amount = 1):
+        # Undo sale; rarely needed
+        (buy, sell) = item.currency.rates(self.currency)
+        cost = amount * sell
+        profit = amount * (sell - buy)
+
+        transaction = self._transaction(responsible = user, description = "BrmBar sale UNDO of {}x {} to {}".format(amount, item.name, user.name))
+        item.debit(transaction, amount, user.name + " (sale undo)")
+        user.credit(transaction, cost, item.name + " (sale undo)")
+        self.profits.credit(transaction, profit, "Margin repaid on " + item.name)
+        self.db.commit()
+
+        return cost
+
     def add_credit(self, credit, user):
         transaction = self._transaction(responsible = user, description = "BrmBar credit replenishment for " + user.name)
         self.cash.debit(transaction, credit, user.name)
