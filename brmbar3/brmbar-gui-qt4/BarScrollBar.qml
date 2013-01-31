@@ -10,9 +10,9 @@ Rectangle {
 
     property int scrollbarWidth: 20
 
-    property variant color: "white"
-    property variant baseOpacityOff: 0.4
-    property variant baseOpacityOn: 0.9
+    property string color: "white"
+    property real baseOpacityOff: 0.4
+    property real baseOpacityOn: 0.9
 
     radius: vertical ? width/2 : height/2
 

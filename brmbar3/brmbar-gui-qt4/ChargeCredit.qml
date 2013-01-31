@@ -1,14 +1,12 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtQuick 1.0
 
 Item {
     id: page
     anchors.fill: parent
 
-    property variant username: ""
-    property variant userdbid: ""
-    property variant amount: credit_pad.enteredText
+    property string username: ""
+    property string userdbid: ""
+    property string amount: credit_pad.enteredText
 
     Text {
         id: item_name
@@ -64,7 +62,7 @@ Item {
                 status_text.setStatus("Unknown barcode", "#ff4444")
                 return
             }
-            if (acct.acctype == "debt") {
+            if (acct.acctype === "debt") {
                 username = acct.name
                 userdbid = acct.id
             } else {

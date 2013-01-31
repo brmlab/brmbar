@@ -1,4 +1,3 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
 BasePage {
@@ -17,11 +16,11 @@ BasePage {
     }
 
     function loadPageByAcct(acct) {
-        if (acct.acctype == "inventory") {
+        if (acct.acctype === "inventory") {
             loadPage("ItemInfo", { name: acct["name"], dbid: acct["id"], price: acct["price"] })
-        } else if (acct.acctype == "debt") {
+        } else if (acct.acctype === "debt") {
             loadPage("UserInfo", { name: acct["name"], dbid: acct["id"], negbalance: acct["negbalance"] })
-        } else if (acct.acctype == "recharge") {
+        } else if (acct.acctype === "recharge") {
             loadPage("ChargeCredit", { amount: acct["amount"] })
         }
     }

@@ -1,4 +1,3 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
 Item {
@@ -6,8 +5,8 @@ Item {
     width: 894
     height: 80
 
-    property variant hint_goal: ""
-    property variant hint_action: ""
+    property string hint_goal: ""
+    property string hint_action: ""
 
     Text {
         id: text1

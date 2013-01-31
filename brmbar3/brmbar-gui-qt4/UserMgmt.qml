@@ -1,6 +1,4 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtQuick 1.0
 
 Item {
     id: page
@@ -17,7 +15,7 @@ Item {
                 status_text.setStatus("Unknown barcode", "#ff4444")
                 return
             }
-            if (acct.acctype != "debt") {
+            if (acct.acctype !== "debt") {
                 loadPageByAcct(acct)
                 return
             }

@@ -1,4 +1,3 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
 Rectangle {
@@ -6,8 +5,8 @@ Rectangle {
     width:  320
     height: 65
     property variant now: new Date()
-    property variant textColor: "#000000"
-    property variant textSize: 0.768 * 16
+    property string textColor: "#000000"
+    property real textSize: 0.768 * 16
     Timer {
         id: clockUpdater
         interval: 1000 // update clock every second

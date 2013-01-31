@@ -1,16 +1,30 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
 Rectangle {
     id: rectangle1
     width: 240
     height: 83
-    color: "#000000"
+    gradient: Gradient {
+        GradientStop {
+            position: 0
+            color: "#888888"
+        }
+
+        GradientStop {
+            position: 0.5
+            color: "#000000"
+        }
+
+        GradientStop {
+            position: 1
+            color: "#888888"
+        }
+    }
     border.color: btnColor
 
     property string text: "Button"
     property int fontSize: 0.768 * 60
-    property variant btnColor: "#aaaaaa"
+    property string btnColor: "#aaaaaa"
 
     signal buttonClick
     onButtonClick: { /* Supplied by component user. */ }

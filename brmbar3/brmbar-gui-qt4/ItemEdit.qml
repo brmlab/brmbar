@@ -1,16 +1,14 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtQuick 1.0
 
 Item {
     id: page
     anchors.fill: parent
 
-    property variant item_name: item_name_pad.enteredText
-    property variant dbid: ""
-    property variant info: ""
-    property variant buy_price: item_buyprice_pad.enteredText
-    property variant price: item_sellprice_pad.enteredText
+    property string item_name: item_name_pad.enteredText
+    property string dbid: ""
+    property string info: ""
+    property string buy_price: item_buyprice_pad.enteredText
+    property string price: item_sellprice_pad.enteredText
 
     property string barcode: ""
     state: "normal"
@@ -28,7 +26,7 @@ Item {
 		/* TODO: Allow override. */
 		return
 	    }
-	    if (info.dbid == "") {
+        if (info.dbid === "") {
 		status_text.setStatus("Press [Create] first", "#ff4444")
 		return
 	    }
@@ -310,35 +308,35 @@ Item {
         width: 360
         text: dbid == "" ? "Create" : "Save"
         onButtonClick: {
-	    var xi = info;
-	    xi["name"] = page.item_name;
-	    xi["buy_price"] = page.buy_price;
-	    xi["price"] = page.price;
-	    info = xi
+            var xi = info;
+            xi["name"] = page.item_name;
+            xi["buy_price"] = page.buy_price;
+            xi["price"] = page.price;
+            info = xi
 
-	    var res;
-	    if (dbid == "") {
-		res = shop.newItem(info)
-		if (!res) {
-		   status_text.setStatus("Please fill all values first.", "#ff4444")
-		   return
-		}
-	    } else {
-		res = shop.saveItem(dbid, info)
-	    }
+            var res;
+            if (dbid == "") {
+                res = shop.newItem(info)
+                if (!res) {
+                   status_text.setStatus("Please fill all values first.", "#ff4444")
+                   return
+                }
+            } else {
+                res = shop.saveItem(dbid, info)
+            }
 
-	    if (res.cost) {
-		status_text.setStatus((dbid == "" ? "Stocked!" : "Restocked!") + " Take " + res.cost + " from the money box.", "#ffff7c")
-	    } else {
-		status_text.setStatus(dbid == "" ? "Item created" : "Changes saved", "#ffff7c")
-	    }
+            if (res.cost) {
+                status_text.setStatus((dbid == "" ? "Stocked!" : "Restocked!") + " Take " + res.cost + " from the money box.", "#ffff7c")
+            } else {
+                status_text.setStatus(dbid == "" ? "Item created" : "Changes saved", "#ffff7c")
+            }
 
-	    if (dbid == "") {
-		dbid = res.dbid
-		var xi = info; xi["dbid"] = page.dbid; info = xi
-	    } else {
-		loadPage("StockMgmt")
-	    }
+            if (dbid == "") {
+                dbid = res.dbid
+                xi = info; xi["dbid"] = page.dbid; info = xi
+            } else {
+                loadPage("StockMgmt")
+            }
         }
     }
 

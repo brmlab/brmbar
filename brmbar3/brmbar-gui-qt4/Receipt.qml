@@ -1,14 +1,12 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtQuick 1.0
 
 Item {
     id: page
     anchors.fill: parent
 
     property variant user
-    property variant description: item_name_pad.enteredText
-    property variant amount: amount_pad.enteredText
+    property string description: item_name_pad.enteredText
+    property string amount: amount_pad.enteredText
 
     state: "normal"
 

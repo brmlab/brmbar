@@ -1,14 +1,12 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtQuick 1.0
 
 Item {
     id: page
     anchors.fill: parent
 
-    property variant name: ""
-    property variant dbid: ""
-    property variant price: ""
+    property string name: ""
+    property string dbid: ""
+    property string price: ""
 
     Text {
         id: item_name
@@ -52,7 +50,7 @@ Item {
                 status_text.setStatus("Unknown barcode", "#ff4444")
                 return
             }
-            if (acct.acctype != "debt") {
+            if (acct.acctype !== "debt") {
                 loadPageByAcct(acct)
                 return
             }

@@ -1,13 +1,12 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 
 Item {
     id: page
     anchors.fill: parent
 
-    property variant name: ""
-    property variant dbid: ""
-    property variant negbalance: ""
+    property string name: ""
+    property string dbid: ""
+    property string negbalance: ""
 
     Text {
         id: item_name
@@ -43,7 +42,7 @@ Item {
                 status_text.setStatus("Unknown barcode", "#ff4444")
                 return
             }
-            if (acct.acctype == "recharge") {
+            if (acct.acctype === "recharge") {
                 loadPage("ChargeCredit", { "username": name, "userdbid": dbid, "amount": acct.amount })
                 return
             }
