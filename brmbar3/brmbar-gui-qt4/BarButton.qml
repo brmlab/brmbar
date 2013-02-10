@@ -4,22 +4,7 @@ Rectangle {
     id: rectangle1
     width: 240
     height: 83
-    gradient: Gradient {
-        GradientStop {
-            position: 0
-            color: "#888888"
-        }
-
-        GradientStop {
-            position: 0.5
-            color: "#000000"
-        }
-
-        GradientStop {
-            position: 1
-            color: "#888888"
-        }
-    }
+    color: "#000000"
     border.color: btnColor
 
     property string text: "Button"
