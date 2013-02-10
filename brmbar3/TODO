@@ -1,26 +1,5 @@
-+ Management view
-	+ Stock management link
-	+ User management link
-	+ Bilance overview (Cash, Profit, Credit total)
-+ Item picker from list
-+ User management
-	+ List of users
-	+ Withdrawal of user credit
-+ Numerical manual entry support
-	+ Use for credit charge
-	+ Use for withdrawal
-+ Restocking view (Stock management)
-	+ Item picker with edit button
-	+ Item editor (name, buy price, sale price, quantity)
-	+ Item-barcode assignment
-	+ Support for adding new items
-+ Alphanumeric manual entry support
-	+ Use in item editor
-+ Withdrawal for brmbar receipts
-	1. User responsible
-	2. Amount and description
-
-** At this point it should be good enough to deploy **
+This reprensents some generic features that would need to be implemented
+in brmbar-gui-qt4 to have a fully fledged user interface.
 
 . User management
 	- Add user
