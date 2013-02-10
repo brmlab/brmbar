@@ -24,7 +24,7 @@ Hardware Requirements
   accounts; these will be then used by people to buy stuff using their
   accounts - first scan barcode of the item, then scan your barcode,
   voila. Scanning your barcode directly can bring the user to a screen
-  where they can see their credit and charge it too.
+  where they can see their credit and charge it too. See also USAGE.
 
 Software Requirements
 ---------------------
@@ -56,6 +56,8 @@ Software Setup
   If you want to make sure all works as expected, execute the SQL
   statements in file `SQL.test` (revisit for currency names too) which
   will populate the database with a bit of sample data for testing.
+* Regarding adding users at this point and for other usage instructions,
+  refer to the USAGE file.
 
 TODO: Mention the actual commands to execute.
 

@@ -5,6 +5,8 @@ Quick Guide
   money into the cash box.
 
 * I want to buy from credit: I scan item's barcode, then my barcode.
+(If you don't have your barcode printed out, you can also type your
+username on a physical keyboard.)
 
 * I want to put money on credit: press **Charge**, I scan my barcode,
 type some amount, press **Charge** and put money in the cash box.
@@ -50,3 +52,25 @@ there are no irregularities.
 
 To enter text (or numbers too), you can use both the on-screen keyboard
 and the physical keyboard nearby.
+
+
+Administrative Usage
+--------------------
+
+* The most common administrative action you will need to do is adding
+  new user (also called debt or credit) accounts. The GUI support for
+  this is not implemented yet, but the `brmbar-cli.py` UI allows it:
+
+  		./brmbar-cli.py adduser joehacker
+
+  Afterwards, print out a barcode saying "joehacker" and stick that
+  somewhere nearby; scanning that barcode will allow access to this
+  account (and so will typing "joehacker" on a physical keyboard).
+
+* If your inventory stock count or cash box amount does not match
+the in-system data, you will need to make a corrective transaction.
+In the future, brmbar-cli.py will support this, but there is no
+implementation yet; it's not entirely clear yet what is the proper
+way to do this from the accounting standpoint. In the meantime, you
+can use SQL INSERTs to manually create a transaction with appropriate
+transaction splits (see doc/architecture for details on splits).
