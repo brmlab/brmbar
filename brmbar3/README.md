@@ -68,4 +68,13 @@ TODO
   but UI support needs to be added.
 * Bitcoin support, somehow...
 
-Some more TODO items may be listed in the GitHub issue tracker.
+Some more TODO items may be listed in the GitHub issue tracker;
+missing brmbar-gui-qt4 features are listed in the `TODO` file.
+
+Other Resources
+---------------
+
+See the INSTALL file for setup instructions and USAGE file for
+basic usage instructions. The doc/architecture file describes
+the brmbar object model and briefly explains the brmbar Python
+package.
