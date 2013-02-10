@@ -6,7 +6,7 @@ Item {
 
     property string item_name: item_name_pad.enteredText
     property string dbid: ""
-    property string info: ""
+    property variant info: ""
     property string buy_price: item_buyprice_pad.enteredText
     property string price: item_sellprice_pad.enteredText
 
