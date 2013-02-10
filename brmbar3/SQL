@@ -4,6 +4,7 @@ CREATE TABLE currencies (
 	name VARCHAR(128) NOT NULL,
 	UNIQUE(name)
 );
+-- Some code depends on the primary physical currency to have id 1.
 INSERT INTO currencies (name) VALUES ('Kč');
 
 CREATE TYPE exchange_rate_direction AS ENUM ('source_to_target', 'target_to_source');

@@ -28,6 +28,8 @@ Usage: brmbar-cli.py COMMAND ARGS...
 	stats
 		A set of various balances as shown in the Management
 		screen of the GUI.
+	adduser USER
+		Add user (debt) account with given username.
 !	changestock ITEM1 +-AMT_ITEM1 ITEM2 +-AMT_ITEM2 ...
 		Create a custom transaction that will change balance
 		of a variety of items at once, and either deduce
@@ -146,6 +148,11 @@ elif sys.argv[1] == "stats":
     print("Profit: {}".format(shop.profits.balance_str()))
     print("Credit: {}".format(shop.credit_negbalance_str()))
     print("Inventory: {}".format(shop.inventory_balance_str()))
+
+elif sys.argv[1] == "adduser":
+    acct = brmbar.Account.create(db, sys.argv[2], brmbar.Currency.load(db, id = 1), 'debt')
+    acct.add_barcode(sys.argv[2]) # will commit
+    print("{}: id {}".format(acct.name, acct.id));
 
 else:
     help()
