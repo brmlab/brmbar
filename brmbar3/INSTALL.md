@@ -44,14 +44,26 @@ Software Setup
 --------------
 
 * Create psql user and `brmbar` database.
+
+    brmuser@host:~> su postgres
+    postgres@host:/home/user> createuser -D brmuser
+    postgres@host:/home/user> su brmuser
+    brmuser@host:~> createdb brmbar
+
 * The SQL schema in file `SQL` contains the required SQL tables,
   but also INSERTs that add some rows essential for proper operation;
   base currency and two base accounts.  You *will* want to tweak the
   currency name; default is `Kč` (the Czech crown), replace it with
   your currency symbol. Then do `git grep 'Kč'` and replace all other
   occurences of `Kč` in brmbar source with your currency name.
-* Load the SQL schema stored in file `SQL` in the database (redirect
-  it to psql command standard input).
+* Load the SQL schema stored in file `SQL` in the database.
+
+    brmuser@host:~/brmbar/brmbar3> psql brmbar
+    psql (9.1.8)
+	Type "help" for help.
+
+	brmbar=# \i SQL
+
 * You should be able to fire up the GUI now and start entering data.
   If you want to make sure all works as expected, execute the SQL
   statements in file `SQL.test` (revisit for currency names too) which
