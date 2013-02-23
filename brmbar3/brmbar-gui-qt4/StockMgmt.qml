@@ -6,6 +6,8 @@ Item {
 
     property variant item_list_model
 
+    state: "normal"
+
     BarcodeInput {
         color: "#00ff00" /* just for debugging */
         onAccepted: {
@@ -82,9 +84,11 @@ Item {
         id: new_item
         x: 65
         y: 582
-        width: 360
+        width: 281
+        height: 83
         text: "New Item"
         fontSize: 0.768 * 60
+        visible: page.state == "normal"
         onButtonClick: {
 	    loadPage("ItemEdit", { dbid: "" })
 	}
@@ -97,11 +101,91 @@ Item {
         width: 360
         text: "Main Screen"
         onButtonClick: {
-	    loadPage("MainPage")
+            if (page.state == "search")
+                page.state = "normal"
+            else
+                loadPage("MainPage")
 	}
     }
 
+    BarButton {
+        id: search_button
+        x: 353
+        y: 582
+        text: "Search"
+        visible: page.state == "normal"
+        onButtonClick: { page.state = "search" }
+    }
+
+    BarKeyPad {
+        id: search_pad
+        x: 65
+        y: 298
+        opacity: 0
+    }
+
+    Text {
+        id: search_text
+        x: 65
+        y: 602
+        color: "#ffff7c"
+        text: search_pad.enteredText
+        visible: page.state == "search"
+        font.pixelSize: 0.768 * 46
+        opacity: 0
+    }
+
+    BarButton {
+        id: query_button
+        x: 353
+        y: 582
+        text: "Search"
+        visible: page.state == "search"
+        onButtonClick: {
+            page.item_list_model = shop.itemList(search_pad.enteredText)
+            item_list.model = page.item_list_model
+        }
+    }
+
+    states: [
+        State {
+            name: "normal"
+        },
+        State {
+            name: "search"
+
+            PropertyChanges {
+                target: item_list_container
+                x: 66
+                y: 166
+                width: 899
+                height: 132
+            }
+
+            PropertyChanges {
+                target: search_pad
+                x: 65
+                y: 298
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: cancel
+                text: "Back"
+            }
+
+            PropertyChanges {
+                target: search_text
+                x: 65
+                y: 582
+                width: 528
+                height: 83
+                opacity: 1
+            }
+        }
+    ]
+
     Component.onCompleted: {
-	item_list_model = shop.itemList()
+        item_list_model = shop.itemList("")
     }
 }

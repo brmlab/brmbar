@@ -120,9 +120,9 @@ class ShopAdapter(QtCore.QObject):
         db.commit()
         return alist
 
-    @QtCore.Slot(result='QVariant')
-    def itemList(self):
-        alist = [ self.acct_inventory_map(a) for a in shop.account_list("inventory") ]
+    @QtCore.Slot('QVariant', result='QVariant')
+    def itemList(self, query):
+        alist = [ self.acct_inventory_map(a) for a in shop.account_list("inventory", like_str="%%"+query+"%%") ]
         db.commit()
         return alist
 
@@ -188,5 +188,5 @@ ctx.setContextProperty('shop', ShopAdapter())
 
 view.setSource('brmbar-gui-qt4/main.qml')
 
-view.showFullScreen()
+view.show()
 app.exec_()
