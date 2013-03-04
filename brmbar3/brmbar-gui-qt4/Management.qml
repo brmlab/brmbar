@@ -63,7 +63,7 @@ Item {
 
     Text {
         id: credit_name
-        x: 535
+        x: 791
         y: 156
         width: 337
         height: 160
@@ -76,7 +76,7 @@ Item {
 
     Text {
         id: credit_amount
-        x: 705
+        x: 961
         y: 156
         height: 160
         width: 254
@@ -89,7 +89,7 @@ Item {
 
     Text {
         id: inv_name
-        x: 535
+        x: 791
         y: 266
         width: 337
         height: 160
@@ -102,7 +102,7 @@ Item {
 
     Text {
         id: inv_amount
-        x: 705
+        x: 961
         y: 266
         height: 160
         width: 254
@@ -116,7 +116,7 @@ Item {
     BarButton {
         id: stock_manager
         x: 65
-        y: 430
+        y: 686
         width: 360
         text: "Stock Mgmt"
         onButtonClick: {
@@ -126,8 +126,8 @@ Item {
 
     BarButton {
         id: user_manager
-        x: 599
-        y: 430
+        x: 855
+        y: 686
         width: 360
         text: "User Mgmt"
         onButtonClick: {
@@ -138,7 +138,7 @@ Item {
     BarButton {
         id: select_item
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Receipt"
         onButtonClick: {
@@ -148,8 +148,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Main Screen"
         onButtonClick: {

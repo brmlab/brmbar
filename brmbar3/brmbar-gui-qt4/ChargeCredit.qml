@@ -77,7 +77,7 @@ Item {
     BarButton {
         id: charge_button
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Charge"
         fontSize: 0.768 * 60
@@ -89,8 +89,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Cancel"
         onButtonClick: {

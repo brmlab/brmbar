@@ -23,7 +23,7 @@ Item {
 
     Text {
         id: text3
-        x: 611
+        x: 867
         y: 156
         height: 160
         width: 348
@@ -63,7 +63,7 @@ Item {
     BarButton {
         id: pay_cash
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Pay by cash"
         fontSize: 0.768 * 60
@@ -76,8 +76,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Cancel"
         onButtonClick: {

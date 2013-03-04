@@ -1,8 +1,8 @@
 import QtQuick 1.1
 
 Rectangle {
-    width: 1024
-    height: 768
+    width: 1280
+    height: 1024
     color: "#000000"
     Text {
         id: title
@@ -16,7 +16,7 @@ Rectangle {
     }
     BarClock {
         id: clock
-        x: 328
+        x: 456
         y: 35
         color: "#000000"
         textColor: "#217777"
@@ -25,7 +25,7 @@ Rectangle {
 
     Image {
         id: image1
-        x: 688
+        x: 944
         y: 41
         height: 65
         smooth: true
@@ -36,7 +36,7 @@ Rectangle {
     property alias status_text: status_text_id
     Text {
         id: status_text_id
-        x: 65
+        x: 193
         y: 112
         width: 894
         color: "#ff4444"

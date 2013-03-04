@@ -2,7 +2,7 @@ import QtQuick 1.1
 
 Item {
     id: main_hint
-    width: 894
+    width: 1150
     height: 80
 
     property string hint_goal: ""

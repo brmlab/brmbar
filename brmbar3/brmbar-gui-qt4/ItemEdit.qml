@@ -58,7 +58,7 @@ Item {
 
 	BarButton {
 	    id: item_name_edit
-	    x: 534
+	    x: 790
 	    y: 0
 	    width: 240
 	    height: 60
@@ -113,7 +113,7 @@ Item {
 
 	BarButton {
 	    id: item_buyprice_edit
-	    x: 534
+	    x: 790
 	    y: 0
 	    width: 240
 	    height: 60
@@ -168,7 +168,7 @@ Item {
 
 	BarButton {
 	    id: item_sellprice_edit
-	    x: 534
+	    x: 790
 	    y: 0
 	    width: 240
 	    height: 60
@@ -223,7 +223,7 @@ Item {
 
 	BarButton {
 	    id: item_balance_restock
-	    x: 534
+	    x: 790
 	    y: 0
 	    width: 240
 	    height: 60
@@ -304,7 +304,7 @@ Item {
     BarButton {
         id: save
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: dbid == "" ? "Create" : "Save"
         onButtonClick: {
@@ -342,8 +342,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Cancel"
         onButtonClick: {

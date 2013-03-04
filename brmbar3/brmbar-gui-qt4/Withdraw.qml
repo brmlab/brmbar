@@ -37,7 +37,7 @@ Item {
 
     BarTextHint {
         x: 65
-        y: 430
+        y: 686
         hint_goal: (parent.username ? "" : parent.amount ? "Withdraw:" : "Withdraw amount?")
         hint_action: (parent.username ? (parent.amount ? "" : "(or scan barcode now)") : "Scan barcode now")
     }
@@ -77,7 +77,7 @@ Item {
     BarButton {
         id: withdraw_button
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Withdraw"
         fontSize: 0.768 * 60
@@ -89,8 +89,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Cancel"
         onButtonClick: {

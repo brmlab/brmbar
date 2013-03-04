@@ -25,7 +25,7 @@ Item {
 
     BarButton {
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Charge"
         onButtonClick: {
@@ -35,8 +35,8 @@ Item {
 
     BarButton {
         id: management
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Management"
         onButtonClick: {

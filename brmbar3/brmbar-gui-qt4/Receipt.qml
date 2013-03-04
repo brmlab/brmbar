@@ -47,7 +47,7 @@ Item {
 
 	BarButton {
 	    id: description_edit
-        x: 591
+ 	    x: 847
 	    y: 0
 	    width: 300
 	    height: 60
@@ -102,7 +102,7 @@ Item {
 
 	BarButton {
 	    id: amount_edit
-	    x: 650
+	    x: 906
 	    y: 0
 	    width: 240
 	    height: 60
@@ -148,7 +148,7 @@ Item {
     BarButton {
         id: save
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Create"
         onButtonClick: {
@@ -169,8 +169,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Cancel"
         onButtonClick: {

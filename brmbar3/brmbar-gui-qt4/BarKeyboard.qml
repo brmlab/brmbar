@@ -5,8 +5,8 @@ Grid {
     property string enteredText: ""
     property int gridRows: 0
     property int gridColumns: 0
-    property int buttonWidth: 70
-    property int buttonHeight: 70
+    property int buttonWidth: 80
+    property int buttonHeight: 80
 
     property bool shift: false
 

@@ -28,8 +28,8 @@ Item {
 	id: user_list_container
         x: 65
         y: 166
-        width: 899
-        height: 400
+        width: 1155
+        height: 656
 
 	ListView {
 	    id: user_list
@@ -48,7 +48,7 @@ Item {
 
 		Text {
 		    anchors.verticalCenter: parent.verticalCenter
-		    x: 300
+		    x: 556
 		    width: 254
 		    color: "#ffff7c"
 		    text: modelData.negbalance_str
@@ -58,7 +58,7 @@ Item {
 
 		BarButton {
 		    anchors.verticalCenter: parent.verticalCenter
-		    x: 600
+		    x: 856
 		    width: 240
 		    height: 68
 		    text: "Withdraw"
@@ -82,7 +82,7 @@ Item {
     BarButton {
         id: add_user
         x: 65
-        y: 582
+        y: 838
         width: 360
         text: "Add User"
         fontSize: 0.768 * 60
@@ -91,8 +91,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Main Screen"
         onButtonClick: {

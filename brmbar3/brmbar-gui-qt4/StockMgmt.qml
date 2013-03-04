@@ -29,8 +29,8 @@ Item {
 	id: item_list_container
         x: 65
         y: 166
-        width: 899
-        height: 400
+        width: 1155
+        height: 656
 
 	ListView {
 	    id: item_list
@@ -49,7 +49,7 @@ Item {
 
 		Text {
 		    anchors.verticalCenter: parent.verticalCenter
-		    x: 300
+		    x: 556
 		    width: 254
 		    color: "#ffff7c"
 		    text: modelData.price
@@ -59,7 +59,7 @@ Item {
 
 		BarButton {
 		    anchors.verticalCenter: parent.verticalCenter
-		    x: 600
+		    x: 856
 		    width: 240
 		    height: 68
 		    text: "Edit"
@@ -83,7 +83,7 @@ Item {
     BarButton {
         id: new_item
         x: 65
-        y: 582
+        y: 838
         width: 281
         height: 83
         text: "New Item"
@@ -96,8 +96,8 @@ Item {
 
     BarButton {
         id: cancel
-        x: 599
-        y: 582
+        x: 855
+        y: 838
         width: 360
         text: "Main Screen"
         onButtonClick: {
@@ -111,7 +111,7 @@ Item {
     BarButton {
         id: search_button
         x: 353
-        y: 582
+        y: 838
         text: "Search"
         visible: page.state == "normal"
         onButtonClick: { page.state = "search" }
@@ -119,8 +119,8 @@ Item {
 
     BarKeyPad {
         id: search_pad
-        x: 65
-        y: 298
+        x: 193
+        y: 554
         opacity: 0
     }
 
@@ -138,7 +138,7 @@ Item {
     BarButton {
         id: query_button
         x: 353
-        y: 582
+        y: 838
         text: "Search"
         visible: page.state == "search"
         onButtonClick: {
@@ -158,14 +158,14 @@ Item {
                 target: item_list_container
                 x: 66
                 y: 166
-                width: 899
-                height: 132
+                width: 1155
+                height: 348
             }
 
             PropertyChanges {
                 target: search_pad
-                x: 65
-                y: 298
+                x: 83
+                y: 514
                 opacity: 1
             }
 
@@ -177,7 +177,7 @@ Item {
             PropertyChanges {
                 target: search_text
                 x: 65
-                y: 582
+                y: 838
                 width: 528
                 height: 83
                 opacity: 1
