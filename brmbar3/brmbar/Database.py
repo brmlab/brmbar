@@ -36,6 +36,12 @@ class Database:
             else:
                 cur.execute(query, attrs)
             return cur
+        except psycopg2.DataError as error: # when biitr comes and enters '99999999999999999999' for amount
+            print("We have invalid input data (SQLi?): level %s (%s) @%s" % (
+                level, error, time.strftime("%Y%m%d %a %I:%m %p")
+                ))
+            self.db_conn.rollback()
+            raise RuntimeError("Unsanitized data entered again... BOBBY TABLES")
         except psycopg2.OperationalError as error:
             print("Sleeping: level %s (%s) @%s" % (
                 level, error, time.strftime("%Y%m%d %a %I:%m %p")
