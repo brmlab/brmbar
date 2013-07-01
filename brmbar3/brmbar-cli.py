@@ -30,7 +30,12 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		screen of the GUI.
 	adduser USER
 		Add user (debt) account with given username.
-!	changestock ITEM1 +-AMT_ITEM1 ITEM2 +-AMT_ITEM2 ...
+!   inventory ITEM1 NEW_AMOUNT1 ITEM2 NEW_AMOUNT2 ...
+    Create a special inventory recounting
+
+    mensi pocet [item] == prevedu na ucet manko (deficiency) BEZ marginu
+    vetsi pocet [item] == prevedu z uctu primnozky (excess)
+    stejny pocet [item] == prazdny prevod mezi item a item
 		Create a custom transaction that will change balance
 		of a variety of items at once, and either deduce
 		buy price (+amt) or add sell price (-amt) to the
