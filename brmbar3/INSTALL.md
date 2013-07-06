@@ -40,6 +40,10 @@ Software Requirements
   * The database server itself, e.g. postgresql package.
   * PsyCoPg2, e.g. python3-psycopg2 package.
 
+Ubuntu packages installation instructions
+-----------------------------------------
+* sudo apt-get install postgresql libqt4-declarative python3 python3-pyside.qtdeclarative python3-psycopg2 python3-pyqt4
+
 Software Setup
 --------------
 
