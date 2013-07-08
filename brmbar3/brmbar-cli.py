@@ -152,8 +152,9 @@ elif sys.argv[1] == "inventory":
         iamt = int(sys.argv[2])
         iacct = load_item(sys.argv[3]) #TODO:use barcodes later
         print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
-        shop.fix_inventory(item = iacct, amount = iamt)
-        print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
-
+        if shop.fix_inventory(item = iacct, amount = iamt):
+            print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+        else:
+            print ("No action needed amount is correct.")
 else:
     help()

@@ -156,8 +156,12 @@ class Shop:
             item.debit(transaction, diff, "Inventory fix excess")
             self.excess.credit(transaction, buy_total, "Inventory fix excess " + item.name)
             self.db.commit()
+            return True
         elif amount_in_reality < amount_in_system:
             transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
             item.credit(transaction, diff, "Inventory fix deficit")
-            self.deficit.credit(transaction, buy_total, "Inventory fix deficit " + item.name)
+            self.deficit.debit(transaction, buy_total, "Inventory fix deficit " + item.name)
             self.db.commit()
+            return True
+        else:
+            return False
