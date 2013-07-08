@@ -8,7 +8,7 @@ import brmbar
 
 
 def help():
-    print("""BrmBar v3 (c) Petr Baudis <pasky@ucw.cz> 2012
+    print("""BrmBar v3 (c) Petr Baudis <pasky@ucw.cz> 2012-2013
 
 Usage: brmbar-cli.py COMMAND ARGS...
 
@@ -30,22 +30,8 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		screen of the GUI.
 	adduser USER
 		Add user (debt) account with given username.
-!   inventory ITEM1 NEW_AMOUNT1 ITEM2 NEW_AMOUNT2 ...
-    Create a special inventory recounting
-
-    mensi pocet [item] == prevedu na ucet manko (deficiency) BEZ marginu
-    vetsi pocet [item] == prevedu z uctu primnozky (excess)
-    stejny pocet [item] == prazdny prevod mezi item a item
-		Create a custom transaction that will change balance
-		of a variety of items at once, and either deduce
-		buy price (+amt) or add sell price (-amt) to the
-		cash balance for all of these items. This is useful
-		e.g. after events where stock is sold offline or when
-		doing an inventory recount.
-		If cash balance discrepancy is discovered as well
-		during the inventory recounting, first do changestock,
-		then compare actual and nominal cash balance again,
-		then issue changecash command if necessary.
+    inventory NEW_AMOUNT1 ITEM1 NEW_AMOUNT2 ITEM2
+        Inventory recounting (fixing the number of items)
 !	changecash +-AMT
 		Create a custom transaction that updates nominal cash
 		balance based on the actual cash balance counted
@@ -158,6 +144,16 @@ elif sys.argv[1] == "adduser":
     acct = brmbar.Account.create(db, sys.argv[2], brmbar.Currency.load(db, id = 1), 'debt')
     acct.add_barcode(sys.argv[2]) # will commit
     print("{}: id {}".format(acct.name, acct.id));
+
+elif sys.argv[1] == "inventory":
+    if (len(sys.argv) % 2 != 0 or len(sys.argv) < 4):
+        print ("Invalid number of parameters, count your parameters.")
+    else:
+        iamt = int(sys.argv[2])
+        iacct = load_item(sys.argv[3]) #TODO:use barcodes later
+        print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+        shop.fix_inventory(item = iacct, amount = iamt)
+        print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
 
 else:
     help()

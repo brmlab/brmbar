@@ -41,6 +41,8 @@ CREATE TABLE accounts (
 );
 INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Cash', (SELECT id FROM currencies WHERE name='Kč'), 'cash');
 INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Profits', (SELECT id FROM currencies WHERE name='Kč'), 'income');
+INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Excess', (SELECT id FROM currencies WHERE name='Kč'), 'income');
+INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Deficit', (SELECT id FROM currencies WHERE name='Kč'), 'expense');
 
 
 CREATE SEQUENCE barcodes_id_seq START WITH 1 INCREMENT BY 1;

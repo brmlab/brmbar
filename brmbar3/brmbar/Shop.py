@@ -7,18 +7,22 @@ class Shop:
 
     Business logic so that only interaction is left in the hands
     of the frontend scripts. """
-    def __init__(self, db, currency, profits, cash):
+    def __init__(self, db, currency, profits, cash, excess, deficit):
         self.db = db
         self.currency = currency # brmbar.Currency
         self.profits = profits # income brmbar.Account for brmbar profit margins on items
         self.cash = cash # our operational ("wallet") cash account
+        self.excess = excess # account from which is deducted cash during inventory item fixing (when system contains less items than is the reality)
+        self.deficit = deficit # account where is put cash during inventory item fixing (when system contains more items than is the reality)
 
     @classmethod
     def new_with_defaults(cls, db):
         return cls(db,
             currency = Currency.default(db),
             profits = Account.load(db, name = "BrmBar Profits"),
-            cash = Account.load(db, name = "BrmBar Cash"))
+            cash = Account.load(db, name = "BrmBar Cash"),
+            excess = Account.load(db, name = "BrmBar Excess"),
+            deficit = Account.load(db, name = "BrmBar Deficit"))
 
     def sell(self, item, user, amount = 1):
         # Sale: Currency conversion from item currency to shop currency
@@ -139,3 +143,21 @@ class Shop:
         for inventory in cur:
             accts += [ Account.load(self.db, id = inventory[0]) ]
         return accts
+
+    def fix_inventory(self, item, amount):
+        amount_in_reality = amount
+        amount_in_system = item.balance()
+        (buy, sell) = item.currency.rates(self.currency)
+
+        diff = abs(amount_in_reality - amount_in_system)
+        buy_total = buy * diff
+        if amount_in_reality > amount_in_system:
+            transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
+            item.debit(transaction, diff, "Inventory fix excess")
+            self.excess.credit(transaction, buy_total, "Inventory fix excess " + item.name)
+            self.db.commit()
+        elif amount_in_reality < amount_in_system:
+            transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
+            item.credit(transaction, diff, "Inventory fix deficit")
+            self.deficit.credit(transaction, buy_total, "Inventory fix deficit " + item.name)
+            self.db.commit()
