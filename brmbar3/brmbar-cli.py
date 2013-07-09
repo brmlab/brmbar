@@ -30,8 +30,10 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		screen of the GUI.
 	adduser USER
 		Add user (debt) account with given username.
-    inventory NEW_AMOUNT1 ITEM1 NEW_AMOUNT2 ITEM2
+    inventory ITEM1 NEW_AMOUNT1 ITEM2 NEW_AMOUNT2
         Inventory recounting (fixing the number of items)
+    inventory-interactive
+        Launches interactive mode for performing inventory with barcode reader
 !	changecash +-AMT
 		Create a custom transaction that updates nominal cash
 		balance based on the actual cash balance counted
@@ -139,6 +141,8 @@ elif sys.argv[1] == "stats":
     print("Profit: {}".format(shop.profits.balance_str()))
     print("Credit: {}".format(shop.credit_negbalance_str()))
     print("Inventory: {}".format(shop.inventory_balance_str()))
+    print("Excess: {}".format(shop.excess.negbalance_str()))
+    print("Deficit: {}".format(shop.deficit.balance_str()))
 
 elif sys.argv[1] == "adduser":
     acct = brmbar.Account.create(db, sys.argv[2], brmbar.Currency.load(db, id = 1), 'debt')
@@ -149,12 +153,37 @@ elif sys.argv[1] == "inventory":
     if (len(sys.argv) % 2 != 0 or len(sys.argv) < 4):
         print ("Invalid number of parameters, count your parameters.")
     else:
-        iamt = int(sys.argv[2])
-        iacct = load_item(sys.argv[3]) #TODO:use barcodes later
-        print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
-        if shop.fix_inventory(item = iacct, amount = iamt):
-            print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+        for i in range(2, len(sys.argv), 2):
+            iacct = load_item(sys.argv[i])
+            iamt = int(sys.argv[i+1])
+            print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+            if shop.fix_inventory(item = iacct, amount = iamt):
+                print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+            else:
+                print ("No action needed amount is correct.")
+
+
+elif sys.argv[1] == "inventory-interactive":
+    print("Inventory interactive mode. To exit interactive mode just enter empty barcode")
+
+    keep_entering = True
+    while keep_entering:
+        barcode = str(input("Enter barcode:"))
+        if barcode == "":
+            break
         else:
-            print ("No action needed amount is correct.")
+            iacct = brmbar.Account.load_by_barcode(db, barcode)
+            amount = str(input("What is the amount of {} in reality current is {}:".format(iacct.name, iacct.balance())))
+            if amount == "":
+                break
+            else:
+                iamt = int(amount)
+                print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+                if shop.fix_inventory(item = iacct, amount = iamt):
+                    print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+                else:
+                    print ("No action needed amount is correct.")
+    print("End of processing. Bye")
+
 else:
     help()
