@@ -34,12 +34,8 @@ Usage: brmbar-cli.py COMMAND ARGS...
         Inventory recounting (fixing the number of items)
     inventory-interactive
         Launches interactive mode for performing inventory with barcode reader
-!	changecash +-AMT
-		Create a custom transaction that updates nominal cash
-		balance based on the actual cash balance counted
-		in the cash box. If you found more money than expected,
-		use +amt, if you found less money than expected,
-		use -amt.
+    changecash AMT
+        Fixes the cash and puts money difference into excess or deficit account
 
 USER and ITEM may be barcodes or account ids. AMT may be
 both positive and negative amount (big difference to other
@@ -184,6 +180,17 @@ elif sys.argv[1] == "inventory-interactive":
                 else:
                     print ("No action needed amount is correct.")
     print("End of processing. Bye")
+elif sys.argv[1] == "changecash":
+    if (len(sys.argv) != 3):
+        print ("Invalid number of parameters, check your parameters.")
+    else:
+        print("Current Cash is : {}".format(shop.cash.balance_str()))
+        iamt = int(sys.argv[2])
+        if shop.fix_cash(amount = iamt):
+            print("New Cash is : {}".format(shop.cash.balance_str()))
+        else:
+            print ("No action needed amount is the same.")
+
 
 else:
     help()

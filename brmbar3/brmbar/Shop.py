@@ -165,3 +165,22 @@ class Shop:
             return True
         else:
             return False
+    def fix_cash(self, amount):
+        amount_in_reality = amount
+        amount_in_system = self.cash.balance()
+
+        diff = abs(amount_in_reality - amount_in_system)
+        if amount_in_reality > amount_in_system:
+            transaction = self._transaction(description = "BrmBar cash inventory fix of {} in system to {} in reality".format(amount_in_system, amount_in_reality))
+            self.cash.debit(transaction, diff, "Inventory fix excess")
+            self.excess.credit(transaction, diff, "Inventory cash fix excess.")
+            self.db.commit()
+            return True
+        elif amount_in_reality < amount_in_system:
+            transaction = self._transaction(description = "BrmBar cash inventory fix of {} in system to {} in reality".format(amount_in_system, amount_in_reality))
+            self.cash.credit(transaction, diff, "Inventory fix deficit")
+            self.deficit.debit(transaction, diff, "Inventory fix deficit.")
+            self.db.commit()
+            return True
+        else:
+            return False
