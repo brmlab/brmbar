@@ -164,6 +164,10 @@ class Shop:
             self.db.commit()
             return True
         else:
+            transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
+            item.debit(transaction, 0, "Inventory fix - amount was correct")
+            item.credit(transaction, 0, "Inventory fix - amount was correct")
+            self.db.commit()
             return False
     def fix_cash(self, amount):
         amount_in_reality = amount
