@@ -165,6 +165,7 @@ elif sys.argv[1] == "inventory-interactive":
     keep_entering = True
     while keep_entering:
         barcode = str(input("Enter barcode:"))
+        fuckyou = input("fuckyou")
         if barcode == "":
             break
         else:
