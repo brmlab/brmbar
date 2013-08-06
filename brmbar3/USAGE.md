@@ -74,3 +74,22 @@ implementation yet; it's not entirely clear yet what is the proper
 way to do this from the accounting standpoint. In the meantime, you
 can use SQL INSERTs to manually create a transaction with appropriate
 transaction splits (see doc/architecture for details on splits).
+
+
+Useful SQL queries
+------------------
+
+* Compute sum of sold stock:
+
+	select sum(amount) from transactions
+		left join transaction_splits on transaction_splits.transaction = transactions.id
+		where description like '% sale %' and side = 'debit';`
+
+* List of items not covered by inventory check:
+
+	select * from account_balances
+		where id not in (select account from transactions
+			left join transaction_splits on transaction_splits.transaction = transactions.id
+			where description like '% inventory %')
+		and acctype = 'inventory'
+
