@@ -130,7 +130,7 @@ class Shop:
             # might have been bought for a different price! Therefore,
             # we need to replace the command below with a complex SQL
             # statement that will... ugh, accounting is hard!
-            balance += inv.currency.convert(inv.balance(), self.currency)
+            balance += inv.balance() * inv.currency.rates(self.currency)[0]
         return balance
     def inventory_balance_str(self):
         return self.currency.str(self.inventory_balance())
