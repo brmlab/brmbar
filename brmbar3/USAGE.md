@@ -83,7 +83,7 @@ Useful SQL queries
 
 	select sum(amount) from transactions
 		left join transaction_splits on transaction_splits.transaction = transactions.id
-		where description like '% sale %' and side = 'debit';`
+		where description like '% sale %' and side = 'debit';
 
 * List of items not covered by inventory check:
 
@@ -91,5 +91,10 @@ Useful SQL queries
 		where id not in (select account from transactions
 			left join transaction_splits on transaction_splits.transaction = transactions.id
 			where description like '% inventory %')
-		and acctype = 'inventory'
+		and acctype = 'inventory';
 
+* List all cash transactions:
+
+	select time, transactions.id, description, responsible, amount from transactions
+		left join transaction_splits on transaction_splits.transaction = transactions.id
+		where transaction_splits.account = 1;
