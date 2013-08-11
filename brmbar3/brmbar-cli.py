@@ -36,6 +36,9 @@ Usage: brmbar-cli.py COMMAND ARGS...
         Launches interactive mode for performing inventory with barcode reader
     changecash AMT
         Fixes the cash and puts money difference into excess or deficit account
+    consolidate
+        Wraps up inventory + cash recounting, transferring the excess and
+        deficit accounts balance to the profits account and resetting them
 
 USER and ITEM may be barcodes or account ids. AMT may be
 both positive and negative amount (big difference to other
@@ -191,6 +194,11 @@ elif sys.argv[1] == "changecash":
             print("New Cash is : {}".format(shop.cash.balance_str()))
         else:
             print ("No action needed amount is the same.")
+elif sys.argv[1] == "consolidate":
+    if (len(sys.argv) != 2):
+        print ("Invalid number of parameters, check your parameters.")
+    else:
+        shop.consolidate()
 
 
 else:
