@@ -93,3 +93,22 @@ CREATE VIEW account_balances AS
 		LEFT JOIN accounts ON accounts.id = ts.account
 		GROUP BY ts.account, accounts.name, accounts.acctype
 		ORDER BY crbalance ASC;
+
+-- Transaction splits in a form that's nicer to query during manual inspection
+CREATE VIEW transaction_nicesplits AS
+	SELECT ts.id AS id, ts.transaction AS transaction, ts.account AS account,
+			(CASE WHEN ts.side = 'credit' THEN -ts.amount ELSE ts.amount END) AS amount,
+			a.currency AS currency, ts.memo AS memo
+		FROM transaction_splits AS ts LEFT JOIN accounts AS a ON a.id = ts.account
+		ORDER BY ts.id;
+
+-- List transactions with summary information regarding their cash element
+-- (except in case of transfers between cash and debt accounts, which will cancel out).
+CREATE VIEW transaction_cashsums AS
+	SELECT t.id AS id, t.time AS time, SUM(ts.amount) AS cash, t.description AS description
+		FROM transactions AS t
+		LEFT JOIN transaction_nicesplits AS ts ON ts.transaction = t.id
+		LEFT JOIN accounts AS a ON a.id = ts.account
+		WHERE a.currency = (SELECT currency FROM accounts WHERE name = 'BrmBar Cash')
+			AND a.acctype IN ('cash', 'debt')
+		GROUP BY t.id ORDER BY t.id;
