@@ -53,6 +53,7 @@ These UIs are provided:
   advanced functionality like inventory revision that is too tedious
   to implement in the Qt4 GUI and only the brmbar admins are expected
   to do these tasks.
+* **brmbar-web**: A simple read-only web interface to the stock list.
 
 TODO
 ----
