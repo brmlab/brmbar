@@ -16,7 +16,13 @@ def stock():
     # FIXME: XSS protection.
     response = '<table border="1"><tr><th>Id</th><th>Item Name</th><th>Bal.</th></tr>'
     for a in shop.account_list("inventory"):
-        response += '<tr><td>%d</td><td>%s</td><td>%d</td></tr>' % (a.id, a.name, a.balance())
+        style = ''
+        balance = a.balance()
+        if balance == 0:
+            style = 'color: grey; font-style: italic'
+        elif balance < 0:
+            style = 'color: red'
+        response += '<tr style="%s"><td>%d</td><td>%s</td><td>%d</td></tr>' % (style, a.id, a.name, balance)
     response += '</table>'
     return response
 
