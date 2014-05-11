@@ -50,12 +50,18 @@ Item {
                 status_text.setStatus("Unknown barcode", "#ff4444")
                 return
             }
-            if (acct.acctype !== "debt") {
+            if (acct.acctype !== "debt" && acct.acctype !== "cash") {
                 loadPageByAcct(acct)
                 return
             }
-            var balance = shop.sellItem(dbid, acct.id)
-            status_text.setStatus("Sold! "+acct.name+"'s credit is "+balance+".", "#ffff7c")
+            
+            if (acct.acctype == "cash") { //Copied from BarButton.onButtonClick
+                shop.sellItemCash(dbid)
+                status_text.setStatus("Sold! Put " + price + " Kč in the money box.", "#ffff7c")
+            } else {
+                var balance = shop.sellItem(dbid, acct.id)
+                status_text.setStatus("Sold! "+acct.name+"'s credit is "+balance+".", "#ffff7c")
+            }
             loadPage("MainPage")
         }
     }

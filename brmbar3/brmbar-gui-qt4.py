@@ -29,6 +29,10 @@ class ShopAdapter(QtCore.QObject):
         map["price"] = str(sell)
         return map
 
+    def acct_cash_map(self, acct):
+        map = acct.__dict__.copy()
+        return map
+
     def acct_map(self, acct):
         if acct is None:
             return None
@@ -36,6 +40,8 @@ class ShopAdapter(QtCore.QObject):
             return self.acct_debt_map(acct)
         elif acct.acctype == "inventory":
             return self.acct_inventory_map(acct)
+        elif acct.acctype == "cash":
+            return self.acct_cash_map(acct)
         else:
             return None
 

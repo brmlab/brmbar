@@ -52,6 +52,9 @@ CREATE TABLE barcodes (
 	account INTEGER NOT NULL,
         FOREIGN KEY (account) REFERENCES accounts (id)
 );
+-- Barcode for cash
+-- XXX Silently assume there is only one.
+INSERT INTO barcodes (barcode, account) VALUES ('_cash_', (SELECT id FROM accounts WHERE acctype = 'cash'));
 
 
 CREATE SEQUENCE transactions_id_seq START WITH 1 INCREMENT BY 1;
