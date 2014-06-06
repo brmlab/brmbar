@@ -98,3 +98,15 @@ Useful SQL queries
 	select time, transactions.id, description, responsible, amount from transactions
 		left join transaction_splits on transaction_splits.transaction = transactions.id
 		where transaction_splits.account = 1;
+
+* List all inventory items ordered by their cummulative worth:
+
+	select foo.*, foo.rate * -foo.crbalance as worth from
+		(select account_balances.*,
+			(select exchange_rates.rate from exchange_rates, accounts
+				where exchange_rates.target = accounts.currency
+					and accounts.id = account_balances.id
+				order by exchange_rates.valid_since limit 1) as rate
+			from account_balances where account_balances.acctype = 'inventory')
+		as foo order by worth;
+
