@@ -8,4 +8,4 @@ echo "Time since last full inventory check: $(echo "select now()-time from trans
 echo
 echo "Overflows: $(echo "SELECT name, -crbalance FROM account_balances WHERE name LIKE '%overflow%' AND crbalance != 0 ORDER BY name" | psql brmbar | tail -n +3 | grep '|' | tr -s " " | sed -e "s/ |/:/g" -e "s/$/;/" | tr -d "\n")  TOTAL: $(echo "SELECT -SUM(crbalance) FROM account_balances WHERE name LIKE '%overflow%' AND crbalance != 0" | psql brmbar | tail -n +3 | head -n 1 | tr -s " ")"
 echo
-echo "Club Mate sold in last 24 hours: $(echo "select count(*) from transaction_cashsums where time > now() - '1 day'::INTERVAL and description like '%Club Mate%'" | psql brmbar | tail -n +3 | head -n 1 | tr -s " ") bottles"
+echo "Club Mate sold in last 24 hours: $(echo "select count(*) from transaction_cashsums where time > now() - '1 day'::INTERVAL and (description like '%Club Mate%' or description like '%granatove mate%')" | psql brmbar | tail -n +3 | head -n 1 | tr -s " ") bottles"
