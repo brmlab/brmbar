@@ -108,10 +108,18 @@ CREATE VIEW transaction_nicesplits AS
 -- List transactions with summary information regarding their cash element
 -- (except in case of transfers between cash and debt accounts, which will cancel out).
 CREATE VIEW transaction_cashsums AS
-	SELECT t.id AS id, t.time AS time, SUM(ts.amount) AS cash, t.description AS description
+	SELECT t.id AS id, t.time AS time, SUM(credit_cash) AS cash_credit, SUM(debit_cash) AS cash_debit, t.description AS description
 		FROM transactions AS t
-		LEFT JOIN transaction_nicesplits AS ts ON ts.transaction = t.id
-		LEFT JOIN accounts AS a ON a.id = ts.account
-		WHERE a.currency = (SELECT currency FROM accounts WHERE name = 'BrmBar Cash')
-			AND a.acctype IN ('cash', 'debt')
+		LEFT JOIN (SELECT cts.amount AS credit_cash, cts.transaction AS cts_t
+				FROM transaction_nicesplits AS cts
+			LEFT JOIN accounts AS a ON a.id = cts.account OR a.id = cts.account
+			WHERE a.currency = (SELECT currency FROM accounts WHERE name = 'BrmBar Cash')
+				AND a.acctype IN ('cash', 'debt')
+				AND cts.amount < 0) credit ON cts_t = t.id
+		LEFT JOIN (SELECT dts.amount AS debit_cash, dts.transaction AS dts_t
+				FROM transaction_nicesplits AS dts
+			LEFT JOIN accounts AS a ON a.id = dts.account OR a.id = dts.account
+			WHERE a.currency = (SELECT currency FROM accounts WHERE name = 'BrmBar Cash')
+				AND a.acctype IN ('cash', 'debt')
+				AND dts.amount > 0) debit ON dts_t = t.id
 		GROUP BY t.id ORDER BY t.id;
