@@ -37,7 +37,9 @@ CREATE TABLE accounts (
 	currency INTEGER NOT NULL,
         FOREIGN KEY (currency) REFERENCES currencies (id),
 
-	acctype account_type NOT NULL
+	acctype account_type NOT NULL,
+
+	active BOOLEAN NOT NULL DEFAULT TRUE
 );
 INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Cash', (SELECT id FROM currencies WHERE name='Kč'), 'cash');
 INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Profits', (SELECT id FROM currencies WHERE name='Kč'), 'income');
