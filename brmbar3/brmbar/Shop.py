@@ -118,6 +118,7 @@ class Shop:
     def credit_negbalance_str(self):
         return self.currency.str(-self.credit_balance())
 
+# XXX causing extra heavy delay ( thousands of extra SQL queries ), disabled
     def inventory_balance(self):
         balance = 0
         # Each inventory account has its own currency,
@@ -132,8 +133,11 @@ class Shop:
             # statement that will... ugh, accounting is hard!
             balance += inv.balance() * inv.currency.rates(self.currency)[0]
         return balance
+
+# XXX bypass hack
     def inventory_balance_str(self):
-        return self.currency.str(self.inventory_balance())
+        return  "XXX"
+#       return self.currency.str(self.inventory_balance())
 
     def account_list(self, acctype, like_str="%%"):
         """list all accounts (people or items, as per acctype)"""
