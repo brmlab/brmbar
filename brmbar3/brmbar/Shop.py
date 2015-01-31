@@ -105,16 +105,12 @@ class Shop:
     def credit_balance(self):
         # We assume all debt accounts share a currency
         sumselect = """
-            SELECT SUM(ts.amount)
-                FROM accounts AS a
-                LEFT JOIN transaction_splits AS ts ON a.id = ts.account
-                WHERE a.acctype = %s AND ts.side = %s
+            SELECT SUM(crbalance)
+                FROM accounts WHERE acctype = %s AND
         """
-        cur = self.db.execute_and_fetch(sumselect, ["debt", 'debit'])
-        debit = cur[0] or 0
-        credit = self.db.execute_and_fetch(sumselect, ["debt", 'credit'])
-        credit = credit[0] or 0
-        return debit - credit
+        cur = self.db.execute_and_fetch(sumselect, ["debt"])
+        cur = cur[0] or 0
+        return cur
     def credit_negbalance_str(self):
         return self.currency.str(-self.credit_balance())
 

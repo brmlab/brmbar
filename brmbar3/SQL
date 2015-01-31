@@ -39,7 +39,8 @@ CREATE TABLE accounts (
 
 	acctype account_type NOT NULL,
 
-	active BOOLEAN NOT NULL DEFAULT TRUE
+	active BOOLEAN NOT NULL DEFAULT TRUE,
+	crbalance DECIMAL(12,2) NOT NULL
 );
 INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Cash', (SELECT id FROM currencies WHERE name='Kč'), 'cash');
 INSERT INTO accounts (name, currency, acctype) VALUES ('BrmBar Profits', (SELECT id FROM currencies WHERE name='Kč'), 'income');
@@ -92,12 +93,14 @@ CREATE TABLE transaction_splits (
 -- Note that currency information is currently not supplied; inventory items
 -- have balances in stock amounts.
 CREATE VIEW account_balances AS
-	SELECT ts.account AS id, accounts.name AS name, accounts.acctype AS acctype,
-		-SUM(CASE WHEN ts.side = 'credit' THEN -ts.amount ELSE ts.amount END) AS crbalance
-		FROM transaction_splits AS ts
-		LEFT JOIN accounts ON accounts.id = ts.account
-		GROUP BY ts.account, accounts.name, accounts.acctype
-		ORDER BY crbalance ASC;
+	SELECT id, name, acctype, crbalance FROM accounts ORDER BY crbalance ASC;
+
+--	SELECT ts.account AS id, accounts.name AS name, accounts.acctype AS acctype,
+--		-SUM(CASE WHEN ts.side = 'credit' THEN -ts.amount ELSE ts.amount END) AS crbalance
+--		FROM transaction_splits AS ts
+--		LEFT JOIN accounts ON accounts.id = ts.account
+--		GROUP BY ts.account, accounts.name, accounts.acctype
+--		ORDER BY crbalance ASC;
 
 -- Transaction splits in a form that's nicer to query during manual inspection
 CREATE VIEW transaction_nicesplits AS

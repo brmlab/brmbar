@@ -45,11 +45,9 @@ class Account:
         return cls(db, name = name, id = id, currency = currency, acctype = acctype)
 
     def balance(self):
-        debit = self.db.execute_and_fetch("SELECT SUM(amount) FROM transaction_splits WHERE account = %s AND side = %s", [self.id, 'debit'])
-        debit = debit[0] or 0
-        credit = self.db.execute_and_fetch("SELECT SUM(amount) FROM transaction_splits WHERE account = %s AND side = %s", [self.id, 'credit'])
-        credit = credit[0] or 0
-        return debit - credit
+        crbalance = self.db.execute_and_fetch("SELECT crbalance FROM accounts WHERE account = %s", [self.id])
+        crbalance = crbalance[0] or 0
+        return crbalance
 
     def balance_str(self):
         return self.currency.str(self.balance())
@@ -63,9 +61,12 @@ class Account:
     def credit(self, transaction, amount, memo):
         return self._transaction_split(transaction, 'credit', amount, memo)
 
+# XXX atomicita
     def _transaction_split(self, transaction, side, amount, memo):
         """ Common part of credit() and debit(). """
         self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, self.id, amount, memo])
+
+	self.db.execute("UPDATE accounts set crbalance = crbalance + (CASE WHEN %s = 'credit' THEN -amount ELSE amount END)", [side])
 
     def add_barcode(self, barcode):
         self.db.execute("INSERT INTO barcodes (account, barcode) VALUES (%s, %s)", [self.id, barcode])
