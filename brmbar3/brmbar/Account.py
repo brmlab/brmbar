@@ -66,7 +66,7 @@ class Account:
         """ Common part of credit() and debit(). """
         self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, self.id, amount, memo])
 
-	self.db.execute("UPDATE accounts set crbalance = crbalance - (CASE WHEN %s = 'credit' THEN -amount ELSE amount END)", [side])
+        self.db.execute("UPDATE accounts set crbalance = crbalance - (CASE WHEN %s = 'credit' THEN -amount ELSE amount END)", [side])
 
     def add_barcode(self, barcode):
         self.db.execute("INSERT INTO barcodes (account, barcode) VALUES (%s, %s)", [self.id, barcode])

@@ -135,7 +135,7 @@ class Shop:
         """list all accounts (people or items, as per acctype)"""
         accts = []
         cur = self.db.execute_and_fetchall("SELECT id FROM accounts WHERE acctype = %s AND name ILIKE %s ORDER BY name ASC", [acctype, like_str])
-		#FIXME: sanitize input like_str ^
+                #FIXME: sanitize input like_str ^
         for inventory in cur:
             accts += [ Account.load(self.db, id = inventory[0]) ]
         return accts
