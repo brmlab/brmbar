@@ -106,7 +106,7 @@ class Shop:
         # We assume all debt accounts share a currency
         sumselect = """
             SELECT SUM(crbalance)
-                FROM accounts WHERE acctype = %s AND
+                FROM accounts WHERE acctype = %s
         """
         cur = self.db.execute_and_fetch(sumselect, ["debt"])
         cur = cur[0] or 0
