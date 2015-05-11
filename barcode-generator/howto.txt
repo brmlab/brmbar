@@ -1,0 +1,9 @@
+on brmbar:
+select distinct barcode from barcodes b, transactions t, accounts a where t.responsible=a.id and time>'2015-01-01' and b.account=a.id order by barcode asc;
+
+run this locally and paste output of previous command:
+
+while read tmp; do echo "$tmp;$tmp";done|grep -v overflow|python2 ./barcode-generator.py
+
+print resulting SVG files
+
