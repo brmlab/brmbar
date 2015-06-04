@@ -8,6 +8,9 @@ from brmbar import Database
 
 import brmbar
 
+# User credit balance limit; sale will fail when balance is below this limit.
+LIMIT_BALANCE = -200
+
 
 class ShopAdapter(QtCore.QObject):
     """ Interface between QML and the brmbar package """
@@ -71,6 +74,11 @@ class ShopAdapter(QtCore.QObject):
         return acct
 
     @QtCore.Slot('QVariant', 'QVariant', result='QVariant')
+    def canSellItem(self, itemid, userid):
+        user = brmbar.Account.load(db, id = userid)
+        return -user.balance() > LIMIT_BALANCE
+
+    @QtCore.Slot('QVariant', 'QVariant', result='QVariant')
     def sellItem(self, itemid, userid):
         user = brmbar.Account.load(db, id = userid)
         shop.sell(item = brmbar.Account.load(db, id = itemid), user = user)
@@ -98,6 +106,11 @@ class ShopAdapter(QtCore.QObject):
         balance = user.negbalance_str()
         db.commit()
         return balance
+
+    @QtCore.Slot('QVariant', result='QVariant')
+    def balance_user(self, userid):
+        user = brmbar.Account.load(db, id=userid)
+        return user.negbalance_str()
 
     @QtCore.Slot(result='QVariant')
     def balance_cash(self):

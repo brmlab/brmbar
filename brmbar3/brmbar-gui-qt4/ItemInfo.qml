@@ -58,6 +58,8 @@ Item {
             if (acct.acctype == "cash") { //Copied from BarButton.onButtonClick
                 shop.sellItemCash(dbid)
                 status_text.setStatus("Sold! Put " + price + " Kč in the money box.", "#ffff7c")
+            } else if (!shop.canSellItem(dbid, acct.id)) {
+                status_text.setStatus("NOT SOLD! "+acct.name+"'s credit is TOO LOW: "+shop.balance_user(acct.id), "#ff4444")
             } else {
                 var balance = shop.sellItem(dbid, acct.id)
                 status_text.setStatus("Sold! "+acct.name+"'s credit is "+balance+".", "#ffff7c")
