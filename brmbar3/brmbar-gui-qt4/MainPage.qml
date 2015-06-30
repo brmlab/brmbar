@@ -43,4 +43,14 @@ Item {
             loadPage("Management")
         }
     }
+
+    BarButton {
+        x: 65
+        y: 438
+        width: 1150
+        text: "* Mroze a Termixy najdes v lednici *"
+    }
+
+
+
 }

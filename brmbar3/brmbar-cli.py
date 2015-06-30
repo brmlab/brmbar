@@ -17,6 +17,7 @@ Usage: brmbar-cli.py COMMAND ARGS...
 	changecredit USER +-AMT
 	sellitem USER ITEM +-AMT
 		You can use negative AMT to undo a sale.
+	restock ITEM AMT
  	userinfo USER
 	iteminfo ITEM
 
@@ -199,7 +200,15 @@ elif sys.argv[1] == "consolidate":
         print ("Invalid number of parameters, check your parameters.")
     else:
         shop.consolidate()
-
+elif sys.argv[1] == "restock":
+    if (len(sys.argv) != 4):
+        print ("Invalid number of parameters, check your parameters.")
+    else:
+        iacct = load_item(sys.argv[2])
+        amt = int(sys.argv[3])
+        cash = shop.buy_for_cash(iacct, amt);
+        print("Old amount {}, increased by {}, take {} from cashbox".format(iacct.balance(), amt, cash))
+       
 
 else:
     help()
