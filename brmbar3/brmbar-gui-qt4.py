@@ -1,12 +1,22 @@
 #!/usr/bin/python3
 
 import sys
+import subprocess
 
 from PySide import QtCore, QtGui, QtDeclarative
 
 from brmbar import Database
 
 import brmbar
+
+# User credit balance limit; sale will fail when balance is below this limit.
+LIMIT_BALANCE = -200
+# When below this credit balance, an alert hook script (see below) is run.
+ALERT_BALANCE = 0
+# This script is executed when a user is buying things and their balance is
+# below LIMIT_BALANCE (with argument "limit") or below ALERT_BALANCE
+# (with argument "alert").
+ALERT_SCRIPT = "./alert.sh"
 
 
 class ShopAdapter(QtCore.QObject):
@@ -71,6 +81,18 @@ class ShopAdapter(QtCore.QObject):
         return acct
 
     @QtCore.Slot('QVariant', 'QVariant', result='QVariant')
+    def canSellItem(self, itemid, userid):
+        user = brmbar.Account.load(db, id = userid)
+        if -user.balance() > ALERT_BALANCE:
+            return True
+        elif -user.balance() > LIMIT_BALANCE:
+            subprocess.call(["sh", ALERT_SCRIPT, "alert"])
+            return True
+        else:
+            subprocess.call(["sh", ALERT_SCRIPT, "limit"])
+            return False
+
+    @QtCore.Slot('QVariant', 'QVariant', result='QVariant')
     def sellItem(self, itemid, userid):
         user = brmbar.Account.load(db, id = userid)
         shop.sell(item = brmbar.Account.load(db, id = itemid), user = user)
@@ -98,6 +120,11 @@ class ShopAdapter(QtCore.QObject):
         balance = user.negbalance_str()
         db.commit()
         return balance
+
+    @QtCore.Slot('QVariant', result='QVariant')
+    def balance_user(self, userid):
+        user = brmbar.Account.load(db, id=userid)
+        return user.negbalance_str()
 
     @QtCore.Slot(result='QVariant')
     def balance_cash(self):
