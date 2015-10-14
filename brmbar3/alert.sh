@@ -1,6 +1,7 @@
 #!/bin/sh
-if [ "$1" = "alert" ]; then
-	mplayer ~/trombone.wav &
-else
-	mplayer ~/much.wav &
-fi
+
+case $1 in
+alert) mplayer ~/trombone.wav & ;;
+limit) mplayer ~/much.wav & ;;
+charge) mplayer ~/charge.wav & ;;
+esac
