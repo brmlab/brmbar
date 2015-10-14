@@ -107,6 +107,7 @@ class ShopAdapter(QtCore.QObject):
 
     @QtCore.Slot('QVariant', 'QVariant', result='QVariant')
     def chargeCredit(self, credit, userid):
+        subprocess.call(["sh", ALERT_SCRIPT, "charge"])
         user = brmbar.Account.load(db, id = userid)
         shop.add_credit(credit = credit, user = user)
         balance = user.negbalance_str()
