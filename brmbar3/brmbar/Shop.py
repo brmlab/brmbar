@@ -177,6 +177,7 @@ class Shop:
             item.credit(transaction, 0, "Inventory fix - amount was correct")
             self.db.commit()
             return False
+
     def fix_cash(self, amount):
         amount_in_reality = amount
         amount_in_system = self.cash.balance()
@@ -196,6 +197,7 @@ class Shop:
             return True
         else:
             return False
+
     def consolidate(self):
         transaction = self._transaction(description = "BrmBar inventory consolidation")
 
@@ -210,3 +212,16 @@ class Shop:
             self.deficit.credit(transaction, deficit_balance, "Deficit balance removed from profit.")
             self.profits.credit(transaction, deficit_balance, "Deficit balance removed from profit.")
         self.db.commit()
+
+    def undo(self, oldtid):
+        description = self.db.execute_and_fetch("SELECT description FROM transactions WHERE id = %s", [oldtid])[0]
+        description = 'undo %d (%s)' % (oldtid, description)
+
+        transaction = self._transaction(description=description)
+        for split in self.db.execute_and_fetchall("SELECT id, side, account, amount, memo FROM transaction_splits WHERE transaction = %s", [oldtid]):
+            splitid, side, account, amount, memo = split
+            memo = 'undo %d (%s)' % (splitid, memo)
+            amount = -amount
+            self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, account, amount, memo])
+        self.db.commit()
+        return transaction

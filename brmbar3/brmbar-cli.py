@@ -31,6 +31,9 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		screen of the GUI.
 	adduser USER
 		Add user (debt) account with given username.
+	undo TRANSID
+		Commit a transaction that reverses all splits of a transaction with
+		a given id (to find out that id: select * from transaction_cashsums;)
 
 3. Inventorization
 
@@ -151,6 +154,10 @@ elif sys.argv[1] == "adduser":
     acct = brmbar.Account.create(db, sys.argv[2], brmbar.Currency.load(db, id = 1), 'debt')
     acct.add_barcode(sys.argv[2]) # will commit
     print("{}: id {}".format(acct.name, acct.id));
+
+elif sys.argv[1] == "undo":
+    newtid = shop.undo(int(sys.argv[2]))
+    print("Transaction %d undone by reverse transaction %d" % (int(sys.argv[2]), newtid))
 
 elif sys.argv[1] == "inventory":
     if (len(sys.argv) % 2 != 0 or len(sys.argv) < 4):
