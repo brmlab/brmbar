@@ -78,6 +78,10 @@ class Shop:
         user.debit(transaction, credit, "Credit withdrawal")
         self.db.commit()
 
+    def transfer_credit(self, userfrom, userto, amount):
+        self.add_credit(amount, userto)
+        self.withdraw_credit(amount, userfrom)
+
     def buy_for_cash(self, item, amount = 1):
         # Buy: Currency conversion from item currency to shop currency
         (buy, sell) = item.currency.rates(self.currency)

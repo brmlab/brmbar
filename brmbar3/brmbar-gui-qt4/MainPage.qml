@@ -34,6 +34,16 @@ Item {
     }
 
     BarButton {
+        x: 450
+        y: 838
+        width: 360
+        text: "Transfer"
+        onButtonClick: {
+            loadPage("Transfer")
+        }
+    }
+
+    BarButton {
         id: management
         x: 855
         y: 838
@@ -50,7 +60,4 @@ Item {
         width: 1150
         text: "* Mroze a Termixy najdes v lednici *"
     }
-
-
-
 }

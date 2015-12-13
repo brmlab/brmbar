@@ -122,6 +122,14 @@ class ShopAdapter(QtCore.QObject):
         db.commit()
         return balance
 
+    @QtCore.Slot('QVariant', 'QVariant', 'QVariant', result='QVariant')
+    def newTransfer(self, uidfrom, uidto, amount):
+        ufrom = brmbar.Account.load(db, id=uidfrom)
+        uto = brmbar.Account.load(db, id=uidto)
+        shop.transfer_credit(ufrom, uto, amount = amount)
+        db.commit()
+        return currency.str(float(amount))
+
     @QtCore.Slot('QVariant', result='QVariant')
     def balance_user(self, userid):
         user = brmbar.Account.load(db, id=userid)
