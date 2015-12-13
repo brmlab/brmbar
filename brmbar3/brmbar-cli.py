@@ -31,15 +31,18 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		screen of the GUI.
 	adduser USER
 		Add user (debt) account with given username.
-    inventory ITEM1 NEW_AMOUNT1 ITEM2 NEW_AMOUNT2
-        Inventory recounting (fixing the number of items)
-    inventory-interactive
-        Launches interactive mode for performing inventory with barcode reader
-    changecash AMT
-        Fixes the cash and puts money difference into excess or deficit account
-    consolidate
-        Wraps up inventory + cash recounting, transferring the excess and
-        deficit accounts balance to the profits account and resetting them
+
+3. Inventorization
+
+	inventory ITEM1 NEW_AMOUNT1 ITEM2 NEW_AMOUNT2
+		Inventory recounting (fixing the number of items)
+	inventory-interactive
+		Launches interactive mode for performing inventory with barcode reader
+	changecash AMT
+		Fixes the cash and puts money difference into excess or deficit account
+	consolidate
+		Wraps up inventory + cash recounting, transferring the excess and
+		deficit accounts balance to the profits account and resetting them
 
 USER and ITEM may be barcodes or account ids. AMT may be
 both positive and negative amount (big difference to other
