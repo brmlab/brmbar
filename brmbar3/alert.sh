@@ -1,7 +1,7 @@
 #!/bin/sh
 
 case $1 in
-alert) mplayer ~/trombone.wav & ;;
-limit) mplayer ~/much.wav & ;;
-charge) mplayer ~/charge.wav & ;;
+alert) mplayer -really-quiet ~/trombone.wav & ;;
+limit) mplayer -really-quiet ~/much.wav & ;;
+charge) mplayer -really-quiet ~/charge.wav & ;;
 esac
