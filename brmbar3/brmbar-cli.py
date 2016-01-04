@@ -182,16 +182,18 @@ elif sys.argv[1] == "inventory-interactive":
             break
         else:
             iacct = brmbar.Account.load_by_barcode(db, barcode)
-            amount = str(input("What is the amount of {} in reality current is {}:".format(iacct.name, iacct.balance())))
+            amount = str(input("What is the amount of {} in reality (expected: {} pcs):".format(iacct.name, iacct.balance())))
             if amount == "":
                 break
+            elif int(amount) > 10000:
+                print("Ignoring too high amount {}, assuming barcode was mistakenly scanned instead".format(amount))
             else:
                 iamt = int(amount)
                 print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
                 if shop.fix_inventory(item = iacct, amount = iamt):
                     print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
                 else:
-                    print ("No action needed amount is correct.")
+                    print("No action needed, amount is correct.")
     print("End of processing. Bye")
 elif sys.argv[1] == "changecash":
     if (len(sys.argv) != 3):
