@@ -53,7 +53,21 @@ user interfaces; you can e.g. undo a sale!).
 
 For users, you can use their name as USER as their username
 is also the barcode. For items, use listitems command first
-to find out the item id.""")
+to find out the item id.
+
+EXAMPLES:
+
+Transfer 35Kc from pasky to sachy:
+
+	$ ./brmbar-cli.py changecredit pasky -35
+	$ ./brmbar-cli.py changecredit sachy +35
+
+Buy one RaspberryPi for cash from commandline:
+
+	$ ./brmbar-cli.py listitems | grep -i raspberry
+	Raspberry Pi 2  1277    1.00 pcs
+	$ ./brmbar-cli.py sellitem cash 1277 1
+""")
     sys.exit(1)
 
 
