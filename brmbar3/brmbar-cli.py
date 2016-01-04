@@ -15,7 +15,7 @@ Usage: brmbar-cli.py COMMAND ARGS...
 1. Commands pertaining the standard operation
 	showcredit USER
 	changecredit USER +-AMT
-	sellitem USER ITEM +-AMT
+	sellitem {USER|"cash"} ITEM +-AMT
 		You can use negative AMT to undo a sale.
 	restock ITEM AMT
  	userinfo USER
@@ -105,14 +105,20 @@ elif sys.argv[1] == "changecredit":
     print("{}: {}".format(acct.name, acct.negbalance_str()))
 
 elif sys.argv[1] == "sellitem":
-    uacct = load_user(sys.argv[2])
+    if sys.argv[2] == "cash":
+        uacct = shop.cash
+    else:
+        uacct = load_user(sys.argv[2])
     iacct = load_item(sys.argv[3])
     amt = int(sys.argv[4])
     if amt > 0:
-        shop.sell(item = iacct, user = uacct, amount = amt)
+        if uacct == shop.cash:
+            shop.sell_for_cash(item = iacct, amount = amt)
+        else:
+            shop.sell(item = iacct, user = uacct, amount = amt)
     elif amt < 0:
         shop.undo_sale(item = iacct, user = uacct, amount = -amt)
-    print("{}: {}".format(uacct.name, uacct.negbalance_str()))
+    print("{}: {}".format(uacct.name, uacct.balance_str() if uacct == shop.cash else uacct.negbalance_str()))
     print("{}: {}".format(iacct.name, iacct.balance_str()))
 
 elif sys.argv[1] == "userinfo":
