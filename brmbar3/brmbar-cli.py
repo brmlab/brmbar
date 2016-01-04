@@ -174,27 +174,26 @@ elif sys.argv[1] == "inventory":
 elif sys.argv[1] == "inventory-interactive":
     print("Inventory interactive mode. To exit interactive mode just enter empty barcode")
 
-    keep_entering = True
-    while keep_entering:
+    while True:
         barcode = str(input("Enter barcode:"))
         fuckyou = input("fuckyou")
         if barcode == "":
             break
+        iacct = brmbar.Account.load_by_barcode(db, barcode)
+        amount = str(input("What is the amount of {} in reality (expected: {} pcs):".format(iacct.name, iacct.balance())))
+        if amount == "":
+            break
+        elif int(amount) > 10000:
+            print("Ignoring too high amount {}, assuming barcode was mistakenly scanned instead".format(amount))
         else:
-            iacct = brmbar.Account.load_by_barcode(db, barcode)
-            amount = str(input("What is the amount of {} in reality (expected: {} pcs):".format(iacct.name, iacct.balance())))
-            if amount == "":
-                break
-            elif int(amount) > 10000:
-                print("Ignoring too high amount {}, assuming barcode was mistakenly scanned instead".format(amount))
+            iamt = int(amount)
+            print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
+            if shop.fix_inventory(item = iacct, amount = iamt):
+                print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
             else:
-                iamt = int(amount)
-                print("Current state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
-                if shop.fix_inventory(item = iacct, amount = iamt):
-                    print("New state {} (id {}): {} pcs".format(iacct.name, iacct.id, iacct.balance()))
-                else:
-                    print("No action needed, amount is correct.")
+                print("No action needed, amount is correct.")
     print("End of processing. Bye")
+
 elif sys.argv[1] == "changecash":
     if (len(sys.argv) != 3):
         print ("Invalid number of parameters, check your parameters.")
@@ -205,11 +204,13 @@ elif sys.argv[1] == "changecash":
             print("New Cash is : {}".format(shop.cash.balance_str()))
         else:
             print ("No action needed amount is the same.")
+
 elif sys.argv[1] == "consolidate":
     if (len(sys.argv) != 2):
         print ("Invalid number of parameters, check your parameters.")
     else:
         shop.consolidate()
+
 elif sys.argv[1] == "restock":
     if (len(sys.argv) != 4):
         print ("Invalid number of parameters, check your parameters.")
