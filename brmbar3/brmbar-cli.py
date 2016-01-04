@@ -53,9 +53,7 @@ user interfaces; you can e.g. undo a sale!).
 
 For users, you can use their name as USER as their username
 is also the barcode. For items, use listitems command first
-to find out the item id.
-
-Commands prefixed with ! are not implemented yet.""")
+to find out the item id.""")
     sys.exit(1)
 
 
