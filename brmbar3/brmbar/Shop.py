@@ -135,13 +135,16 @@ class Shop:
             # might have been bought for a different price! Therefore,
             # we need to replace the command below with a complex SQL
             # statement that will... ugh, accounting is hard!
-            balance += inv.balance() * inv.currency.rates(self.currency)[0]
+            b = inv.balance() * inv.currency.rates(self.currency)[0]
+            # if b != 0:
+            #     print(str(b) + ',' + inv.name)
+            balance += b
         return balance
 
 # XXX bypass hack
     def inventory_balance_str(self):
-        return  "XXX"
-#       return self.currency.str(self.inventory_balance())
+        # return self.currency.str(self.inventory_balance())
+        return "XXX"
 
     def account_list(self, acctype, like_str="%%"):
         """list all accounts (people or items, as per acctype)"""
