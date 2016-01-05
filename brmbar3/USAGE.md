@@ -68,12 +68,26 @@ Administrative Usage
   account (and so will typing "joehacker" on a physical keyboard).
 
 * If your inventory stock count or cash box amount does not match
-the in-system data, you will need to make a corrective transaction.
-In the future, brmbar-cli.py will support this, but there is no
-implementation yet; it's not entirely clear yet what is the proper
-way to do this from the accounting standpoint. In the meantime, you
-can use SQL INSERTs to manually create a transaction with appropriate
-transaction splits (see doc/architecture for details on splits).
+  the in-system data, you will need to make a corrective transaction.
+  To fix cash amount to reality in which you counted 1234Kč, use
+
+		./brmbar-cli.py fixcash 1234
+
+  whereas to fix amount of a particular stock, use
+
+		./brmbar-cli.py inventory-interactive
+
+  then scan the item barcode and then enter the right amount.
+
+* If you want to view recent transactions, run
+
+		psql brmbar
+		select * from transaction_cashsums;
+
+* If you want to undo a transaction, get its id (using the select above)
+  and run
+
+		./brmbar-cli.py undo ID
 
 
 Useful SQL queries
