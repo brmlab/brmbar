@@ -41,7 +41,7 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		Inventory recounting (fixing the number of items)
 	inventory-interactive
 		Launches interactive mode for performing inventory with barcode reader
-	changecash AMT
+	fixcash AMT
 		Fixes the cash and puts money difference into excess or deficit account
 	consolidate
 		Wraps up inventory + cash recounting, transferring the excess and
@@ -214,7 +214,7 @@ elif sys.argv[1] == "inventory-interactive":
                 print("No action needed, amount is correct.")
     print("End of processing. Bye")
 
-elif sys.argv[1] == "changecash":
+elif sys.argv[1] == "fixcash" or sys.argv[1] == "changecash":
     if (len(sys.argv) != 3):
         print ("Invalid number of parameters, check your parameters.")
     else:
