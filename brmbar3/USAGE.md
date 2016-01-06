@@ -95,32 +95,32 @@ Useful SQL queries
 
 * Compute sum of sold stock:
 
-	select sum(amount) from transactions
-		left join transaction_splits on transaction_splits.transaction = transactions.id
-		where description like '% sale %' and side = 'debit';
+		select sum(amount) from transactions
+			left join transaction_splits on transaction_splits.transaction = transactions.id
+			where description like '% sale %' and side = 'debit';
 
 * List of items not covered by inventory check:
 
-	select * from account_balances
-		where id not in (select account from transactions
-			left join transaction_splits on transaction_splits.transaction = transactions.id
-			where description like '% inventory %')
-		and acctype = 'inventory';
+		select * from account_balances
+			where id not in (select account from transactions
+				left join transaction_splits on transaction_splits.transaction = transactions.id
+				where description like '% inventory %')
+			and acctype = 'inventory';
 
 * List all cash transactions:
 
-	select time, transactions.id, description, responsible, amount from transactions
-		left join transaction_splits on transaction_splits.transaction = transactions.id
-		where transaction_splits.account = 1;
+		select time, transactions.id, description, responsible, amount from transactions
+			left join transaction_splits on transaction_splits.transaction = transactions.id
+			where transaction_splits.account = 1;
 
 * List all inventory items ordered by their cummulative worth:
 
-	select foo.*, foo.rate * -foo.crbalance as worth from
-		(select account_balances.*,
-			(select exchange_rates.rate from exchange_rates, accounts
-				where exchange_rates.target = accounts.currency
-					and accounts.id = account_balances.id
-				order by exchange_rates.valid_since limit 1) as rate
-			from account_balances where account_balances.acctype = 'inventory')
-		as foo order by worth;
+		select foo.*, foo.rate * -foo.crbalance as worth from
+			(select account_balances.*,
+				(select exchange_rates.rate from exchange_rates, accounts
+					where exchange_rates.target = accounts.currency
+						and accounts.id = account_balances.id
+					order by exchange_rates.valid_since limit 1) as rate
+				from account_balances where account_balances.acctype = 'inventory')
+			as foo order by worth;
 
