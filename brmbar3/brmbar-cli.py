@@ -166,8 +166,10 @@ elif sys.argv[1] == "stats":
     print("Inventory: {}".format(shop.inventory_balance_str()))
     print("Credit: {}".format(shop.credit_negbalance_str(overflow='exclude')))
     print("Profit: {}".format(shop.profits.balance_str()))
-    print("Excess: {}".format(shop.excess.negbalance_str()))
-    print("Deficit: {}".format(shop.deficit.balance_str()))
+    print("Fixups: {} (excess {}, deficit {})".format(
+           -shop.excess.balance() - shop.deficit.balance(),
+           shop.excess.negbalance_str(),
+           shop.deficit.balance_str()))
 
 elif sys.argv[1] == "adduser":
     acct = brmbar.Account.create(db, sys.argv[2], brmbar.Currency.load(db, id = 1), 'debt')
