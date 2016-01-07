@@ -161,9 +161,11 @@ elif sys.argv[1] == "listitems":
         print("{}\t{}\t{} pcs".format(acct.name, acct.id, acct.balance()))
 
 elif sys.argv[1] == "stats":
+    print("--- Material Assets ---")
     print("Cash: {}".format(shop.cash.balance_str()))
     print("Overflow: {}".format(shop.currency.str(shop.credit_balance(overflow='only'))))
     print("Inventory: {}".format(shop.inventory_balance_str()))
+    print("--- Logical Accounts ---")
     print("Credit: {}".format(shop.credit_negbalance_str(overflow='exclude')))
     print("Profit: {}".format(shop.profits.balance_str()))
     print("Fixups: {} (excess {}, deficit {})".format(
