@@ -162,9 +162,10 @@ elif sys.argv[1] == "listitems":
 
 elif sys.argv[1] == "stats":
     print("Cash: {}".format(shop.cash.balance_str()))
-    print("Profit: {}".format(shop.profits.balance_str()))
-    print("Credit: {}".format(shop.credit_negbalance_str()))
+    print("Overflow: {}".format(shop.currency.str(shop.credit_balance(overflow='only'))))
     print("Inventory: {}".format(shop.inventory_balance_str()))
+    print("Credit: {}".format(shop.credit_negbalance_str(overflow='exclude')))
+    print("Profit: {}".format(shop.profits.balance_str()))
     print("Excess: {}".format(shop.excess.negbalance_str()))
     print("Deficit: {}".format(shop.deficit.balance_str()))
 

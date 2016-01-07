@@ -106,7 +106,7 @@ class Shop:
         transaction = transaction[0]
         return transaction
 
-    def credit_balance(self):
+    def credit_balance(self, overflow=None):
         # We assume all debt accounts share a currency
         sumselect = """
             SELECT SUM(ts.amount)
@@ -114,13 +114,15 @@ class Shop:
                 LEFT JOIN transaction_splits AS ts ON a.id = ts.account
                 WHERE a.acctype = %s AND ts.side = %s
         """
+        if overflow is not None:
+            sumselect += ' AND a.name ' + ('NOT ' if overflow == 'exclude' else '') + ' LIKE \'%%-overflow\''
         cur = self.db.execute_and_fetch(sumselect, ["debt", 'debit'])
         debit = cur[0] or 0
         credit = self.db.execute_and_fetch(sumselect, ["debt", 'credit'])
         credit = credit[0] or 0
         return debit - credit
-    def credit_negbalance_str(self):
-        return self.currency.str(-self.credit_balance())
+    def credit_negbalance_str(self, overflow=None):
+        return self.currency.str(-self.credit_balance(overflow=overflow))
 
 # XXX causing extra heavy delay ( thousands of extra SQL queries ), disabled
     def inventory_balance(self):
