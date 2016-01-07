@@ -89,6 +89,33 @@ Administrative Usage
 
 		./brmbar-cli.py undo ID
 
+* If you want to get overview of the financial situation, run
+
+		./brmbar-cli.py stats
+
+  The following items represent "material", "tangible" assets:
+
+  * Cash - how much should be in the money box
+  * Overflow - how much cash is stored in overflow credit accounts (pockets of admins)
+  * Inventory - how much worth (buy price) is the current inventory stock
+
+  I.e., cash plus overflow plus inventory is how much brmbar is worth
+  and cash plus overflow is how much brmbar can spend right now.
+
+  The following items represent "virtual" accounts which determine
+  the logical composition of the assets:
+
+  * Credit - sum of all credit accounts, i.e. money stored in brmbar by its users;
+    i.e. how much of the assets is users' money
+  * Profit - accumulated profit made by brmbar on buy/sell margins (but receipts
+    and inventory deficits are subtracted); i.e. how much of the assets is brmbar's
+    own money
+  * Fixups - sum of gains and losses accrued by inventory fixups, i.e. stemming
+    from differences between accounting and reality - positive is good, negative
+    is bad; this amount is added to profit on consolidation
+
+  The total worth of the material and virtual accounts should be equal.
+
 
 Useful SQL queries
 ------------------
