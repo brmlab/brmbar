@@ -19,6 +19,7 @@ Usage: brmbar-cli.py COMMAND ARGS...
 		You can use negative AMT to undo a sale.
 	restock ITEM AMT
  	userinfo USER
+	userlog USER TIMESTAMP
 	iteminfo ITEM
 
 2. Management commands
@@ -141,6 +142,14 @@ elif sys.argv[1] == "userinfo":
 
     res = db.execute_and_fetchall("SELECT barcode FROM barcodes WHERE account = %s", [acct.id])
     print("Barcodes: " + ", ".join(map((lambda r: r[0]), res)))
+
+elif sys.argv[1] == "userlog":
+    acct = load_user(sys.argv[2])
+    timestamp = sys.argv[3]
+
+    res = db.execute_and_fetchall("SELECT transactions.time,transactions.description FROM transactions INNER JOIN accounts ON accounts.id=transactions.responsible WHERE accounts.name=%s and time > TIMESTAMP %s ORDER BY time", [acct.name,timestamp])
+    for transaction in res:
+       print("{}\t{}\t".format(transaction[0],transaction[1]))
 
 elif sys.argv[1] == "iteminfo":
     acct = load_item(sys.argv[2])
