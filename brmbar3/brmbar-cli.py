@@ -147,9 +147,9 @@ elif sys.argv[1] == "userlog":
     acct = load_user(sys.argv[2])
     timestamp = sys.argv[3]
 
-    res = db.execute_and_fetchall("SELECT transactions.time,transactions.description FROM transactions INNER JOIN accounts ON accounts.id=transactions.responsible WHERE accounts.name=%s and time > TIMESTAMP %s ORDER BY time", [acct.name,timestamp])
+    res = db.execute_and_fetchall("SELECT * FROM transaction_cashsums WHERE responsible=%s and time > TIMESTAMP %s ORDER BY time", [acct.name,timestamp])
     for transaction in res:
-       print("{}\t{}\t".format(transaction[0],transaction[1]))
+       print('\t'.join([str(f) for f in transaction]))
 
 elif sys.argv[1] == "iteminfo":
     acct = load_item(sys.argv[2])
