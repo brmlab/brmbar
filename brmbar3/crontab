@@ -1,0 +1,15 @@
+# cleanup bounty
+*/5 * * * * ~/brmbar/brmbar3/uklid-watchdog.sh
+0 0 * * 1 ~/brmbar/brmbar3/uklid-refill.sh
+# overall summary
+5 4  *   *    *    ~/brmbar/brmbar3/daily-summary.sh | mail -s "daily brmbar summary" yyy@yyy
+# debt track
+5 0  *   *    *    ~/brmbar/brmbar3/dluhy.sh 2>/dev/null
+
+# per-user summary
+1 0 * * * /home/brmlab/brmbar/brmbar3/log.sh yyy yyy@yyy
+
+# backup
+6  * * * * echo "SELECT * FROM account_balances;" | psql brmbar | gzip -9 | ssh -Tp 110 -i /home/brmlab/.ssh/id_ecdsa jenda@coralmyn.hrach.eu
+16 1 * * * pg_dump brmbar | gzip -9 | ssh -Tp 110 -i /home/brmlab/.ssh/id_ecdsa jenda@coralmyn.hrach.eu
+
