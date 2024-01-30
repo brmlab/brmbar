@@ -100,8 +100,17 @@ Item {
     }
 
     function withdrawCredit() {
-        var balance = shop.withdrawCredit(amount, userdbid)
-        status_text.setStatus("Withdrawn! "+username+"'s credit is "+balance+".", "#ffff7c")
+        var balance=0
+	if (!isNaN(amount)) {
+	        amount=(amount*1)
+	        if(amount>=0) {
+	            balance = shop.withdrawCredit(amount, userdbid)
+	            status_text.setStatus("Withdrawn "+amount+"! "+username+"'s credit is "+balance+".", "#ffff7c")
+	        } else {  
+	            balance = shop.chargeCredit((amount*(-1)),userdbid)
+	            status_text.setStatus("Charged "+amount+"! "+username+"'s credit is "+balance+".", "#ffff7c")
+	        }
+	}
         loadPage("MainPage")
     }
 }
