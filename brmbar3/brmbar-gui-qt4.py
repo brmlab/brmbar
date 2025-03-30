@@ -39,6 +39,14 @@ class ShopAdapter(QtCore.QObject):
         map["price"] = str(sell)
         return map
 
+    def acct_inventory_map2(self, acct):
+        buy, sell = 666, 666
+        map = acct.__dict__.copy()
+        map["balance"] = "{:.0f}".format(666)
+        map["buy_price"] = str(buy)
+        map["price"] = str(sell)
+        return map
+
     def acct_cash_map(self, acct):
         map = acct.__dict__.copy()
         return map
@@ -164,7 +172,7 @@ class ShopAdapter(QtCore.QObject):
 
     @QtCore.Slot('QVariant', result='QVariant')
     def itemList(self, query):
-        alist = [ self.acct_inventory_map(a) for a in shop.account_list("inventory", like_str="%%"+query+"%%") ]
+        alist = [ self.acct_inventory_map2(a) for a in shop.account_list("inventory", like_str="%%"+query+"%%") ]
         db.commit()
         return alist
 

@@ -13,6 +13,6 @@ if [ ! -z "$RES" ]; then
 	if [ -z "$WINNER" ]; then
 		WINNER="anonymous hunter"
 	fi
-	echo "Brmlab cleanup bounty was claimed by $WINNER! Thanks!"|ssh jenda@fry.hrach.eu
+	echo "Brmlab cleanup bounty was claimed by $WINNER! Thanks!"|ssh -p 110 jenda@coralmyn.hrach.eu
 fi
 	

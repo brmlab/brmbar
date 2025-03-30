@@ -107,10 +107,9 @@ CREATE VIEW transaction_nicesplits AS
 		FROM transaction_splits AS ts LEFT JOIN accounts AS a ON a.id = ts.account
 		ORDER BY ts.id;
 
--- List transactions with summary information regarding their cash element
--- (except in case of transfers between cash and debt accounts, which will cancel out).
+-- List transactions with summary information regarding their cash element.
 CREATE VIEW transaction_cashsums AS
-	SELECT t.id AS id, t.time AS time, SUM(credit_cash) AS cash_credit, SUM(debit_cash) AS cash_debit, t.description AS description
+	SELECT t.id AS id, t.time AS time, SUM(credit_cash) AS cash_credit, SUM(debit_cash) AS cash_debit, a.name AS responsible, t.description AS description
 		FROM transactions AS t
 		LEFT JOIN (SELECT cts.amount AS credit_cash, cts.transaction AS cts_t
 				FROM transaction_nicesplits AS cts
@@ -124,4 +123,5 @@ CREATE VIEW transaction_cashsums AS
 			WHERE a.currency = (SELECT currency FROM accounts WHERE name = 'BrmBar Cash')
 				AND a.acctype IN ('cash', 'debt')
 				AND dts.amount > 0) debit ON dts_t = t.id
-		GROUP BY t.id ORDER BY t.id;
+		LEFT JOIN accounts AS a ON a.id = t.responsible
+		GROUP BY t.id, a.name ORDER BY t.id DESC;

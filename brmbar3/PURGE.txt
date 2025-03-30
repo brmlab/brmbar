@@ -1,0 +1,64 @@
+How to "reset" the database - drop all history and keep only accounts with non-zero balance.
+
+Legend:
+> - SQL commands
+$ - shell commands
+
+Run the (full) inventory.
+
+Get number of the first inventory TX.
+
+> select id from account_balances where id in (select id from accounts where currency not in (select distinct currency from
+               transaction_nicesplits where transaction >= NUMBER_HERE and currency != 1 and memo like '%Inventory fix%') and acctype = 'inventory') and crbalance != 0 \g 'vynulovat'
+$ ./brmbar-cli.py inventory `cat vynulovat  | while read x; do echo $x 0; done`
+
+Backup the database
+$ pg_dump brmbar > backup.sql
+
+Dump "> SELECT * FROM account_balances;" to file N.
+
+Dump inventory to file nastavit FIXME.
+
+Drop all transactions:
+> delete from transaction_splits;
+> delete from transactions;
+
+Restore inventory:
+$ cat nastavit | while read acc p amt; do ./brmbar-cli.py inventory $acc `echo $amt | grep -oE "^[0-9-]+"`; done
+
+Restore cash balance:
+$ cat N | grep debt | tr -s " " |cut -d \| -f 2,4 | while read acc p amt; do ./brmbar-cli.py changecredit $acc `echo $amt | grep -oE "^[0-9-]+"`; done
+
+Delete zero-balance accounts:
+> delete from accounts where accounts.id not in (select id from account_balances);
+
+Delete orphaned barcodes:
+> delete from barcodes where barcodes.account not in (select id from account_balances);
+
+Delete orphaned currencies and exchange rates:
+> CREATE OR REPLACE VIEW "a_tmp" AS
+SELECT ts.account AS id, accounts.name, accounts.acctype, accounts.currency AS fff, (- sum(CASE WHEN (ts.side = 'credit'::transaction_split_side) THEN (- ts.amount) ELSE ts.amount END)) AS crbalance FROM (transaction_splits ts LEFT JOIN accounts ON ((accounts.id = ts.account))) GROUP BY ts.account, accounts.name, accounts.id, accounts.acctype ORDER BY (- sum(CASE WHEN (ts.side = 'credit'::transaction_split_side) THEN (- ts.amount) ELSE ts.amount END));
+
+> delete from exchange_rates where source not in (select fff from a_tmp);
+> delete from currencies where id not in (select fff from a_tmp);
+
+> DROP VIEW "a_tmp";
+
+Drop obsolete exchange rates:
+
+> delete from exchange_rates where 
+ valid_since <> (SELECT max(valid_since) 
+                              FROM exchange_rates e
+                              WHERE e.target  = exchange_rates.target and e.source = exchange_rates.source)
+
+Restore system accounts:
+> INSERT INTO "accounts" ("name", "currency", "acctype", "active")
+   VALUES ('BrmBar Profits', '1', 'income', '1');
+> INSERT INTO "accounts" ("name", "currency", "acctype", "active")
+   VALUES ('BrmBar Excess', '1', 'income', '1');
+> INSERT INTO "accounts" ("name", "currency", "acctype", "active")
+   VALUES ('BrmBar Deficit', '1', 'expense', '1');
+> INSERT INTO "accounts" ("name", "currency", "acctype", "active")
+   VALUES ('BrmBar Cash', '1', 'cash', '1');
+
+Restart brmbar.

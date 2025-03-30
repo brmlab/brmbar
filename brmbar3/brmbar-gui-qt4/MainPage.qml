@@ -58,6 +58,6 @@ Item {
         x: 65
         y: 438
         width: 1150
-        text: "* Mroze a Termixy najdes v lednici *"
+        text: "* Za uklid brmlabu vam nabijeme kredit. *"
     }
 }

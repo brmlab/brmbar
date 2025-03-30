@@ -107,7 +107,7 @@ Item {
 	            status_text.setStatus("Charged "+amount+"! "+username+"'s credit is "+balance+".", "#ffff7c")
 	          } else {
 	            balance = shop.withdrawCredit((amount*(-1)), userdbid)
-	            status_text.setStatus("Withdrawn "+amount+"! "+username+"'s credit is "+balance+".", "#ffff7c")            
+	            status_text.setStatus("Withdrawn "+amount+"! "+username+"'s credit is "+balance+".", "#ffff7c")
 	        }
 	}
         loadPage("MainPage")

@@ -97,6 +97,12 @@ def load_item(inp):
         exit(1)
     return acct
 
+def load_item_by_barcode(inp):
+    acct = brmbar.Account.load_by_barcode(db, inp)
+    if acct.acctype != "inventory":
+        print("Bad EAN " + inp + " type " + acct.acctype, file=sys.stderr)
+        exit(1)
+    return acct
 
 db = Database.Database("dbname=brmbar")
 shop = brmbar.Shop.new_with_defaults(db)
@@ -147,9 +153,9 @@ elif sys.argv[1] == "userlog":
     acct = load_user(sys.argv[2])
     timestamp = sys.argv[3]
 
-    res = db.execute_and_fetchall("SELECT transactions.time,transactions.description FROM transactions INNER JOIN accounts ON accounts.id=transactions.responsible WHERE accounts.name=%s and time > TIMESTAMP %s ORDER BY time", [acct.name,timestamp])
+    res = db.execute_and_fetchall("SELECT * FROM transaction_cashsums WHERE responsible=%s and time > TIMESTAMP %s ORDER BY time", [acct.name,timestamp])
     for transaction in res:
-       print("{}\t{}\t".format(transaction[0],transaction[1]))
+       print('\t'.join([str(f) for f in transaction]))
 
 elif sys.argv[1] == "iteminfo":
     acct = load_item(sys.argv[2])
@@ -245,16 +251,16 @@ elif sys.argv[1] == "consolidate":
     else:
         shop.consolidate()
 
-elif sys.argv[1] == "restock":
+elif sys.argv[1] in {"restock", "restock_ean"}:
     if (len(sys.argv) != 4):
         print ("Invalid number of parameters, check your parameters.")
     else:
-        iacct = load_item(sys.argv[2])
+        iacct = (load_item if sys.argv[1] == "restock" else load_item_by_barcode)(sys.argv[2])
         oldbal = iacct.balance()
         amt = int(sys.argv[3])
         cash = shop.buy_for_cash(iacct, amt);
         print("Old amount {}, increased by {}, take {} from cashbox".format(oldbal, amt, cash))
-       
+
 
 else:
     help()
