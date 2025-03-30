@@ -1,0 +1,8 @@
+Accounts with multiple barcodes:
+
+SELECT accounts.name,barcodes.account,barcodes.barcode
+FROM "barcodes"
+join accounts on accounts.id = barcodes.account
+where barcodes.account in (select a from (select count(*) as c, account as a from barcodes group by account) as dt where c > 1)
+ORDER BY "account" DESC
+

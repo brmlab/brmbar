@@ -1,3 +1,3 @@
 p1=`echo -n "brmbar - dluhy: "; echo "SELECT name, crbalance FROM account_balances WHERE acctype = 'debt' AND crbalance < -100 AND name NOT LIKE '%overflow%' AND name NOT LIKE 'sachyo' ORDER BY crbalance ASC" | psql brmbar | tail -n +3 | grep '|' | tr -s " " | sed -e "s/ |/:/g" -e "s/$/;/" | tr -d "\n"`
 p2=`echo "SELECT sum(crbalance) FROM account_balances WHERE acctype = 'debt' AND crbalance < 0 AND name NOT LIKE '%overflow%' AND name NOT LIKE 'sachyo'" | psql brmbar | tail -n +3 | head -n 1 | tr -s " "`
-echo "$p1 total$p2 Kc" | ssh -p 110 -i /home/brmlab/.ssh/id_rsa jenda@coralmyn.hrach.eu 
+echo "$p1 total$p2 Kc. https://www.elektro-obojky.cz/" | ssh -p 110 -i /home/brmlab/.ssh/id_rsa jenda@coralmyn.hrach.eu
