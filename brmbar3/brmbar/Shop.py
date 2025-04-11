@@ -219,14 +219,15 @@ class Shop:
         self.db.commit()
 
     def undo(self, oldtid):
-        description = self.db.execute_and_fetch("SELECT description FROM transactions WHERE id = %s", [oldtid])[0]
-        description = 'undo %d (%s)' % (oldtid, description)
+        #description = self.db.execute_and_fetch("SELECT description FROM transactions WHERE id = %s", [oldtid])[0]
+        #description = 'undo %d (%s)' % (oldtid, description)
 
-        transaction = self._transaction(description=description)
-        for split in self.db.execute_and_fetchall("SELECT id, side, account, amount, memo FROM transaction_splits WHERE transaction = %s", [oldtid]):
-            splitid, side, account, amount, memo = split
-            memo = 'undo %d (%s)' % (splitid, memo)
-            amount = -amount
-            self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, account, amount, memo])
+        #transaction = self._transaction(description=description)
+        #for split in self.db.execute_and_fetchall("SELECT id, side, account, amount, memo FROM transaction_splits WHERE transaction = %s", [oldtid]):
+        #    splitid, side, account, amount, memo = split
+        #    memo = 'undo %d (%s)' % (splitid, memo)
+        #    amount = -amount
+        #    self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, account, amount, memo])
+        transaction = self.db.execute_and_fetch("CALL undo_transaction(%s)",[oldtid])[0]
         self.db.commit()
         return transaction
