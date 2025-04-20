@@ -23,6 +23,9 @@
 -- CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 --
 
+-- Require fully-qualified names
+SELECT pg_catalog.set_config('search_path', '', false);
+
 DO $upgrade_block$
 BEGIN
 

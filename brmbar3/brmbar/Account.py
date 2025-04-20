@@ -40,7 +40,8 @@ class Account:
     @classmethod
     def create(cls, db, name, currency, acctype):
         """ Constructor for new account """
-        id = db.execute_and_fetch("INSERT INTO accounts (name, currency, acctype) VALUES (%s, %s, %s) RETURNING id", [name, currency.id, acctype])
+        # id = db.execute_and_fetch("INSERT INTO accounts (name, currency, acctype) VALUES (%s, %s, %s) RETURNING id", [name, currency.id, acctype])
+        id = db.execute_and_fetch("SELECT public.create_account(%s, %s, %s)", [name, currency.id, acctype])
         id = id[0]
         return cls(db, name = name, id = id, currency = currency, acctype = acctype)
 
