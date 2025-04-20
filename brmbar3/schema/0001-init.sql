@@ -1,5 +1,5 @@
 --
--- 0000-init.sql
+-- 0001-init.sql
 --
 -- Initial SQL schema construction as of 2025-04-20 (or so)
 --
@@ -273,7 +273,7 @@ BEGIN
 
     CREATE OR REPLACE FUNCTION brmbar_privileged.has_exact_schema_version(
 	    IN i_ver INTEGER
-    ) RETURNS INTEGER
+    ) RETURNS BOOLEAN
     VOLATILE  NOT LEAKPROOF  LANGUAGE plpgsql AS $x$
     DECLARE
 	    v_ver INTEGER;
@@ -292,7 +292,7 @@ BEGIN
 
     CREATE OR REPLACE FUNCTION brmbar_privileged.upgrade_schema_version_to(
 	    IN i_ver INTEGER
-    ) RETURNS INTEGER
+    ) RETURNS VOID
     VOLATILE  NOT LEAKPROOF  LANGUAGE plpgsql AS $x$
     DECLARE
 	    v_ver INTEGER;
