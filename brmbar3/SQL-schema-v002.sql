@@ -1,80 +1,61 @@
--- intoduce implementation schema
-CREATE SCHEMA IF NOT EXISTS brmbar_implementation;
--- version table (with initialization)
-CREATE TABLE IF NOT EXISTS brmbar_implementation.brmbar_schema (
-	ver INTEGER NOT NULL
-);
-DO $$
-DECLARE v INTEGER;
-BEGIN
-	SELECT ver FROM brmbar_implementation.brmbar_schema INTO v;
-	IF v IS NULL THEN
-		INSERT INTO brmbar_implementation.brmbar_schema (ver) VALUES (1);
-	END IF;
-END;
-$$;
-
+--RESET search_path
+SELECT pg_catalog.set_config('search_path', '', false);
 
 --- upgrade schema
-DO $$
+DO $upgrade_block$
 DECLARE
 current_ver INTEGER;
 BEGIN
 
-SELECT ver FROM brmbar_implementation.brmbar_schema INTO current_ver;
+-- confirm that we are upgrading from version 1
+SELECT brmbar_implementation.has_exact_schema_version(1) INTO current_ver;
 IF current_ver <> 1 THEN
 	RAISE EXCEPTION 'BrmBar schema version % cannot be upgraded to version 2.', current_ver;
 END IF;
 
-ALTER TYPE public.account_type ADD VALUE 'trading';
+-- structural changes
 
---drop function if exists public.create_currency;
-CREATE OR REPLACE PROCEDURE public.create_currency(
-	IN i_name public.currencies.name%TYPE,
-	OUT o_id public.currencies.id%TYPE)
-LANGUAGE plpgsql SECURITY DEFINER AS $fn$
-BEGIN
-        INSERT INTO currencies ("name") VALUES (i_name) RETURNING o_id;
-END
-$fn$;
+-- TRADING ACCOUNTS
+--START TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
-CREATE OR REPLACE PROCEDURE public.undo_transaction(
-	IN i_id public.transactions.id%TYPE,
-	OUT o_id public.transactions.id%TYPE)
-LANGUAGE plpgsql SECURITY DEFINER AS $fn$
-DECLARE
-	v_ntrn_id public.transactions.id%TYPE;
-	v_old_trn public.transactions%ROWTYPE;
-	v_old_split public.transaction_splits%ROWTYPE;
-BEGIN
-	SELECT * INTO v_old_trn FROM public.transactions WHERE id = i_id;
-        INSERT INTO transactions ("description") VALUES ('undo '||o_id||' ('||v_old_trn.description||')') RETURNING id into v_ntrn_id;
-	FOR v_old_split IN
-		SELECT * FROM transaction_splits WHERE "transaction" = i_id
-	LOOP
-		INSERT INTO transaction_splits ("transaction", "side", "account", "amount", "memo")
-		VALUES (v_ntrn_id, v_old_split.side, v_old_split.account, -v_old_split.amount,
-			'undo ' || v_old_split.id || ' (' || v_old_split.memo || ')' );
-	END LOOP;
-	o_id := v_ntrn_id;
-END
-$fn$;
+-- currency trading accounts - account type
+ALTER TYPE public.account_type ADD VALUE IF NOT EXISTS 'trading';
 
--- this is for the case that psycopg2 cannot do output arguments
-CREATE OR REPLACE FUNCTION public.undo_transaction_fn(
-	IN i_id public.transactions.id%TYPE)
-RETURNS public.transactions.id%TYPE
-VOLATILE  NOT LEAKPROOF  LANGUAGE plpgsql AS $fn$
-DECLARE
-	v_ntrn_id public.transactions.id%TYPE;
-BEGIN
-	CALL public.undo_transaction(i_id, v_ntrn_id);
-	RETURN v_ntrn_id;
-END
-$fn$;
+-- constraint needed for foreign key in currencies table
+ALTER TABLE public.accounts ADD CONSTRAINT accounts_id_acctype_key UNIQUE(id, acctype);
+
+-- add columns to currencies to record the trading account associated with the currency
+ALTER TABLE public.currencies
+	ADD COLUMN IF NOT EXISTS trading_account integer,
+	ADD COLUMN IF NOT EXISTS trading_account_type account_type GENERATED ALWAYS AS ('trading'::public.account_type) STORED;
+
+-- make trading accounts (without making duplicates)
+INSERT INTO public.accounts ("name", "currency", acctype)
+SELECT
+	'Currency Trading Account: ' || c."name",
+	c.id,
+	'trading'::public.account_type
+FROM public.currencies AS c
+WHERE NOT EXISTS (
+	SELECT 1
+	FROM public.accounts a
+	WHERE a.currency = c.id AND a.acctype = 'trading'::public.account_type
+);
 
 
+-- record the trading account IDs in currencies table
+UPDATE public.currencies AS c SET (trading_account) = (SELECT a.id FROM public.accounts AS a WHERE a.currency = c.id AND c.acctype = 'trading'::public.account_type);
+
+-- foreign key to check the validity of currency trading account reference
+ALTER TABLE public.currencies
+	ADD CONSTRAINT currencies_trading_fkey FOREIGN KEY (trading_account, trading_account_type)
+		REFERENCES xaccounts(id,acctype) DEFERRABLE INITIALLY DEFERRED;
+
+--COMMIT AND CHAIN;
+
+SELECT brmbar_implementation.upgrade_schema_version_to(2) INTO current_ver;
 -- end of upgrade do block
 end
-$$;
+$upgrade_block$;
 
+-- vim: set ft=plsql :
