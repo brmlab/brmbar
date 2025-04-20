@@ -1,11 +1,11 @@
-CREATE SEQUENCE currencies_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE currencies_id_seq START WITH 2 INCREMENT BY 1;
 CREATE TABLE currencies (
 	id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('currencies_id_seq'::regclass),
 	name VARCHAR(128) NOT NULL,
 	UNIQUE(name)
 );
 -- Some code depends on the primary physical currency to have id 1.
-INSERT INTO currencies (name) VALUES ('Kč');
+INSERT INTO currencies (id, name) VALUES (1, 'Kč');
 
 CREATE TYPE exchange_rate_direction AS ENUM ('source_to_target', 'target_to_source');
 CREATE TABLE exchange_rates (
