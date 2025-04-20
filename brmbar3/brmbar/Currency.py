@@ -71,7 +71,9 @@ class Currency:
 
     def update_sell_rate(self, target, rate):
         # self.db.execute("INSERT INTO exchange_rates (source, target, rate, rate_dir) VALUES (%s, %s, %s, %s)", [self.id, target.id, rate, "source_to_target"])
-        self.db.execute("SELECT update_currency_sell_rate(%s, %s, %s)",
+        self.db.execute("SELECT public.update_currency_sell_rate(%s, %s, %s)",
                         [self.id, target.id, rate])
     def update_buy_rate(self, source, rate):
-        self.db.execute("INSERT INTO exchange_rates (source, target, rate, rate_dir) VALUES (%s, %s, %s, %s)", [source.id, self.id, rate, "target_to_source"])
+        # self.db.execute("INSERT INTO exchange_rates (source, target, rate, rate_dir) VALUES (%s, %s, %s, %s)", [source.id, self.id, rate, "target_to_source"])
+        self.db.execute("SELECT public.update_currency_buy_rate(%s, %s, %s)",
+                        [source.id, self.id, rate])
