@@ -69,7 +69,8 @@ class Account:
         self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, self.id, amount, memo])
 
     def add_barcode(self, barcode):
-        self.db.execute("INSERT INTO barcodes (account, barcode) VALUES (%s, %s)", [self.id, barcode])
+        # self.db.execute("INSERT INTO barcodes (account, barcode) VALUES (%s, %s)", [self.id, barcode])
+        self.db.execute("SELECT public.add_barcode_to_account(%s, %s)", [self.id, barcode])
         self.db.commit()
 
     def rename(self, name):
