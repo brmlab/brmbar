@@ -25,18 +25,25 @@ class Shop:
             deficit = Account.load(db, name = "BrmBar Deficit"))
 
     def sell(self, item, user, amount = 1):
-        # Sale: Currency conversion from item currency to shop currency
-        (buy, sell) = item.currency.rates(self.currency)
-        cost = amount * sell
-        profit = amount * (sell - buy)
+        # Call the stored procedure for the sale
+        cost = self.db.execute_and_fetch(
+            "SELECT public.sell_item(%s, %s, %s, %s, %s)",
+            [item.id, amount, user.id, self.currency.id, f"BrmBar sale of {amount}x {item.name} to {user.name}"]
+        )[0]#[0]
 
-        transaction = self._transaction(responsible = user, description = "BrmBar sale of {}x {} to {}".format(amount, item.name, user.name))
-        item.credit(transaction, amount, user.name)
-        user.debit(transaction, cost, item.name) # debit (increase) on a _debt_ account
-        self.profits.debit(transaction, profit, "Margin on " + item.name)
         self.db.commit()
-
         return cost
+        # Sale: Currency conversion from item currency to shop currency
+        #(buy, sell) = item.currency.rates(self.currency)
+        #cost = amount * sell
+        #profit = amount * (sell - buy)
+
+        #transaction = self._transaction(responsible = user, description = "BrmBar sale of {}x {} to {}".format(amount, item.name, user.name))
+        #item.credit(transaction, amount, user.name)
+        #user.debit(transaction, cost, item.name) # debit (increase) on a _debt_ account
+        #self.profits.debit(transaction, profit, "Margin on " + item.name)
+        #self.db.commit()
+        #return cost
 
     def sell_for_cash(self, item, amount = 1):
         # Sale: Currency conversion from item currency to shop currency
