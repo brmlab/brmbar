@@ -74,5 +74,6 @@ class Account:
         self.db.commit()
 
     def rename(self, name):
-        self.db.execute("UPDATE accounts SET name = %s WHERE id = %s", [name, self.id])
+        # self.db.execute("UPDATE accounts SET name = %s WHERE id = %s", [name, self.id])
+        self.db.execute("SELECT public.rename_account(%s, %s)", [self.id, name])
         self.name = name
