@@ -31,8 +31,9 @@ class Currency:
     @classmethod
     def create(cls, db, name):
         """ Constructor for new currency """
-        id = db.execute_and_fetch("INSERT INTO currencies (name) VALUES (%s) RETURNING id", [name])
-        id = id[0]
+        # id = db.execute_and_fetch("INSERT INTO currencies (name) VALUES (%s) RETURNING id", [name])
+        id = db.execute_and_fetch("SELECT public.create_currency(%s)", [name])
+        # id = id[0]
         return cls(db, name = name, id = id)
 
     def rates(self, other):
