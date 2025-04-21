@@ -31,21 +31,6 @@ BEGIN
 
 IF brmbar_privileged.has_exact_schema_version(18) THEN
 
-CREATE OR REPLACE FUNCTION public.compute_account_balance(
-	i_account_id public.accounts.id%TYPE
-) RETURNS NUMERIC
-LANGUAGE plpgsql
-AS $$
-DECLARE
-	v_crsum NUMERIC;
-	v_dbsum NUMERIC;
-BEGIN
-	SELECT COALESCE(SUM(CASE WHEN side='credit' THEN amount ELSE 0 END),0) crsum INTO v_crsum,
-	COALESCE(SUM(CASE WHEN side='debit' THEN amount ELSE 0 END),0) dbsum into v_dbsum
-	FROM public.transaction_splits ts WHERE ts.account=4
-	RETURN v_dbsum - v_crsum;
-END; $$;
-
 CREATE OR REPLACE FUNCTION public.make_consolidate_transaction(
 	i_excess_id public.accounts.id%TYPE,
 	i_deficit_id public.accounts.id%TYPE,

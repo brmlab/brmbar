@@ -202,30 +202,37 @@ class Shop:
         return accts
 
     def fix_inventory(self, item, amount):
-        amount_in_reality = amount
-        amount_in_system = item.balance()
-        (buy, sell) = item.currency.rates(self.currency)
+        rv = self.db.execute_and_fetch(
+            "SELECT public.fix_inventory(%s, %s, %s, %s, %s, %s)",
+            [item.id, item.currency.id, self.excess.id, self.deficit.id, self.currency.id, amount]
+        )[0]
 
-        diff = abs(amount_in_reality - amount_in_system)
-        buy_total = buy * diff
-        if amount_in_reality > amount_in_system:
-            transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
-            item.debit(transaction, diff, "Inventory fix excess")
-            self.excess.credit(transaction, buy_total, "Inventory fix excess " + item.name)
-            self.db.commit()
-            return True
-        elif amount_in_reality < amount_in_system:
-            transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
-            item.credit(transaction, diff, "Inventory fix deficit")
-            self.deficit.debit(transaction, buy_total, "Inventory fix deficit " + item.name)
-            self.db.commit()
-            return True
-        else:
-            transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
-            item.debit(transaction, 0, "Inventory fix - amount was correct")
-            item.credit(transaction, 0, "Inventory fix - amount was correct")
-            self.db.commit()
-            return False
+        self.db.commit()
+        return rv
+        #amount_in_reality = amount
+        #amount_in_system = item.balance()
+        #(buy, sell) = item.currency.rates(self.currency)
+
+        #diff = abs(amount_in_reality - amount_in_system)
+        #buy_total = buy * diff
+        #if amount_in_reality > amount_in_system:
+        #    transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
+        #    item.debit(transaction, diff, "Inventory fix excess")
+        #    self.excess.credit(transaction, buy_total, "Inventory fix excess " + item.name)
+        #    self.db.commit()
+        #    return True
+        #elif amount_in_reality < amount_in_system:
+        #    transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
+        #    item.credit(transaction, diff, "Inventory fix deficit")
+        #    self.deficit.debit(transaction, buy_total, "Inventory fix deficit " + item.name)
+        #    self.db.commit()
+        #    return True
+        #else:
+        #    transaction = self._transaction(description = "BrmBar inventory fix of {}pcs {} in system to {}pcs in reality".format(amount_in_system, item.name,amount_in_reality))
+        #    item.debit(transaction, 0, "Inventory fix - amount was correct")
+        #    item.credit(transaction, 0, "Inventory fix - amount was correct")
+        #    self.db.commit()
+        #    return False
 
     def fix_cash(self, amount):
         amount_in_reality = amount
