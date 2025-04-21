@@ -68,14 +68,20 @@ class Shop:
 
     def undo_sale(self, item, user, amount = 1):
         # Undo sale; rarely needed
-        (buy, sell) = item.currency.rates(self.currency)
-        cost = amount * sell
-        profit = amount * (sell - buy)
+        #(buy, sell) = item.currency.rates(self.currency)
+        #cost = amount * sell
+        #profit = amount * (sell - buy)
 
-        transaction = self._transaction(responsible = user, description = "BrmBar sale UNDO of {}x {} to {}".format(amount, item.name, user.name))
-        item.debit(transaction, amount, user.name + " (sale undo)")
-        user.credit(transaction, cost, item.name + " (sale undo)")
-        self.profits.credit(transaction, profit, "Margin repaid on " + item.name)
+        #transaction = self._transaction(responsible = user, description = "BrmBar sale UNDO of {}x {} to {}".format(amount, item.name, user.name))
+        #item.debit(transaction, amount, user.name + " (sale undo)")
+        #user.credit(transaction, cost, item.name + " (sale undo)")
+        #self.profits.credit(transaction, profit, "Margin repaid on " + item.name)
+        # Call the stored procedure for undoing a sale
+        cost = self.db.execute_and_fetch(
+            "SELECT public.undo_sale_of_item(%s,  %s, %s, %s)",
+            [item.id, amount, user.id, user.currency.id, f"BrmBar sale UNDO of {amount}x {item.name} to {user.name}"]
+        )[0]#[0]
+
         self.db.commit()
 
         return cost
