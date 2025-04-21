@@ -29,7 +29,7 @@ SELECT pg_catalog.set_config('search_path', '', false);
 DO $upgrade_block$
 BEGIN
 
-IF brmbar_privileged.has_exact_schema_version(9) THEN
+IF brmbar_privileged.has_exact_schema_version(14) THEN
 
 CREATE OR REPLACE FUNCTION public.buy_for_cash(
 	i_cash_account_id public.accounts.id%TYPE,
@@ -73,7 +73,7 @@ BEGIN
 END;
 $$;
 
-PERFORM brmbar_privileged.upgrade_schema_version_to(10);
+PERFORM brmbar_privileged.upgrade_schema_version_to(15);
 END IF;
 
 END;

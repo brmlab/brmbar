@@ -29,7 +29,7 @@ SELECT pg_catalog.set_config('search_path', '', false);
 DO $upgrade_block$
 BEGIN
 
-IF brmbar_privileged.has_exact_schema_version(9) THEN
+IF brmbar_privileged.has_exact_schema_version(15) THEN
 
 CREATE OR REPLACE FUNCTION public.receipt_reimbursement(
 	i_profits_id public.accounts.id%TYPE,
@@ -55,7 +55,7 @@ BEGIN
 END;
 $$;
 
-PERFORM brmbar_privileged.upgrade_schema_version_to(10);
+PERFORM brmbar_privileged.upgrade_schema_version_to(16);
 END IF;
 
 END;

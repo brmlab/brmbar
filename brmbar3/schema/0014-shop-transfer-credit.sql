@@ -29,7 +29,7 @@ SELECT pg_catalog.set_config('search_path', '', false);
 DO $upgrade_block$
 BEGIN
 
-IF brmbar_privileged.has_exact_schema_version(12) THEN
+IF brmbar_privileged.has_exact_schema_version(13) THEN
 
 CREATE OR REPLACE FUNCTION public.transfer_credit(
 	i_cash_account_id public.accounts.id%TYPE,
@@ -49,7 +49,7 @@ $$;
 
 
 
-PERFORM brmbar_privileged.upgrade_schema_version_to(13);
+PERFORM brmbar_privileged.upgrade_schema_version_to(14);
 END IF;
 
 END;
