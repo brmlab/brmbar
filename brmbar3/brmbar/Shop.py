@@ -87,12 +87,11 @@ class Shop:
         return cost
 
     def add_credit(self, credit, user):
-        trn = self.db.execute_and_fetch(
+        self.db.execute_and_fetch(
             "SELECT public.add_credit(%s,  %s, %s, %s)",
             [self.cash.id, credit, user.id, user.name]
-        )[0]
+        )
         self.db.commit()
-        return trn # unused
 
         #transaction = self._transaction(responsible = user, description = "BrmBar credit replenishment for " + user.name)
         #self.cash.debit(transaction, credit, user.name)
@@ -100,20 +99,24 @@ class Shop:
         #self.db.commit()
 
     def withdraw_credit(self, credit, user):
-        trn = self.db.execute_and_fetch(
+        self.db.execute_and_fetch(
             "SELECT public.withdraw_credit(%s,  %s, %s, %s)",
             [self.cash.id, credit, user.id, user.name]
-        )[0]
+        )
         self.db.commit()
-        return trn # unused
         #transaction = self._transaction(responsible = user, description = "BrmBar credit withdrawal for " + user.name)
         #self.cash.credit(transaction, credit, user.name)
         #user.debit(transaction, credit, "Credit withdrawal")
         #self.db.commit()
 
     def transfer_credit(self, userfrom, userto, amount):
-        self.add_credit(amount, userto)
-        self.withdraw_credit(amount, userfrom)
+        self.db.execute_and_fetch(
+            "SELECT public.transfer_credit(%s,  %s, %s, %s)",
+            [self.cash.id, credit, user.id, user.name]
+        )
+        self.db.commit()
+        #self.add_credit(amount, userto)
+        #self.withdraw_credit(amount, userfrom)
 
     def buy_for_cash(self, item, amount = 1):
         # Buy: Currency conversion from item currency to shop currency
