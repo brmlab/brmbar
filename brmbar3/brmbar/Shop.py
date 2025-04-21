@@ -248,18 +248,23 @@ class Shop:
             return False
 
     def consolidate(self):
-        transaction = self._transaction(description = "BrmBar inventory consolidation")
-
-        excess_balance = self.excess.balance()
-        if excess_balance != 0:
-            print("Excess balance {} debited to profit".format(-excess_balance))
-            self.excess.debit(transaction, -excess_balance, "Excess balance added to profit.")
-            self.profits.debit(transaction, -excess_balance, "Excess balance added to profit.")
-        deficit_balance = self.deficit.balance()
-        if deficit_balance != 0:
-            print("Deficit balance {} credited to profit".format(deficit_balance))
-            self.deficit.credit(transaction, deficit_balance, "Deficit balance removed from profit.")
-            self.profits.credit(transaction, deficit_balance, "Deficit balance removed from profit.")
+        msg = self.db.execute_and_fetch(
+            "SELECT public.make_consolidate_transaction(%s, %s, %s)",
+            [self.excess.id, self.deficit.id, self.profits.id]
+        )[0]
+        #transaction = self._transaction(description = "BrmBar inventory consolidation")
+        #excess_balance = self.excess.balance()
+        #if excess_balance != 0:
+        #    print("Excess balance {} debited to profit".format(-excess_balance))
+        #    self.excess.debit(transaction, -excess_balance, "Excess balance added to profit.")
+        #    self.profits.debit(transaction, -excess_balance, "Excess balance added to profit.")
+        #deficit_balance = self.deficit.balance()
+        #if deficit_balance != 0:
+        #    print("Deficit balance {} credited to profit".format(deficit_balance))
+        #    self.deficit.credit(transaction, deficit_balance, "Deficit balance removed from profit.")
+        #    self.profits.credit(transaction, deficit_balance, "Deficit balance removed from profit.")
+        if msg != None:
+            print(msg)
         self.db.commit()
 
     def undo(self, oldtid):

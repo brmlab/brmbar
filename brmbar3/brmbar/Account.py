@@ -46,11 +46,16 @@ class Account:
         return cls(db, name = name, id = id, currency = currency, acctype = acctype)
 
     def balance(self):
-        debit = self.db.execute_and_fetch("SELECT SUM(amount) FROM transaction_splits WHERE account = %s AND side = %s", [self.id, 'debit'])
-        debit = debit[0] or 0
-        credit = self.db.execute_and_fetch("SELECT SUM(amount) FROM transaction_splits WHERE account = %s AND side = %s", [self.id, 'credit'])
-        credit = credit[0] or 0
-        return debit - credit
+        bal = self.db.execute_and_fetch(
+            "SELECT public.compute_account_balance(%s)",
+            [self.id]
+        )[0]
+        return bal
+        #debit = self.db.execute_and_fetch("SELECT SUM(amount) FROM transaction_splits WHERE account = %s AND side = %s", [self.id, 'debit'])
+        #debit = debit[0] or 0
+        #credit = self.db.execute_and_fetch("SELECT SUM(amount) FROM transaction_splits WHERE account = %s AND side = %s", [self.id, 'credit'])
+        #credit = credit[0] or 0
+        #return debit - credit
 
     def balance_str(self):
         return self.currency.str(self.balance())
