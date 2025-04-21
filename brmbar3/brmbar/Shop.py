@@ -277,6 +277,6 @@ class Shop:
         #    memo = 'undo %d (%s)' % (splitid, memo)
         #    amount = -amount
         #    self.db.execute("INSERT INTO transaction_splits (transaction, side, account, amount, memo) VALUES (%s, %s, %s, %s, %s)", [transaction, side, account, amount, memo])
-        transaction = self.db.execute_and_fetch("CALL undo_transaction(%s)",[oldtid])[0]
+        transaction = self.db.execute_and_fetch("SELECT public.undo_transaction(%s)",[oldtid])[0]
         self.db.commit()
         return transaction
