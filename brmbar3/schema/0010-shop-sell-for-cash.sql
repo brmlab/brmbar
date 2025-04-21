@@ -1,5 +1,5 @@
 --
--- 0009-shop-sell.sql
+-- 0010-shop-sell-for-cash.sql
 --
 -- #10 - stored function for cash sell transaction
 --
