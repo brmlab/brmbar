@@ -46,18 +46,25 @@ class Shop:
         #return cost
 
     def sell_for_cash(self, item, amount = 1):
-        # Sale: Currency conversion from item currency to shop currency
-        (buy, sell) = item.currency.rates(self.currency)
-        cost = amount * sell
-        profit = amount * (sell - buy)
+        cost = self.db.execute_and_fetch(
+            "SELECT public.sell_item_for_cash(%s, %s, %s, %s, %s)",
+            [item.id, amount, user.id, self.currency.id, f"BrmBar sale of {amount}x {item.name} for cash"]
+        )[0]#[0]
 
-        transaction = self._transaction(description = "BrmBar sale of {}x {} for cash".format(amount, item.name))
-        item.credit(transaction, amount, "Cash")
-        self.cash.debit(transaction, cost, item.name)
-        self.profits.debit(transaction, profit, "Margin on " + item.name)
         self.db.commit()
-
         return cost
+        ## Sale: Currency conversion from item currency to shop currency
+        #(buy, sell) = item.currency.rates(self.currency)
+        #cost = amount * sell
+        #profit = amount * (sell - buy)
+
+        #transaction = self._transaction(description = "BrmBar sale of {}x {} for cash".format(amount, item.name))
+        #item.credit(transaction, amount, "Cash")
+        #self.cash.debit(transaction, cost, item.name)
+        #self.profits.debit(transaction, profit, "Margin on " + item.name)
+        #self.db.commit()
+
+        #return cost
 
     def undo_sale(self, item, user, amount = 1):
         # Undo sale; rarely needed
