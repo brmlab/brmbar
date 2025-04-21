@@ -86,7 +86,7 @@ DECLARE
 	new_transaction_id public.transactions%TYPE;
 BEGIN
 	-- Create a new transaction
-	INSERT INTO transactions (responsible, description)
+	INSERT INTO public.transactions (responsible, description)
 	VALUES (i_responsible_id, i_description)
 	RETURNING id INTO new_transaction_id;
 	-- Return the new transaction ID
@@ -111,28 +111,28 @@ DECLARE
 	v_transaction_id public.transactions.id%TYPE;
 BEGIN
 	-- Get the buy and sell rates from the stored functions
-	v_buy_rate := find_buy_rate(i_item_id, i_target_currency_id);
-	v_sell_rate := find_sell_rate(i_item_id, i_target_currency_id);
+	v_buy_rate := public.find_buy_rate(i_item_id, i_target_currency_id);
+	v_sell_rate := public.find_sell_rate(i_item_id, i_target_currency_id);
 
 	-- Calculate cost and profit
 	v_cost := i_amount * v_sell_rate;
 	v_profit := i_amount * (v_sell_rate - v_buy_rate);
 
 	-- Create a new transaction
-	v_transaction_id := create_transaction(i_user_id, i_description);
+	v_transaction_id := public.create_transaction(i_user_id, i_description);
 
 	-- the item (decrease stock)
-	INSERT INTO transaction_splits (transaction, side, account, amount, memo)
+	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
 	VALUES (i_transaction_id, 'credit', i_item_id, i_amount,
 	(SELECT "name" FROM public.accounts WHERE id = i_user_id));
 
 	-- the user
-	INSERT INTO transaction_splits (transaction, side, account, amount, memo)
+	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
 	VALUES (i_transaction_id, 'debit', i_user_id, v_cost,
 	(SELECT "name" FROM public.accounts WHERE id = i_item_id));
 
 	-- the profit
-	INSERT INTO transaction_splits (transaction, side, account, amount, memo)
+	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
 	VALUES (i_transaction_id, 'debit', (SELECT account_id FROM accounts WHERE name = 'BrmBar Profits'), v_profit, (SELECT 'Margin on ' || "name" FROM public.accounts WHERE id = i_item_id));
 
 	-- Return the cost

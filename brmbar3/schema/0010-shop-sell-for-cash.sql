@@ -132,6 +132,8 @@ BEGIN
 END;
 $$;
 
+DROP FUNCTION public.create_transaction;
+
 PERFORM brmbar_privileged.upgrade_schema_version_to(10);
 END IF;
 
