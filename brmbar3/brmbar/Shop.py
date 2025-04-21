@@ -119,13 +119,17 @@ class Shop:
         #self.withdraw_credit(amount, userfrom)
 
     def buy_for_cash(self, item, amount = 1):
+        cost = self.db.execute_and_fetch(
+            "SELECT public.buy_for_cash(%s, %s, %s, %s, %s)",
+            [self.cash.id, item.id, amount, self.currency.id, item.name]
+        )[0]
         # Buy: Currency conversion from item currency to shop currency
-        (buy, sell) = item.currency.rates(self.currency)
-        cost = amount * buy
+        #(buy, sell) = item.currency.rates(self.currency)
+        #cost = amount * buy
 
-        transaction = self._transaction(description = "BrmBar stock replenishment of {}x {} for cash".format(amount, item.name))
-        item.debit(transaction, amount, "Cash")
-        self.cash.credit(transaction, cost, item.name)
+        #transaction = self._transaction(description = "BrmBar stock replenishment of {}x {} for cash".format(amount, item.name))
+        #item.debit(transaction, amount, "Cash")
+        #self.cash.credit(transaction, cost, item.name)
         self.db.commit()
 
         return cost
