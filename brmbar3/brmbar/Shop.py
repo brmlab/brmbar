@@ -100,10 +100,16 @@ class Shop:
         #self.db.commit()
 
     def withdraw_credit(self, credit, user):
-        transaction = self._transaction(responsible = user, description = "BrmBar credit withdrawal for " + user.name)
-        self.cash.credit(transaction, credit, user.name)
-        user.debit(transaction, credit, "Credit withdrawal")
+        trn = self.db.execute_and_fetch(
+            "SELECT public.withdraw_credit(%s,  %s, %s, %s)",
+            [self.cash.id, credit, user.id, user.name]
+        )[0]
         self.db.commit()
+        return trn # unused
+        #transaction = self._transaction(responsible = user, description = "BrmBar credit withdrawal for " + user.name)
+        #self.cash.credit(transaction, credit, user.name)
+        #user.debit(transaction, credit, "Credit withdrawal")
+        #self.db.commit()
 
     def transfer_credit(self, userfrom, userto, amount):
         self.add_credit(amount, userto)
