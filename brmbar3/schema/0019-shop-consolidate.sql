@@ -1,5 +1,5 @@
 --
--- 0019-shop-buy-for-cash.sql
+-- 0019-shop-consolidate.sql
 --
 -- #19 - stored function for "consolidation" transaction
 --
