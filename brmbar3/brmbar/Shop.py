@@ -87,10 +87,17 @@ class Shop:
         return cost
 
     def add_credit(self, credit, user):
-        transaction = self._transaction(responsible = user, description = "BrmBar credit replenishment for " + user.name)
-        self.cash.debit(transaction, credit, user.name)
-        user.credit(transaction, credit, "Credit replenishment")
+        trn = self.db.execute_and_fetch(
+            "SELECT public.add_credit(%s,  %s, %s, %s)",
+            [self.cash.id, credit, user.id, user.name]
+        )[0]
         self.db.commit()
+        return trn # unused
+
+        #transaction = self._transaction(responsible = user, description = "BrmBar credit replenishment for " + user.name)
+        #self.cash.debit(transaction, credit, user.name)
+        #user.credit(transaction, credit, "Credit replenishment")
+        #self.db.commit()
 
     def withdraw_credit(self, credit, user):
         transaction = self._transaction(responsible = user, description = "BrmBar credit withdrawal for " + user.name)
