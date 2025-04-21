@@ -135,9 +135,13 @@ class Shop:
         return cost
 
     def receipt_to_credit(self, user, credit, description):
-        transaction = self._transaction(responsible = user, description = "Receipt: " + description)
-        self.profits.credit(transaction, credit, user.name)
-        user.credit(transaction, credit, "Credit from receipt: " + description)
+        #transaction = self._transaction(responsible = user, description = "Receipt: " + description)
+        #self.profits.credit(transaction, credit, user.name)
+        #user.credit(transaction, credit, "Credit from receipt: " + description)
+        self.db.execute_and_fetch(
+            "SELECT public.buy_for_cash(%s, %s, %s, %s, %s)",
+            [self.profits.id, user.id, user.name, credit, description]
+        )[0]
         self.db.commit()
 
     def _transaction(self, responsible = None, description = None):
