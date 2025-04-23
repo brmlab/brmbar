@@ -77,6 +77,13 @@ Software Setup
 
 TODO: Mention the actual commands to execute.
 
+Running tests
+-------------
+
+Docker can be used to easily run tests in a reproducible environment:
+
+    docker build -t brmbar3 . && docker run --rm brmbar3 test
+
 Troubleshooting
 ---------------
 
