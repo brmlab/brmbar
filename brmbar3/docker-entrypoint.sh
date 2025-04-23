@@ -46,7 +46,7 @@ if [ "$1" == "test" ]; then
   
   # Run test (as brmuser)
   echo "Running python test..."
-  python3 /app/test--currency-rates.py
+  python3 -m pytest # Run pytest as a module
 else
   # Run the specified command
   exec "$@"

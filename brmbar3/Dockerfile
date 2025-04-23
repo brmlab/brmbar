@@ -4,6 +4,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-psycopg2 \
+    python3-pytest \
     postgresql \
     postgresql-client \
     sudo \
