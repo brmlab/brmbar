@@ -33,8 +33,8 @@ IF brmbar_privileged.has_exact_schema_version(8) THEN
 
 -- return negative number on rate not found
 CREATE OR REPLACE FUNCTION public.find_buy_rate(
-	IN i_item_id public.accounts.id%TYPE;
-	IN i_other_id public.accounts.id%TYPE;
+	IN i_item_id public.accounts.id%TYPE,
+	IN i_other_id public.accounts.id%TYPE
 ) RETURNS NUMERIC
 LANGUAGE plpgsql
 AS $$
@@ -42,7 +42,7 @@ DECLARE
 	v_rate public.exchange_rates.rate%TYPE;
 	v_rate_dir public.exchange_rates.rate_dir%TYPE;
 BEGIN
-        SELECT rate INTO STRICT v_rate, rate_dir INTO STRICT v_rate_dir FROM public.exchange_rates WHERE target = i_item_id AND source = i_other_id AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1;
+        SELECT rate, rate_dir INTO STRICT v_rate, v_rate_dir FROM public.exchange_rates WHERE target = i_item_id AND source = i_other_id AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1;
 	IF v_rate_dir = 'target_to_source'::public.exchange_rate_direction THEN
 		RETURN v_rate;
 	ELSE
@@ -52,13 +52,12 @@ EXCEPTION
 	WHEN NO_DATA_FOUND THEN
 		RETURN -1;
 END;
-$$
-
+$$;
 
 -- return negative number on rate not found
 CREATE OR REPLACE FUNCTION public.find_sell_rate(
-	IN i_item_id public.accounts.id%TYPE;
-	IN i_other_id public.accounts.id%TYPE;
+	IN i_item_id public.accounts.id%TYPE,
+	IN i_other_id public.accounts.id%TYPE
 ) RETURNS NUMERIC
 LANGUAGE plpgsql
 AS $$
@@ -66,24 +65,24 @@ DECLARE
 	v_rate public.exchange_rates.rate%TYPE;
 	v_rate_dir public.exchange_rates.rate_dir%TYPE;
 BEGIN
-        SELECT rate INTO STRICT v_rate, rate_dir INTO STRICT v_rate_dir FROM public.exchange_rates WHERE target = i_other_id AND source = i_item_id AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1;
-	IF v_rate_dir = 'source_to_target'::public.exchange_rate_direction THEN
-		RETURN v_rate;
-	ELSE
+        SELECT rate, rate_dir INTO STRICT v_rate, v_rate_dir FROM public.exchange_rates WHERE source = i_item_id AND target = i_other_id AND valid_since <= NOW() ORDER BY valid_since DESC LIMIT 1;
+	IF v_rate_dir = 'target_to_source'::public.exchange_rate_direction THEN
 		RETURN 1/v_rate;
+	ELSE
+		RETURN v_rate;
 	END IF;
 EXCEPTION
 	WHEN NO_DATA_FOUND THEN
 		RETURN -1;
 END;
-$$
+$$;
 
 CREATE OR REPLACE FUNCTION public.create_transaction(
 	i_responsible_id public.accounts.id%TYPE,
 	i_description public.transactions.description%TYPE
 ) RETURNS public.transactions.id%TYPE AS $$
 DECLARE
-	new_transaction_id public.transactions%TYPE;
+	new_transaction_id public.transactions.id%TYPE;
 BEGIN
 	-- Create a new transaction
 	INSERT INTO public.transactions (responsible, description)
@@ -123,17 +122,17 @@ BEGIN
 
 	-- the item (decrease stock)
 	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
-	VALUES (i_transaction_id, 'credit', i_item_id, i_amount,
+	VALUES (v_transaction_id, 'credit', i_item_id, i_amount,
 	(SELECT "name" FROM public.accounts WHERE id = i_user_id));
 
 	-- the user
 	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
-	VALUES (i_transaction_id, 'debit', i_user_id, v_cost,
+	VALUES (v_transaction_id, 'debit', i_user_id, v_cost,
 	(SELECT "name" FROM public.accounts WHERE id = i_item_id));
 
 	-- the profit
 	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
-	VALUES (i_transaction_id, 'debit', (SELECT account_id FROM accounts WHERE name = 'BrmBar Profits'), v_profit, (SELECT 'Margin on ' || "name" FROM public.accounts WHERE id = i_item_id));
+	VALUES (v_transaction_id, 'debit', (SELECT account_id FROM accounts WHERE name = 'BrmBar Profits'), v_profit, (SELECT 'Margin on ' || "name" FROM public.accounts WHERE id = i_item_id));
 
 	-- Return the cost
 	RETURN v_cost;

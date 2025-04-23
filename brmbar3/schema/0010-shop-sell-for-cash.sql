@@ -36,7 +36,7 @@ CREATE OR REPLACE FUNCTION brmbar_privileged.create_transaction(
 	i_description public.transactions.description%TYPE
 ) RETURNS public.transactions.id%TYPE AS $$
 DECLARE
-	new_transaction_id public.transactions%TYPE;
+	new_transaction_id public.transactions.id%TYPE;
 BEGIN
 	-- Create a new transaction
 	INSERT INTO public.transactions (responsible, description)
@@ -77,17 +77,17 @@ BEGIN
 
 	-- the item (decrease stock)
 	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
-	VALUES (i_transaction_id, 'credit', i_item_id, i_amount,
+	VALUES (v_transaction_id, 'credit', i_item_id, i_amount,
 	i_other_memo);
 
 	-- the user
 	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
-	VALUES (i_transaction_id, 'debit', i_user_id, v_cost,
+	VALUES (v_transaction_id, 'debit', i_user_id, v_cost,
 	(SELECT "name" FROM public.accounts WHERE id = i_item_id));
 
 	-- the profit
 	INSERT INTO public.transaction_splits (transaction, side, account, amount, memo)
-	VALUES (i_transaction_id, 'debit', (SELECT account_id FROM accounts WHERE name = 'BrmBar Profits'), v_profit, (SELECT 'Margin on ' || "name" FROM public.accounts WHERE id = i_item_id));
+	VALUES (v_transaction_id, 'debit', (SELECT account_id FROM accounts WHERE name = 'BrmBar Profits'), v_profit, (SELECT 'Margin on ' || "name" FROM public.accounts WHERE id = i_item_id));
 
 	-- Return the cost
 	RETURN v_cost;
@@ -106,7 +106,7 @@ AS $$
 BEGIN
 	RETURN brmbar_privileged.sell_item_internal(i_item_id,
 		i_amount,
-		i_other_id,
+		i_user_id,
 		i_target_currency_id,
 		(SELECT "name" FROM public.accounts WHERE id = i_user_id),
 		i_description);
@@ -125,7 +125,7 @@ AS $$
 BEGIN
 	RETURN brmbar_privileged.sell_item_internal(i_item_id,
 		i_amount,
-		i_other_id,
+		i_user_id,
 		i_target_currency_id,
 		'Cash',
 		i_description);

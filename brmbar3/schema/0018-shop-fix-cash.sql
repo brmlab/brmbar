@@ -32,8 +32,8 @@ BEGIN
 IF brmbar_privileged.has_exact_schema_version(17) THEN
 
 CREATE OR REPLACE FUNCTION public.fix_cash(
-	IN i_excess_id public.acounts.id%TYPE,
-	IN i_deficit_id public.acounts.id%TYPE,
+	IN i_excess_id public.accounts.id%TYPE,
+	IN i_deficit_id public.accounts.id%TYPE,
 	IN i_shop_currency_id public.currencies.id%TYPE,
 	IN i_amount_in_reality NUMERIC
 ) RETURNS BOOLEAN
