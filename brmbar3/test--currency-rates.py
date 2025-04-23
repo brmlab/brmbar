@@ -68,6 +68,8 @@ def main():
                 print(f"[VALUE DIFFERENCE] {c1.name} -> {c2.name}")
                 print(f"  rates():  {rates1}")
                 print(f"  rates2(): {rates2}")
+            else:
+                print(f"{c1.name} -> {c2.name} {rates1} {rates2} OK")
 
 if __name__ == "__main__":
     main()
